@@ -8,44 +8,93 @@
     <style>
         body {
             margin: 0;
-            padding: 0;
-            background-color: #FEAE19;
+            padding: 20px;
+            background-color: white;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .content-container {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            max-width: 900px;
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .text-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
             gap: 20px;
         }
 
-        .logo {
-            width: 120px;
-            height: auto;
-        }
-
         h1 {
-            font-family: 'Inter', sans-serif;
-            color: black;
             font-size: 64px;
             font-weight: 700;
-            text-align: center;
             margin: 0;
-            padding: 20px;
+        }
+
+        .subtitle {
+            font-size: 24px;
+            font-weight: 600;
+            text-align: left;
+            margin: 10px 0;
+        }
+
+        .app-store-badge {
+            width: 180px;
+            height: auto;
+            margin-top: 20px;
+        }
+
+        .hero-image {
+            max-width: 50%;
+            max-height: 700px;
+            height: auto;
+            object-fit: contain;
         }
 
         @media (max-width: 768px) {
+            .content-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
             h1 {
                 font-size: 32px;
-                font-weight: 600;
             }
             
-            .logo {
-                width: 80px;
+            .subtitle {
+                font-size: 18px;
+                text-align: center;
+            }
+
+            .hero-image {
+                max-width: 90%;
+            }
+
+            .app-store-badge {
+                width: 140px;
             }
         }
     </style>
 </head>
 <body>
-    <h1>Dawn and Dusk</h1>
+    <div class="content-container">
+        <div class="text-content">
+            <h1>Dawn and Dusk</h1>
+            <p class="subtitle">A more natural way to tell time, with the sun</p>
+            <p class="subtitle">a prayer bell for the sun</p>
+            <a href="https://apps.apple.com/us/app/dawn-and-dusk/id6736839971" target="_blank">
+                <img src="../images/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="Download on the App Store" class="app-store-badge">
+            </a>
+        </div>
+        <img src="../images/dawn and dusk hero_6.gif" alt="Dawn and Dusk Hero Image" class="hero-image">
+    </div>
 </body>
 </html> 
