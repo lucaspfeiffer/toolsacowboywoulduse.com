@@ -429,14 +429,35 @@
         .full-width-image-section {
             width: 100vw;
             margin-left: calc(-50vw + 50%);
+            margin-right: calc(-50vw + 50%);
             padding: 0;
             overflow: hidden;
+            position: relative;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            box-sizing: border-box;
         }
         
         .full-width-image {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: cover;
             display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .full-width-image-section {
+                height: auto;
+                padding-bottom: 0;
+            }
+            
+            .full-width-image {
+                position: static;
+                height: auto;
+            }
         }
         
         .quote-content {
@@ -461,72 +482,97 @@
             font-weight: 600;
         }
         
-        /* Photography Section */
-        .photography-section {
+        .quote-app-store {
+            display: inline-block;
+            margin-top: 30px;
+        }
+        
+        .quote-app-store-badge {
+            width: 160px;
+            height: auto;
+        }
+        
+        /* Info Cards Section */
+        .info-cards-section {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            max-width: 1200px;
+            width: 100%;
+            padding: 60px 20px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            background: #ffffff;
+        }
+        
+        .info-card {
+            display: flex;
+            align-items: center;
+            max-width: 320px;
+        }
+        
+        .card-image {
+            width: 60px;
+            height: 60px;
+            border-radius: calc(60px * 0.28); /* 28% of width, matching app-logo ratio */
+            object-fit: cover;
+            margin-right: 15px;
+            outline: 1px solid rgba(0, 0, 0, 0.18);
+            outline-offset: -1px;
+            box-sizing: border-box;
+        }
+        
+        .card-content {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0 0 3px 0;
+            color: #333;
+        }
+        
+        .card-subtitle {
+            font-size: 12px;
+            color: #666;
+            margin: 0;
+        }
+        
+        /* Footer */
+        .footer {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            max-width: 1200px;
             width: 100%;
-            padding: 100px 20px;
+            padding: 5px 20px;
             background-color: #ffffff;
             background: #ffffff;
             border-top: 1px solid #eee;
+            margin-top: 0;
         }
         
-        .portrait-container {
-            width: 100%;
-            max-width: 350px;
-            margin-bottom: 60px;
-        }
-        
-        .portrait-image {
-            width: 100%;
-            border-radius: 0;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-        
-        .branding-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-        
-        .brand-logo {
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
-            object-fit: cover;
-        }
-        
-        .brand-text {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-        
-        .brand-name {
-            font-size: 24px;
-            font-weight: 700;
-            margin: 0;
-            line-height: 1.2;
-        }
-        
-        .brand-subtitle {
-            font-size: 16px;
-            color: #666;
-            margin-top: 5px;
-        }
-        
-        .made-in {
-            font-size: 16px;
+        .footer-text {
+            font-size: 14px;
             color: #999;
             text-align: center;
-            font-weight: 500;
-            margin-top: 20px;
+            line-height: 1;
+            margin: 0;
+        }
+        
+        .footer-link {
+            color: #666;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        
+        .footer-link:hover {
+            color: #333;
         }
         
         .feature-sections {
@@ -666,35 +712,31 @@
                 font-size: 18px;
             }
             
-            .photography-section {
-                padding: 60px 20px;
+            .quote-app-store {
+                margin-top: 20px;
             }
             
-            .portrait-container {
-                max-width: 250px;
-                margin-bottom: 40px;
+            .quote-app-store-badge {
+                width: 140px;
             }
             
-            .branding-container {
+            .info-cards-section {
                 flex-direction: column;
                 gap: 20px;
+                padding: 40px 20px;
             }
             
-            .brand-text {
-                align-items: center;
+            .info-card {
+                width: 100%;
             }
             
-            .brand-name {
-                font-size: 20px;
+            .footer {
+                padding: 5px;
+                margin-top: 0;
             }
             
-            .brand-subtitle {
+            .footer-text {
                 font-size: 14px;
-            }
-            
-            .made-in {
-                font-size: 14px;
-                margin-top: 15px;
             }
             
             @media (max-width: 480px) {
@@ -733,8 +775,8 @@
                 <h2>Get notified for sunrise and sunset</h2>
                 <div class="features">
                     <div class="feature">
-                        <i data-feather="bell"></i>
-                        <span>Timely alerts</span>
+                        <i data-feather="heart"></i>
+                        <span>Circadian rhythm</span>
                     </div>
                     <div class="feature">
                         <i data-feather="sun"></i>
@@ -742,7 +784,7 @@
                     </div>
                     <div class="feature">
                         <i data-feather="map-pin"></i>
-                        <span>Location aware</span>
+                        <span>Moves with you</span>
                     </div>
                 </div>
             </div>
@@ -753,7 +795,7 @@
         
         <div class="calendar-section">
             <div class="calendar-content">
-                <h2>Send an event invite to catch the sunset with friends</h2>
+                <h2>Send an event invite to friends for a serendipitous sunrise or sunset together</h2>
             </div>
             <div class="calendar-images">
                 <div class="calendar-image-container">
@@ -776,7 +818,7 @@
         
         <div class="customize-section">
             <div class="customize-content">
-                <h2>Customize your experience</h2>
+                <h2>Customize notifications</h2>
             </div>
             
             <div class="customize-images">
@@ -802,31 +844,40 @@
         
         <div class="quote-section">
             <div class="quote-content">
-                <h2>For all of us, to get outside more.</h2>
-                <p class="quote-author">- Lucas</p>
+                <h2>Made for all of us,</h2>
+                <h2>To get outside more.</h2>
+                <a href="https://apps.apple.com/us/app/dawn-and-dusk/id6736839971" target="_blank" class="quote-app-store">
+                    <img src="../images/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="Download on the App Store" class="quote-app-store-badge">
+                </a>
             </div>
         </div>
         
         <div class="full-width-image-section">
             <img src="../images/IMG_2327.webp" alt="Dawn and Dusk Landscape" class="full-width-image">
         </div>
+    </div>
+    
+    <div class="info-cards-section">
+        <div class="info-card">
+            <img src="../images/Sun_App_logo_3 1.png" alt="Dawn and Dusk App Logo" class="card-image">
+            <div class="card-content">
+                <h3 class="card-title">(01) Dawn and Dusk</h3>
+                <p class="card-subtitle">By Tools a Cowboy Would Use</p>
+            </div>
+        </div>
         
-        <div class="photography-section">
-            <div class="portrait-container">
-                <img src="../images/IMG_3615 1.webp" alt="Dawn and Dusk Portrait" class="portrait-image">
+        <div class="info-card">
+            <img src="../images/CleanShot 2025-04-10 at 19.16.53@2x.webp" alt="Design and Engineering" class="card-image">
+            <div class="card-content">
+                <h3 class="card-title">Design and engineering</h3>
+                <p class="card-subtitle">California, US</p>
             </div>
-            
-            <div class="branding-container">
-                <img src="../images/Sun_App_logo_3 1.png" alt="Dawn and Dusk Logo" class="brand-logo">
-                <div class="brand-text">
-                    <h3 class="brand-name">Dawn<br>and Dusk</h3>
-                    <p class="brand-subtitle">by Tools a Cowboy Would Use</p>
-                </div>
-            </div>
-            
-            <p class="made-in">Designed and engineered in California</p>
         </div>
     </div>
+    
+    <footer class="footer">
+        <p class="footer-text" style="text-align: center;">© All rights reserved to <a href="https://toolsacowboywoulduse.com" class="footer-link">Tools a Cowboy Would Use</a></p>
+    </footer>
 
     <script>
         // Initialize Feather icons
