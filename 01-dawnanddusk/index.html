@@ -447,7 +447,7 @@
         .calendar-images {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 15px;
             padding: 0 20px;
             max-width: 900px;
             margin: 0 auto;
@@ -592,7 +592,7 @@
         .customize-images {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 12px;
             width: 100%;
             max-width: 900px;
             padding: 0 20px;
@@ -890,7 +890,7 @@
             }
 
             .sun-icon {
-                margin: 40px 0;
+                margin: 0;  /* Removed all margin */
             }
 
             .info-cards-section {
@@ -953,6 +953,15 @@
                 padding: 6px 4px;
             }
 
+            /* Adjust image spacing for mobile */
+            .calendar-images {
+                gap: 6px;
+            }
+            
+            .customize-images {
+                gap: 6px;
+            }
+            
             /* Hide third image in customize section on mobile */
             .customize-image-container:nth-child(3) {
                 display: none;
