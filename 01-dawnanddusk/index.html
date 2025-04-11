@@ -5,6 +5,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <style>
         body {
             margin: 0;
@@ -16,6 +17,10 @@
             flex-direction: column;
             align-items: center;
             font-family: 'Inter', sans-serif;
+        }
+        
+        html {
+            background-color: white;
         }
 
         .content-container {
@@ -166,6 +171,70 @@
             z-index: 2;
         }
         
+        .notification-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-width: 1200px;
+            width: 100%;
+            padding: 100px 20px;
+            background-color: white;
+        }
+        
+        .notification-content {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .notification-content h2 {
+            font-size: 42px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .feature {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .feature i {
+            color: #369AFF;
+            stroke-width: 2;
+        }
+        
+        .feature span {
+            font-size: 16px;
+            color: #666;
+            font-weight: 600;
+        }
+        
+        .notification-image-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            background-color: white;
+        }
+        
+        .notification-image {
+            max-width: 350px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            background-color: white;
+            border: 10px solid white;
+        }
+        
         @media (max-width: 768px) {
             .outdoor-section {
                 padding: 60px 20px;
@@ -179,6 +248,29 @@
             
             .quote {
                 font-size: 24px;
+            }
+            
+            .notification-section {
+                padding: 60px 20px;
+            }
+            
+            .notification-content h2 {
+                font-size: 32px;
+                margin-bottom: 20px;
+            }
+            
+            .features {
+                gap: 20px;
+                flex-wrap: wrap;
+                margin-bottom: 20px;
+            }
+            
+            .feature i {
+                stroke-width: 1.5;
+            }
+            
+            .notification-image {
+                max-width: 280px;
             }
         }
     </style>
@@ -203,5 +295,33 @@
         <div class="sun-icon"></div>
         <p class="quote">"It's like a prayer bell for the sun"</p>
     </div>
+    
+    <div class="notification-section">
+        <div class="notification-content">
+            <h2>Get notified for sunrise and sunset</h2>
+            <div class="features">
+                <div class="feature">
+                    <i data-feather="bell"></i>
+                    <span>Timely alerts</span>
+                </div>
+                <div class="feature">
+                    <i data-feather="sun"></i>
+                    <span>Sunrise & sunset</span>
+                </div>
+                <div class="feature">
+                    <i data-feather="map-pin"></i>
+                    <span>Location aware</span>
+                </div>
+            </div>
+        </div>
+        <div class="notification-image-container">
+            <img src="../images/sun app notification.webp" alt="Notification for sunset" class="notification-image">
+        </div>
+    </div>
+
+    <script>
+        // Initialize Feather icons
+        feather.replace();
+    </script>
 </body>
 </html> 
