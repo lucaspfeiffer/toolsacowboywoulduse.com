@@ -533,14 +533,14 @@
         }
         
         .card-title {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 700;
-            margin: 0 0 3px 0;
+            margin: 0 0 4px 0;
             color: #333;
         }
         
         .card-subtitle {
-            font-size: 12px;
+            font-size: 14px;
             color: #666;
             margin: 0;
         }
@@ -918,8 +918,16 @@
         <div class="info-card">
             <img src="../images/CleanShot 2025-04-10 at 19.16.53@2x.webp" alt="Design and Engineering" class="card-image">
             <div class="card-content">
-                <h3 class="card-title">Design and engineering</h3>
-                <p class="card-subtitle">California, US</p>
+                <h3 class="card-title">California, US</h3>
+                <p class="card-subtitle">Design and engineering</p>
+            </div>
+        </div>
+        
+        <div class="info-card">
+            <img src="../images/IMG_3615 1.webp" alt="San Francisco Sunrise/Sunset" class="card-image">
+            <div class="card-content">
+                <h3 class="card-title" id="sf-sun-time">6:37 AM</h3>
+                <p class="card-subtitle">Sunrise in San Francisco</p>
             </div>
         </div>
     </div>
@@ -943,6 +951,166 @@
     <script>
         // Initialize Feather icons
         feather.replace();
+        
+        // San Francisco sunrise/sunset info
+        function updateSFSunInfo() {
+            // San Francisco coordinates
+            const lat = 37.7749;
+            const lng = -122.4194;
+            const now = new Date();
+            
+            // Calculate sun times using a standard astronomical algorithm
+            // Based on NOAA solar calculations
+            function calculateSunTimes(date, lat, lng) {
+                // Convert to radians
+                function toRadians(degrees) {
+                    return degrees * Math.PI / 180;
+                }
+                
+                function toDegrees(radians) {
+                    return radians * 180 / Math.PI;
+                }
+                
+                // Get day of year
+                function getDayOfYear(date) {
+                    const startOfYear = new Date(date.getFullYear(), 0, 0);
+                    const diff = date - startOfYear;
+                    const oneDay = 1000 * 60 * 60 * 24;
+                    return Math.floor(diff / oneDay);
+                }
+                
+                const dayOfYear = getDayOfYear(date);
+                
+                // Convert the longitude to hour value and calculate an approximate time
+                const lngHour = lng / 15;
+                
+                // Calculate sunrise and sunset
+                function calculateSunTime(isRise) {
+                    // isRise: true for sunrise, false for sunset
+                    const zenith = 90.83; // Official zenith
+                    
+                    // Calculate approximate time
+                    let t = dayOfYear + ((isRise ? 6 : 18) - lngHour) / 24;
+                    
+                    // Calculate sun's mean anomaly
+                    const M = (0.9856 * t) - 3.289;
+                    
+                    // Calculate sun's true longitude
+                    let L = M + (1.916 * Math.sin(toRadians(M))) + (0.020 * Math.sin(toRadians(2 * M))) + 282.634;
+                    // Adjust into 0-360 range
+                    L = L % 360;
+                    if (L < 0) L += 360;
+                    
+                    // Calculate sun's right ascension
+                    let RA = toDegrees(Math.atan(0.91764 * Math.tan(toRadians(L))));
+                    // Adjust into 0-360 range
+                    RA = RA % 360;
+                    if (RA < 0) RA += 360;
+                    
+                    // Right ascension value needs to be in the same quadrant as L
+                    const Lquadrant = Math.floor(L / 90) * 90;
+                    const RAquadrant = Math.floor(RA / 90) * 90;
+                    RA = RA + (Lquadrant - RAquadrant);
+                    
+                    // Convert to hours
+                    RA = RA / 15;
+                    
+                    // Calculate sun's declination
+                    const sinDec = 0.39782 * Math.sin(toRadians(L));
+                    const cosDec = Math.cos(Math.asin(sinDec));
+                    
+                    // Calculate sun's local hour angle
+                    const cosH = (Math.cos(toRadians(zenith)) - (sinDec * Math.sin(toRadians(lat)))) / (cosDec * Math.cos(toRadians(lat)));
+                    
+                    // Handle no sunrise or sunset case
+                    if (cosH > 1) {
+                        return isRise ? -1 : 24; // No sunrise/sunset today
+                    }
+                    if (cosH < -1) {
+                        return isRise ? 0 : 24; // Sun always up/down
+                    }
+                    
+                    // Finish calculating H and convert into hours
+                    const H = isRise ? 360 - toDegrees(Math.acos(cosH)) : toDegrees(Math.acos(cosH));
+                    const T = H / 15;
+                    
+                    // Calculate local mean time of rising/setting
+                    let localT = T + RA - (0.06571 * t) - 6.622;
+                    
+                    // Adjust for timezone
+                    let UTC = localT - lngHour;
+                    UTC = UTC % 24;
+                    if (UTC < 0) UTC += 24;
+                    
+                    // Get time zone offset in hours
+                    const tzOffset = -date.getTimezoneOffset() / 60;
+                    
+                    // Convert UTC to local time
+                    let localTime = UTC + tzOffset;
+                    if (localTime >= 24) localTime -= 24;
+                    if (localTime < 0) localTime += 24;
+                    
+                    // Return result
+                    const resultDate = new Date(date);
+                    const hours = Math.floor(localTime);
+                    const minutes = Math.floor((localTime - hours) * 60);
+                    resultDate.setHours(hours, minutes, 0, 0);
+                    return resultDate;
+                }
+                
+                // Calculate sunrise and sunset
+                const sunrise = calculateSunTime(true);
+                const sunset = calculateSunTime(false);
+                
+                return {
+                    sunrise: sunrise,
+                    sunset: sunset
+                };
+            }
+            
+            const sunTimes = calculateSunTimes(now, lat, lng);
+            const timeEl = document.getElementById('sf-sun-time');
+            const subtitleEl = timeEl.nextElementSibling;
+            
+            // Format time as HH:MM AM/PM
+            function formatTime(date) {
+                let hours = date.getHours();
+                const minutes = date.getMinutes();
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12; // the hour '0' should be '12'
+                const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+                return hours + ':' + minutesStr + ' ' + ampm;
+            }
+            
+            // Determine if we should show sunrise or sunset based on current time
+            // If current time is after sunset or before sunrise, show tomorrow's sunrise
+            // Otherwise show today's sunset
+            
+            // Adjust times to consider full date comparison
+            const nowTime = now.getTime();
+            const sunriseTime = sunTimes.sunrise.getTime();
+            const sunsetTime = sunTimes.sunset.getTime();
+            
+            // Create tomorrow's date to calculate tomorrow's sunrise if needed
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowSunTimes = calculateSunTimes(tomorrow, lat, lng);
+            
+            if (nowTime > sunsetTime || nowTime < sunriseTime) {
+                // If past sunset or before sunrise, show next sunrise
+                const nextSunrise = nowTime < sunriseTime ? sunTimes.sunrise : tomorrowSunTimes.sunrise;
+                timeEl.textContent = formatTime(nextSunrise);
+                subtitleEl.textContent = 'Sunrise in San Francisco';
+            } else {
+                // Between sunrise and sunset, show today's sunset
+                timeEl.textContent = formatTime(sunTimes.sunset);
+                subtitleEl.textContent = 'Sunset in San Francisco';
+            }
+        }
+        
+        // Update the sunrise/sunset info when page loads
+        updateSFSunInfo();
     </script>
 </body>
 </html> 
