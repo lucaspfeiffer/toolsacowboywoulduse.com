@@ -67,6 +67,7 @@
 
         .color-flip-btn:hover {
             background-color: #1F2C26;
+            border-color: #BE5D1D;
         }
 
         .hero-section.flipped {
@@ -91,6 +92,7 @@
 
         .hero-section.flipped .color-flip-btn:hover {
             background-color: #7E202B;
+            border-color: #BE5D1D;
         }
 
         .substack-btn {
@@ -144,6 +146,29 @@
 
         body.flipped {
             background-color: #1F2C26;
+        }
+
+        .letter {
+            display: inline-block;
+            transition: color 0.2s ease;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.37 2.63 14 7l-1.59-1.59a2 2 0 0 0-2.82 0L8 7l9 9 1.59-1.59a2 2 0 0 0 0-2.82L17 10l4.37-4.37a2.12 2.12 0 1 0-3-3Z"/><path d="M9 8c-2 3-4 3.5-7 4l8 10c2-1 6-5 6-7"/><path d="M14.5 17.5 4.5 15"/></svg>') 12 12, pointer;
+        }
+
+        .letter:hover {
+            animation: none;
+        }
+
+        .letter.fade-out {
+            animation: fadeBackToWhite 0.5s ease 0.5s forwards;
+        }
+
+        @keyframes fadeBackToWhite {
+            from {
+                color: #BE5D1D;
+            }
+            to {
+                color: white;
+            }
         }
 
 
@@ -437,6 +462,59 @@
                 heroSection.classList.add('flipped');
                 body.classList.add('flipped');
             }
+
+            // Wrap each letter in a span for individual hover effects
+            function wrapLetters(element) {
+                const text = element.textContent;
+                const wrappedText = text.split('').map(char => {
+                    if (char === ' ') {
+                        return ' ';
+                    }
+                    return `<span class="letter">${char}</span>`;
+                }).join('');
+                element.innerHTML = wrappedText;
+            }
+
+            // Apply letter wrapping to hero text elements
+            const heroTitle = document.querySelector('.hero-section h1');
+            const heroTagline = document.querySelector('.hero-section .tagline');
+            
+            if (heroTitle) wrapLetters(heroTitle);
+            if (heroTagline) wrapLetters(heroTagline);
+
+            // Define color palette
+            const colors = [
+                '#1E3A8A', // Navy blue
+                '#1E40AF', // Blue
+                '#1E293B', // Dark navy
+                '#BE5D1D', // Orange
+                '#EA580C', // Bright orange
+                '#F97316', // Orange
+                '#EAB308', // Yellow
+                '#FCD34D', // Light yellow
+                '#FBBF24', // Golden yellow
+                '#DC2626', // Red
+                '#7C2D12', // Brown
+                '#059669', // Green
+                '#7C3AED', // Purple
+                '#BE185D'  // Pink
+            ];
+
+            // Add hover event listeners to handle color changes
+            document.addEventListener('mouseover', function(e) {
+                if (e.target.classList.contains('letter')) {
+                    e.target.classList.remove('fade-out');
+                    // Set random color on hover
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    e.target.style.color = randomColor;
+                }
+            });
+
+            document.addEventListener('mouseout', function(e) {
+                if (e.target.classList.contains('letter')) {
+                    e.target.classList.add('fade-out');
+                }
+            });
         });
 
         function flipColors() {
