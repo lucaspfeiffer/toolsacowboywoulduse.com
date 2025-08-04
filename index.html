@@ -148,10 +148,17 @@
             background-color: #1F2C26;
         }
 
+        h1 {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="white" stroke="none"><path d="M18.37 2.63 14 7l-1.59-1.59a2 2 0 0 0-2.82 0L8 7l9 9 1.59-1.59a2 2 0 0 0 0-2.82L17 10l4.37-4.37a2.12 2.12 0 1 0-3-3Z"/><path d="M9 8c-2 3-4 3.5-7 4l8 10c2-1 6-5 6-7"/><path d="M14.5 17.5 4.5 15"/></svg>') 50 50, pointer;
+        }
+
+        .tagline {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="white" stroke="none"><path d="M18.37 2.63 14 7l-1.59-1.59a2 2 0 0 0-2.82 0L8 7l9 9 1.59-1.59a2 2 0 0 0 0-2.82L17 10l4.37-4.37a2.12 2.12 0 1 0-3-3Z"/><path d="M9 8c-2 3-4 3.5-7 4l8 10c2-1 6-5 6-7"/><path d="M14.5 17.5 4.5 15"/></svg>') 32 32, pointer;
+        }
+
         .letter {
             display: inline-block;
             transition: color 0.2s ease;
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.37 2.63 14 7l-1.59-1.59a2 2 0 0 0-2.82 0L8 7l9 9 1.59-1.59a2 2 0 0 0 0-2.82L17 10l4.37-4.37a2.12 2.12 0 1 0-3-3Z"/><path d="M9 8c-2 3-4 3.5-7 4l8 10c2-1 6-5 6-7"/><path d="M14.5 17.5 4.5 15"/></svg>') 12 12, pointer;
         }
 
         .letter:hover {
@@ -482,24 +489,38 @@
             if (heroTitle) wrapLetters(heroTitle);
             if (heroTagline) wrapLetters(heroTagline);
 
-            // Define color palette - sharp, exciting colors
+            // Define color palette - wide spectrum of vibrant colors
             const colors = [
-                '#FF0000', // Pure Red
-                '#00FF00', // Pure Green
-                '#0000FF', // Pure Blue
-                '#FFFF00', // Pure Yellow
-                '#FF00FF', // Pure Magenta
-                '#00FFFF', // Pure Cyan
-                '#FF8000', // Electric Orange
-                '#8000FF', // Electric Purple
-                '#FF0080', // Electric Pink
-                '#80FF00', // Electric Lime
-                '#0080FF', // Electric Blue
-                '#FF4000', // Bright Red-Orange
-                '#4000FF', // Bright Blue-Purple
-                '#FF0040', // Bright Pink-Red
-                '#40FF00', // Bright Green-Yellow
-                '#0040FF'  // Bright Blue
+                '#FF4444', // Bright Red
+                '#FF6644', // Coral Red
+                '#FF8844', // Bright Orange
+                '#FFAA44', // Amber
+                '#FFCC44', // Gold
+                '#FFFF44', // Bright Yellow
+                '#CCFF44', // Yellow-Green
+                '#88FF44', // Bright Lime
+                '#66FF44', // Spring Green
+                '#44FF44', // Bright Green
+                '#44FF66', // Mint Green
+                '#44FF88', // Sea Green
+                '#44FFAA', // Aqua Green
+                '#44FFCC', // Turquoise
+                '#44FFFF', // Bright Cyan
+                '#44CCFF', // Light Blue
+                '#4488FF', // Bright Sky Blue
+                '#4466FF', // Electric Blue
+                '#4444FF', // Bright Blue
+                '#6644FF', // Royal Purple
+                '#8844FF', // Bright Purple
+                '#AA44FF', // Violet
+                '#CC44FF', // Purple-Pink
+                '#FF44FF', // Bright Magenta
+                '#FF44CC', // Hot Pink
+                '#FF4488', // Bright Pink
+                '#FF4466', // Rose Pink
+                '#FF6688', // Salmon Pink
+                '#FF88AA', // Light Pink
+                '#FFAACC'  // Pastel Pink
             ];
 
             // Add hover event listeners to handle color changes
