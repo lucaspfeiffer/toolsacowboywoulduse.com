@@ -11,7 +11,12 @@
         body {
             margin: 0;
             padding: 0;
+            background-color: #7E202B;
             font-family: 'EB Garamond', serif;
+        }
+
+        body.flipped {
+            background-color: #1F2C26;
         }
 
         .hero-section {
@@ -47,9 +52,16 @@
             z-index: 10;
         }
 
-        .color-flip-btn:hover {
+        .color-flip-btn:active {
             background-color: #1F2C26;
             border-color: #BE5D1D;
+        }
+
+        @media (hover: hover) {
+            .color-flip-btn:hover {
+                background-color: #1F2C26;
+                border-color: #BE5D1D;
+            }
         }
 
         .hero-section.flipped {
@@ -63,9 +75,16 @@
             color: white;
         }
 
-        .hero-section.flipped .color-flip-btn:hover {
+        .hero-section.flipped .color-flip-btn:active {
             background-color: #7E202B;
             border-color: #BE5D1D;
+        }
+
+        @media (hover: hover) {
+            .hero-section.flipped .color-flip-btn:hover {
+                background-color: #7E202B;
+                border-color: #BE5D1D;
+            }
         }
 
         .substack-btn {
@@ -520,8 +539,17 @@
         function flipColors() {
             const heroSection = document.querySelector('.hero-section');
             const body = document.body;
+            const themeColor = document.querySelector('meta[name="theme-color"]');
+            
             heroSection.classList.toggle('flipped');
             body.classList.toggle('flipped');
+            
+            // Update theme color for browser UI
+            if (body.classList.contains('flipped')) {
+                themeColor.content = '#1F2C26';
+            } else {
+                themeColor.content = '#7E202B';
+            }
         }
     </script>
 </body>
