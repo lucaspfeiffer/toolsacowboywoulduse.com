@@ -10,7 +10,6 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #7E202B;
             font-family: 'EB Garamond', serif;
         }
 
@@ -25,25 +24,6 @@
             position: relative;
         }
 
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 6px;
-            background-color: #1F2C26;
-        }
-
-        .hero-section::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background-color: #BE5D1D;
-        }
 
         .color-flip-btn {
             position: absolute;
@@ -75,15 +55,6 @@
             background-color: #1F2C26;
         }
 
-        .hero-section.flipped::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 6px;
-            background-color: #7E202B;
-        }
 
         .hero-section.flipped .color-flip-btn {
             background-color: #7E202B;
@@ -145,9 +116,6 @@
             flex-shrink: 0;
         }
 
-        body.flipped {
-            background-color: #1F2C26;
-        }
 
         h1 {
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="white" stroke="none"><path d="M18.37 2.63 14 7l-1.59-1.59a2 2 0 0 0-2.82 0L8 7l9 9 1.59-1.59a2 2 0 0 0 0-2.82L17 10l4.37-4.37a2.12 2.12 0 1 0-3-3Z"/><path d="M9 8c-2 3-4 3.5-7 4l8 10c2-1 6-5 6-7"/><path d="M14.5 17.5 4.5 15"/></svg>') 50 50, pointer;
@@ -345,12 +313,15 @@
 
         @media (max-width: 768px) {
             .hero-section {
-                min-height: 100svh;
+                min-height: 100dvh;
+                padding-bottom: 100px;
+                gap: 20px;
             }
             
             h1 {
                 font-size: 28px;
                 font-weight: 600;
+                padding: 0;
             }
             
             .tagline {
