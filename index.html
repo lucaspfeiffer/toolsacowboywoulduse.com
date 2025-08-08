@@ -11,12 +11,8 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #7E202B;
             font-family: 'EB Garamond', serif;
-        }
-
-        body.flipped {
-            background-color: #1F2C26;
+            overflow-x: hidden;
         }
 
         .hero-section {
@@ -464,9 +460,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             if (Math.random() < 0.5) {
                 const heroSection = document.querySelector('.hero-section');
-                const body = document.body;
                 heroSection.classList.add('flipped');
-                body.classList.add('flipped');
             }
 
             // Setup intersection observer for theme color changes
@@ -482,8 +476,7 @@
                             themeColor.content = '#ffffff';
                         } else if (entry.target === heroSection) {
                             // Hero section is visible - set to current hero color
-                            const body = document.body;
-                            if (body.classList.contains('flipped')) {
+                            if (heroSection.classList.contains('flipped')) {
                                 themeColor.content = '#1F2C26';
                             } else {
                                 themeColor.content = '#7E202B';
@@ -570,14 +563,12 @@
 
         function flipColors() {
             const heroSection = document.querySelector('.hero-section');
-            const body = document.body;
             const themeColor = document.querySelector('meta[name="theme-color"]');
             
             heroSection.classList.toggle('flipped');
-            body.classList.toggle('flipped');
             
             // Update theme color for browser UI
-            if (body.classList.contains('flipped')) {
+            if (heroSection.classList.contains('flipped')) {
                 themeColor.content = '#1F2C26';
             } else {
                 themeColor.content = '#7E202B';
