@@ -8,12 +8,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600;700&family=Inter:wght@600;700&display=swap" rel="stylesheet">
     <style>
-        body {
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
             margin: 0;
             padding: 0;
             background-color: #7E202B;
             font-family: 'EB Garamond', serif;
             overflow-x: hidden;
+            width: 100vw;
         }
 
         body.flipped {
@@ -22,6 +27,7 @@
 
         .hero-section {
             min-height: 100vh;
+            width: 100vw;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -29,6 +35,7 @@
             gap: 20px;
             background-color: #7E202B;
             position: relative;
+            overflow: hidden;
         }
 
 
@@ -171,15 +178,13 @@
 
         .app-section {
             min-height: 100vh;
+            width: 100vw;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 60px;
-            box-sizing: border-box;
             position: relative;
-            overflow-x: hidden;
-            width: 100%;
-            max-width: 100%;
+            overflow: hidden;
         }
 
         .dawn-section {
