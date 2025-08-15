@@ -197,20 +197,23 @@
 
         .section-content {
             display: flex;
+            flex-direction: column;
             align-items: center;
             gap: 40px;
             max-width: 1000px;
             width: 100%;
             overflow-x: hidden;
             box-sizing: border-box;
+            text-align: center;
         }
 
         .section-text {
             flex: 1;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
             gap: 20px;
+            text-align: center;
         }
 
         .section-media {
@@ -342,6 +345,23 @@
             font-weight: 400;
             color: #000;
         }
+        
+        .dawn-section .section-number {
+            color: #000;
+            font-size: 32px;
+        }
+        
+        .dawn-section .section-text {
+            position: relative;
+        }
+        
+        .dawn-text-number {
+            font-family: 'EB Garamond', serif;
+            font-size: 32px;
+            font-weight: 500;
+            color: #000;
+            margin-top: 20px;
+        }
 
         .hero-video {
             max-width: 300px;
@@ -458,26 +478,14 @@
         <div class="section-content">
             <div class="section-text">
                 <img src="images/Sun_App_logo_3 1.png" alt="Dawn and Dusk App Logo" class="app-logo">
-                <h2 class="section-title">Dawn and Dusk</h2>
-                <p class="section-subtitle">Time, told by the sun.</p>
-                <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
-                    <a href="https://apps.apple.com/us/app/dawn-and-dusk/id6736839971" target="_blank">
-                        <img src="images/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="Download on the App Store" class="app-store-badge">
-                    </a>
-                    <a href="01-dawnanddusk/" class="learn-more-btn" target="_blank">
-                        View Tool
-                        <svg class="external-arrow" viewBox="0 0 24 24">
-                            <path d="M7 17L17 7" />
-                            <path d="M7 7h10v10" />
-                        </svg>
-                    </a>
-                </div>
             </div>
             <div class="section-media">
-                <video class="hero-video" autoplay loop muted playsinline>
-                    <source src="images/Comp 1.webm" type="video/webm">
-                    Your browser does not support the video tag.
-                </video>
+                <a href="01-dawnanddusk/" target="_blank">
+                    <video class="hero-video" autoplay loop muted playsinline>
+                        <source src="images/Comp 1.webm" type="video/webm">
+                        Your browser does not support the video tag.
+                    </video>
+                </a>
             </div>
         </div>
     </div>
