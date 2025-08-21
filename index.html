@@ -47,16 +47,15 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            width: 50px;
-            height: 50px;
+            width: 80px;
+            height: 70px;
             z-index: 10;
-            animation: spin 10s linear infinite;
         }
 
         .color-circle {
             position: absolute;
-            width: 18px;
-            height: 18px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             cursor: pointer;
             border: 2px solid white;
@@ -74,21 +73,20 @@
 
         .color-circle.red {
             background-color: #7E202B;
-            top: 2px;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 0;
+            left: 24px;
         }
 
         .color-circle.green {
             background-color: #1F2C26;
-            bottom: 2px;
-            left: 4px;
+            bottom: 6px;
+            left: 6px;
         }
 
         .color-circle.navy {
             background-color: #001E32;
-            bottom: 2px;
-            right: 4px;
+            bottom: 6px;
+            right: 6px;
         }
 
         @keyframes spin {
@@ -513,7 +511,7 @@
 
     <script>
         // Color system with three brand colors
-        const colors = ['red', 'green', 'navy'];
+        const brandColors = ['red', 'green', 'navy'];
         const colorValues = {
             red: '#7E202B',
             green: '#1F2C26',
@@ -522,7 +520,7 @@
 
         // Randomize initial state on page load
         document.addEventListener('DOMContentLoaded', function() {
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            const randomColor = brandColors[Math.floor(Math.random() * brandColors.length)];
             setColor(randomColor);
 
             // Setup intersection observer for theme color changes
@@ -632,7 +630,7 @@
             const themeColor = document.querySelector('meta[name="theme-color"]');
             
             // Remove all color classes
-            colors.forEach(color => {
+            brandColors.forEach(color => {
                 heroSection.classList.remove(`color-${color}`);
                 body.classList.remove(`color-${color}`);
             });
