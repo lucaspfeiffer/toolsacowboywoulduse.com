@@ -43,23 +43,16 @@
         }
 
 
-        .color-spinner {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 80px;
-            height: 70px;
-            z-index: 10;
-        }
-
         .color-circle {
-            position: absolute;
+            position: fixed;
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            cursor: pointer;
+            cursor: grab;
             border: 2px solid white;
             transition: all 0.2s ease;
+            z-index: 1000;
+            user-select: none;
         }
 
         .color-circle:hover {
@@ -67,26 +60,29 @@
             border-color: #BE5D1D;
         }
 
-        .color-circle:active {
-            transform: scale(0.95);
+        .color-circle.dragging {
+            cursor: grabbing;
+            transform: scale(1.1);
+            transition: none;
+            z-index: 1001;
         }
 
         .color-circle.red {
             background-color: #7E202B;
-            top: 0;
-            left: 24px;
+            top: 44px;
+            right: 44px;
         }
 
         .color-circle.green {
             background-color: #1F2C26;
-            bottom: 6px;
-            left: 6px;
+            top: 76px;
+            right: 26px;
         }
 
         .color-circle.navy {
             background-color: #001E32;
-            bottom: 6px;
-            right: 6px;
+            top: 76px;
+            right: 62px;
         }
 
         @keyframes spin {
@@ -160,17 +156,18 @@
         }
 
 
-        h1 {
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="white" stroke="none"><path d="M18.37 2.63 14 7l-1.59-1.59a2 2 0 0 0-2.82 0L8 7l9 9 1.59-1.59a2 2 0 0 0 0-2.82L17 10l4.37-4.37a2.12 2.12 0 1 0-3-3Z"/><path d="M9 8c-2 3-4 3.5-7 4l8 10c2-1 6-5 6-7"/><path d="M14.5 17.5 4.5 15"/></svg>') 50 50, pointer;
+        .hero-section h1 {
+            cursor: default;
         }
 
-        .tagline {
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="white" stroke="none"><path d="M18.37 2.63 14 7l-1.59-1.59a2 2 0 0 0-2.82 0L8 7l9 9 1.59-1.59a2 2 0 0 0 0-2.82L17 10l4.37-4.37a2.12 2.12 0 1 0-3-3Z"/><path d="M9 8c-2 3-4 3.5-7 4l8 10c2-1 6-5 6-7"/><path d="M14.5 17.5 4.5 15"/></svg>') 32 32, pointer;
+        .hero-section .tagline {
+            cursor: default;
         }
 
         .letter {
             display: inline-block;
             transition: color 0.2s ease;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="white" stroke="none"><path d="M18.37 2.63 14 7l-1.59-1.59a2 2 0 0 0-2.82 0L8 7l9 9 1.59-1.59a2 2 0 0 0 0-2.82L17 10l4.37-4.37a2.12 2.12 0 1 0-3-3Z"/><path d="M9 8c-2 3-4 3.5-7 4l8 10c2-1 6-5 6-7"/><path d="M14.5 17.5 4.5 15"/></svg>') 32 32, pointer;
         }
 
         .letter:hover {
@@ -254,6 +251,7 @@
             max-width: 100%;
             box-sizing: border-box;
             word-wrap: break-word;
+            line-height: 1.1;
         }
 
         .tagline {
@@ -268,6 +266,7 @@
             max-width: 100%;
             box-sizing: border-box;
             word-wrap: break-word;
+            line-height: 1.1;
         }
 
         .location {
@@ -483,11 +482,9 @@
                 <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
             </svg>
         </a>
-        <div class="color-spinner">
-            <button class="color-circle red" onclick="changeColor('red')"></button>
-            <button class="color-circle green" onclick="changeColor('green')"></button>
-            <button class="color-circle navy" onclick="changeColor('navy')"></button>
-        </div>
+        <button class="color-circle red" data-color="red"></button>
+        <button class="color-circle green" data-color="green"></button>
+        <button class="color-circle navy" data-color="navy"></button>
         <h1>Tools a Cowboy Would Use</h1>
         <p class="tagline">making tools people love</p>
     </div>
@@ -553,6 +550,9 @@
 
             observer.observe(heroSection);
             observer.observe(dawnSection);
+
+            // Setup draggable circles
+            setupDraggableCircles();
 
             // Wrap each letter in a span for individual hover effects
             function wrapLetters(element) {
@@ -645,6 +645,281 @@
 
         function changeColor(colorName) {
             setColor(colorName);
+        }
+
+        function setupDraggableCircles() {
+            const circles = document.querySelectorAll('.color-circle');
+            
+            circles.forEach(circle => {
+                let isDragging = false;
+                let startTime = 0;
+                let startPos = { x: 0, y: 0 };
+                let currentPos = { x: 0, y: 0 };
+                let velocity = { x: 0, y: 0 };
+                let lastPos = { x: 0, y: 0 };
+                let lastTime = 0;
+                let animationFrame = null;
+
+                // Physics constants
+                const friction = 0.95;
+                const throwMultiplier = 0.3;
+                const bounceReduction = 0.7;
+
+                function getMousePos(e) {
+                    return {
+                        x: e.clientX || e.touches[0].clientX,
+                        y: e.clientY || e.touches[0].clientY
+                    };
+                }
+
+                function startDrag(e) {
+                    e.preventDefault();
+                    isDragging = true;
+                    startTime = Date.now();
+                    const pos = getMousePos(e);
+                    startPos = { ...pos };
+                    lastPos = { ...pos };
+                    lastTime = Date.now();
+                    
+                    circle.classList.add('dragging');
+                    
+                    const rect = circle.getBoundingClientRect();
+                    currentPos = {
+                        x: rect.left,
+                        y: rect.top
+                    };
+                    
+                    document.addEventListener('mousemove', drag);
+                    document.addEventListener('mouseup', endDrag);
+                    document.addEventListener('touchmove', drag, { passive: false });
+                    document.addEventListener('touchend', endDrag);
+                }
+
+                function drag(e) {
+                    if (!isDragging) return;
+                    e.preventDefault();
+                    
+                    const pos = getMousePos(e);
+                    const deltaX = pos.x - lastPos.x;
+                    const deltaY = pos.y - lastPos.y;
+                    
+                    const nextX = currentPos.x + deltaX;
+                    const nextY = currentPos.y + deltaY;
+                    
+                    // Check for collisions during drag
+                    const rect = circle.getBoundingClientRect();
+                    const collision = checkCollisions(nextX, nextY, rect);
+                    
+                    if (!collision) {
+                        // No collision, allow movement
+                        currentPos.x = nextX;
+                        currentPos.y = nextY;
+                    }
+                    // If there's a collision, don't update position (circle gets "stuck" against element)
+                    
+                    // Calculate velocity for throwing
+                    const currentTime = Date.now();
+                    const timeDelta = currentTime - lastTime;
+                    if (timeDelta > 0) {
+                        velocity.x = deltaX / timeDelta * 16; // Convert to per-frame velocity
+                        velocity.y = deltaY / timeDelta * 16;
+                    }
+                    
+                    // Update position
+                    circle.style.left = currentPos.x + 'px';
+                    circle.style.top = currentPos.y + 'px';
+                    circle.style.right = 'auto';
+                    
+                    lastPos = { ...pos };
+                    lastTime = currentTime;
+                }
+
+                function endDrag(e) {
+                    if (!isDragging) return;
+                    
+                    const endTime = Date.now();
+                    const duration = endTime - startTime;
+                    const pos = getMousePos(e);
+                    const distance = Math.sqrt(
+                        Math.pow(pos.x - startPos.x, 2) + 
+                        Math.pow(pos.y - startPos.y, 2)
+                    );
+                    
+                    isDragging = false;
+                    circle.classList.remove('dragging');
+                    
+                    // If it was a quick tap/click (short duration, small distance), change color
+                    if (duration < 200 && distance < 10) {
+                        const colorName = circle.dataset.color;
+                        changeColor(colorName);
+                    } else if (Math.abs(velocity.x) > 1 || Math.abs(velocity.y) > 1) {
+                        // Start throwing animation
+                        startThrow();
+                    }
+                    
+                    // Clean up event listeners
+                    document.removeEventListener('mousemove', drag);
+                    document.removeEventListener('mouseup', endDrag);
+                    document.removeEventListener('touchmove', drag);
+                    document.removeEventListener('touchend', endDrag);
+                }
+
+                function getCollidableElements() {
+                    const selectors = [
+                        'h1', '.tagline', '.location', 
+                        '.substack-btn', '.instagram-btn',
+                        '.app-logo', '.section-title', '.section-subtitle',
+                        '.app-store-badge', '.learn-more-btn',
+                        '.hero-video', '.section-number'
+                    ];
+                    
+                    const elements = [];
+                    selectors.forEach(selector => {
+                        const els = document.querySelectorAll(selector);
+                        els.forEach(el => {
+                            // Skip if it's one of our draggable circles
+                            if (!el.classList.contains('color-circle')) {
+                                elements.push(el);
+                            }
+                        });
+                    });
+                    
+                    return elements;
+                }
+
+                function checkCollisions(newX, newY, circleRect) {
+                    const collidableElements = getCollidableElements();
+                    
+                    for (let element of collidableElements) {
+                        const elementRect = element.getBoundingClientRect();
+                        
+                        // Check if circle would overlap with element
+                        const circleLeft = newX;
+                        const circleRight = newX + circleRect.width;
+                        const circleTop = newY;
+                        const circleBottom = newY + circleRect.height;
+                        
+                        const elementLeft = elementRect.left;
+                        const elementRight = elementRect.right;
+                        const elementTop = elementRect.top;
+                        const elementBottom = elementRect.bottom;
+                        
+                        // Check for overlap
+                        if (circleRight > elementLeft && 
+                            circleLeft < elementRight && 
+                            circleBottom > elementTop && 
+                            circleTop < elementBottom) {
+                            
+                            // Calculate overlap amounts
+                            const overlapLeft = circleRight - elementLeft;
+                            const overlapRight = elementRight - circleLeft;
+                            const overlapTop = circleBottom - elementTop;
+                            const overlapBottom = elementBottom - circleTop;
+                            
+                            // Find the side with minimum overlap (closest edge)
+                            const minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom);
+                            
+                            return {
+                                element: element,
+                                side: minOverlap === overlapLeft ? 'left' :
+                                      minOverlap === overlapRight ? 'right' :
+                                      minOverlap === overlapTop ? 'top' : 'bottom',
+                                overlap: minOverlap
+                            };
+                        }
+                    }
+                    
+                    return null;
+                }
+
+                function startThrow() {
+                    // Apply throw multiplier
+                    velocity.x *= throwMultiplier;
+                    velocity.y *= throwMultiplier;
+                    
+                    function animate() {
+                        // Calculate next position
+                        const nextX = currentPos.x + velocity.x;
+                        const nextY = currentPos.y + velocity.y;
+                        const rect = circle.getBoundingClientRect();
+                        
+                        // Check collisions with page elements
+                        const collision = checkCollisions(nextX, nextY, rect);
+                        if (collision) {
+                            // Handle collision bounce
+                            switch (collision.side) {
+                                case 'left':
+                                case 'right':
+                                    velocity.x = -velocity.x * bounceReduction;
+                                    // Adjust position to avoid overlap
+                                    if (collision.side === 'left') {
+                                        currentPos.x = collision.element.getBoundingClientRect().left - rect.width - 1;
+                                    } else {
+                                        currentPos.x = collision.element.getBoundingClientRect().right + 1;
+                                    }
+                                    break;
+                                case 'top':
+                                case 'bottom':
+                                    velocity.y = -velocity.y * bounceReduction;
+                                    // Adjust position to avoid overlap
+                                    if (collision.side === 'top') {
+                                        currentPos.y = collision.element.getBoundingClientRect().top - rect.height - 1;
+                                    } else {
+                                        currentPos.y = collision.element.getBoundingClientRect().bottom + 1;
+                                    }
+                                    break;
+                            }
+                        } else {
+                            // No collision, apply normal movement
+                            currentPos.x = nextX;
+                            currentPos.y = nextY;
+                        }
+                        
+                        // Bounce off window boundaries
+                        const windowWidth = window.innerWidth;
+                        const windowHeight = window.innerHeight;
+                        
+                        if (currentPos.x <= 0) {
+                            currentPos.x = 0;
+                            velocity.x = Math.abs(velocity.x) * bounceReduction;
+                        }
+                        if (currentPos.x + rect.width >= windowWidth) {
+                            currentPos.x = windowWidth - rect.width;
+                            velocity.x = -Math.abs(velocity.x) * bounceReduction;
+                        }
+                        if (currentPos.y <= 0) {
+                            currentPos.y = 0;
+                            velocity.y = Math.abs(velocity.y) * bounceReduction;
+                        }
+                        if (currentPos.y + rect.height >= windowHeight) {
+                            currentPos.y = windowHeight - rect.height;
+                            velocity.y = -Math.abs(velocity.y) * bounceReduction;
+                        }
+                        
+                        // Apply friction
+                        velocity.x *= friction;
+                        velocity.y *= friction;
+                        
+                        // Update position
+                        circle.style.left = currentPos.x + 'px';
+                        circle.style.top = currentPos.y + 'px';
+                        
+                        // Continue animation if still moving
+                        if (Math.abs(velocity.x) > 0.1 || Math.abs(velocity.y) > 0.1) {
+                            animationFrame = requestAnimationFrame(animate);
+                        }
+                    }
+                    
+                    if (animationFrame) {
+                        cancelAnimationFrame(animationFrame);
+                    }
+                    animate();
+                }
+
+                // Event listeners
+                circle.addEventListener('mousedown', startDrag);
+                circle.addEventListener('touchstart', startDrag, { passive: false });
+            });
         }
     </script>
 </body>
