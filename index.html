@@ -21,8 +21,12 @@
             width: 100%;
         }
 
-        body.flipped {
+        body.color-green {
             background-color: #1F2C26;
+        }
+
+        body.color-navy {
+            background-color: #001E32;
         }
 
         .hero-section {
@@ -39,60 +43,73 @@
         }
 
 
-        .color-flip-btn {
+        .color-spinner {
             position: absolute;
             top: 20px;
             right: 20px;
-            background-color: #1F2C26;
-            border: 2px solid white;
-            color: white;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
+            z-index: 10;
+            animation: spin 10s linear infinite;
+        }
+
+        .color-circle {
+            position: absolute;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'EB Garamond', serif;
-            font-size: 18px;
-            font-weight: 600;
+            border: 2px solid white;
             transition: all 0.2s ease;
-            z-index: 10;
         }
 
-        .color-flip-btn:active {
-            background-color: #1F2C26;
+        .color-circle:hover {
+            transform: scale(1.1);
             border-color: #BE5D1D;
         }
 
-        @media (hover: hover) {
-            .color-flip-btn:hover {
-                background-color: #1F2C26;
-                border-color: #BE5D1D;
+        .color-circle:active {
+            transform: scale(0.95);
+        }
+
+        .color-circle.red {
+            background-color: #7E202B;
+            top: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .color-circle.green {
+            background-color: #1F2C26;
+            bottom: 2px;
+            left: 4px;
+        }
+
+        .color-circle.navy {
+            background-color: #001E32;
+            bottom: 2px;
+            right: 4px;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
             }
         }
 
-        .hero-section.flipped {
+        .hero-section.color-red {
+            background-color: #7E202B;
+        }
+
+        .hero-section.color-green {
             background-color: #1F2C26;
         }
 
-
-        .hero-section.flipped .color-flip-btn {
-            background-color: #7E202B;
-            border-color: white;
-            color: white;
-        }
-
-        .hero-section.flipped .color-flip-btn:active {
-            background-color: #7E202B;
-            border-color: #BE5D1D;
-        }
-
-        @media (hover: hover) {
-            .hero-section.flipped .color-flip-btn:hover {
-                background-color: #7E202B;
-                border-color: #BE5D1D;
-            }
+        .hero-section.color-navy {
+            background-color: #001E32;
         }
 
         .substack-btn {
@@ -468,7 +485,11 @@
                 <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
             </svg>
         </a>
-        <button class="color-flip-btn" onclick="flipColors()"></button>
+        <div class="color-spinner">
+            <button class="color-circle red" onclick="changeColor('red')"></button>
+            <button class="color-circle green" onclick="changeColor('green')"></button>
+            <button class="color-circle navy" onclick="changeColor('navy')"></button>
+        </div>
         <h1>Tools a Cowboy Would Use</h1>
         <p class="tagline">making tools people love</p>
     </div>
@@ -491,14 +512,18 @@
     </div>
 
     <script>
+        // Color system with three brand colors
+        const colors = ['red', 'green', 'navy'];
+        const colorValues = {
+            red: '#7E202B',
+            green: '#1F2C26',
+            navy: '#001E32'
+        };
+
         // Randomize initial state on page load
         document.addEventListener('DOMContentLoaded', function() {
-            if (Math.random() < 0.5) {
-                const heroSection = document.querySelector('.hero-section');
-                const body = document.body;
-                heroSection.classList.add('flipped');
-                body.classList.add('flipped');
-            }
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            setColor(randomColor);
 
             // Setup intersection observer for theme color changes
             const themeColor = document.querySelector('meta[name="theme-color"]');
@@ -514,10 +539,12 @@
                         } else if (entry.target === heroSection) {
                             // Hero section is visible - set to current hero color
                             const body = document.body;
-                            if (body.classList.contains('flipped')) {
-                                themeColor.content = '#1F2C26';
+                            if (body.classList.contains('color-green')) {
+                                themeColor.content = colorValues.green;
+                            } else if (body.classList.contains('color-navy')) {
+                                themeColor.content = colorValues.navy;
                             } else {
-                                themeColor.content = '#7E202B';
+                                themeColor.content = colorValues.red;
                             }
                         }
                     }
@@ -599,20 +626,27 @@
             });
         });
 
-        function flipColors() {
+        function setColor(colorName) {
             const heroSection = document.querySelector('.hero-section');
             const body = document.body;
             const themeColor = document.querySelector('meta[name="theme-color"]');
             
-            heroSection.classList.toggle('flipped');
-            body.classList.toggle('flipped');
+            // Remove all color classes
+            colors.forEach(color => {
+                heroSection.classList.remove(`color-${color}`);
+                body.classList.remove(`color-${color}`);
+            });
+            
+            // Add new color class
+            heroSection.classList.add(`color-${colorName}`);
+            body.classList.add(`color-${colorName}`);
             
             // Update theme color for browser UI
-            if (body.classList.contains('flipped')) {
-                themeColor.content = '#1F2C26';
-            } else {
-                themeColor.content = '#7E202B';
-            }
+            themeColor.content = colorValues[colorName];
+        }
+
+        function changeColor(colorName) {
+            setColor(colorName);
         }
     </script>
 </body>
