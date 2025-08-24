@@ -235,6 +235,8 @@
         .section-media {
             flex: 1;
             display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
         }
 
@@ -292,6 +294,24 @@
             outline-offset: -1px;
             margin-bottom: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .app-logo-top-left {
+            position: absolute;
+            top: 60px;
+            left: 60px;
+            margin-bottom: 0;
+        }
+
+        .app-store-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            transition: transform 0.2s ease;
+        }
+
+        .app-store-link:hover {
+            transform: scale(1.05);
         }
 
         .section-title {
@@ -460,6 +480,11 @@
                 margin-bottom: 0;
             }
 
+            .app-logo-top-left {
+                top: 20px;
+                left: 20px;
+            }
+
             .app-store-badge {
                 width: 140px;
                 margin-top: 16px;
@@ -497,16 +522,17 @@
 
     <div class="app-section dawn-section">
         <div class="section-number">01</div>
+        <img src="images/Sun_App_logo_3 1.png" alt="Dawn and Dusk App Logo" class="app-logo app-logo-top-left">
         <div class="section-content">
-            <div class="section-text">
-                <img src="images/Sun_App_logo_3 1.png" alt="Dawn and Dusk App Logo" class="app-logo">
-            </div>
             <div class="section-media">
                 <a href="01-dawnanddusk/" target="_blank">
                     <video class="hero-video" autoplay loop muted playsinline>
                         <source src="images/Comp 1.webm" type="video/webm">
                         Your browser does not support the video tag.
                     </video>
+                </a>
+                <a href="https://apps.apple.com/us/app/dawn-and-dusk/id6736839971" target="_blank" class="app-store-link">
+                    <img src="images/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="Download on the App Store" class="app-store-badge">
                 </a>
             </div>
         </div>
