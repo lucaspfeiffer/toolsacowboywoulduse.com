@@ -3,7 +3,9 @@
     "allow": [
       "Bash(git add:*)",
       "Bash(grep:*)",
-      "Bash(sed:*)"
+      "Bash(sed:*)",
+      "Bash(open http://localhost:8000)",
+      "Bash(git checkout:*)"
     ],
     "defaultMode": "acceptEdits"
   },
