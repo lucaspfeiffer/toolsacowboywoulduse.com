@@ -5,7 +5,9 @@
       "Bash(grep:*)",
       "Bash(sed:*)",
       "Bash(open http://localhost:8000)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "WebSearch",
+      "WebFetch(domain:github.com)"
     ],
     "defaultMode": "acceptEdits"
   },
