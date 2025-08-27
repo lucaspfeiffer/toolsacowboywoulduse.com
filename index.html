@@ -3,7 +3,7 @@
 <head>
     <title>Tools a Cowboy Would Use</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#7E202B">
+    <meta name="theme-color" content="#ffffff">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600;700&family=Inter:wght@600;700&display=swap" rel="stylesheet">
@@ -15,7 +15,7 @@
         html, body {
             margin: 0;
             padding: 0;
-            background-color: #7E202B;
+            background-color: #ffffff;
             font-family: 'EB Garamond', serif;
             overflow-x: hidden;
             width: 100%;
@@ -29,6 +29,14 @@
             background-color: #001E32;
         }
 
+        body.color-white {
+            background-color: #ffffff;
+        }
+
+        body.color-black {
+            background-color: #000000;
+        }
+
         .hero-section {
             min-height: 100svh;
             width: 100%;
@@ -37,7 +45,7 @@
             justify-content: center;
             align-items: center;
             gap: 20px;
-            background-color: #7E202B;
+            background-color: #ffffff;
             position: relative;
             overflow: hidden;
         }
@@ -47,22 +55,44 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            width: 80px;
-            height: 70px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
             z-index: 10;
         }
 
         .color-circle {
-            position: absolute;
-            width: 32px;
-            height: 32px;
+            position: relative;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             cursor: pointer;
-            border: 2px solid white;
+            border: 2px solid rgba(0, 0, 0, 0.2);
             transition: all 0.2s ease;
+            flex-shrink: 0;
         }
 
         .color-circle:hover {
+            transform: scale(1.1);
+            border-color: #BE5D1D;
+        }
+
+        .hero-section.color-red .color-circle,
+        .hero-section.color-green .color-circle,
+        .hero-section.color-navy .color-circle,
+        .hero-section.color-black .color-circle {
+            border-color: white;
+        }
+
+        .hero-section.color-white .color-circle {
+            border-color: rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-section.color-red .color-circle:hover,
+        .hero-section.color-green .color-circle:hover,
+        .hero-section.color-navy .color-circle:hover,
+        .hero-section.color-black .color-circle:hover,
+        .hero-section.color-white .color-circle:hover {
             transform: scale(1.1);
             border-color: #BE5D1D;
         }
@@ -73,20 +103,43 @@
 
         .color-circle.red {
             background-color: #7E202B;
-            top: 0;
-            left: 24px;
         }
 
         .color-circle.green {
             background-color: #1F2C26;
-            bottom: 6px;
-            left: 6px;
         }
 
         .color-circle.navy {
             background-color: #001E32;
-            bottom: 6px;
-            right: 6px;
+        }
+
+        .color-circle.white {
+            background-color: #ffffff;
+        }
+
+        .color-circle.black {
+            background-color: #000000;
+        }
+
+        .color-arrow {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 8px solid #BE5D1D;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .color-arrow.active {
+            opacity: 1;
+            visibility: visible;
         }
 
         @keyframes spin {
@@ -110,6 +163,71 @@
             background-color: #001E32;
         }
 
+        .hero-section.color-white {
+            background-color: #ffffff;
+        }
+
+        .hero-section.color-black {
+            background-color: #000000;
+        }
+
+        .hero-section.color-white h1,
+        .hero-section.color-white .tagline,
+        .hero-section.color-white .location {
+            color: black;
+        }
+
+        .hero-section.color-white .substack-btn,
+        .hero-section.color-white .instagram-btn {
+            color: black;
+        }
+
+        .hero-section.color-white .substack-icon {
+            background-color: black;
+        }
+
+        .hero-section.color-red h1,
+        .hero-section.color-red .tagline,
+        .hero-section.color-red .location,
+        .hero-section.color-green h1,
+        .hero-section.color-green .tagline,
+        .hero-section.color-green .location,
+        .hero-section.color-navy h1,
+        .hero-section.color-navy .tagline,
+        .hero-section.color-navy .location {
+            color: white;
+        }
+
+        .hero-section.color-red .substack-btn,
+        .hero-section.color-red .instagram-btn,
+        .hero-section.color-green .substack-btn,
+        .hero-section.color-green .instagram-btn,
+        .hero-section.color-navy .substack-btn,
+        .hero-section.color-navy .instagram-btn {
+            color: white;
+        }
+
+        .hero-section.color-red .substack-icon,
+        .hero-section.color-green .substack-icon,
+        .hero-section.color-navy .substack-icon {
+            background-color: white;
+        }
+
+        .hero-section.color-black h1,
+        .hero-section.color-black .tagline,
+        .hero-section.color-black .location {
+            color: white;
+        }
+
+        .hero-section.color-black .substack-btn,
+        .hero-section.color-black .instagram-btn {
+            color: white;
+        }
+
+        .hero-section.color-black .substack-icon {
+            background-color: white;
+        }
+
         .substack-btn {
             position: absolute;
             top: 30px;
@@ -120,7 +238,7 @@
             font-family: 'Inter', sans-serif;
             font-size: 16px;
             font-weight: 500;
-            color: white;
+            color: black;
             text-decoration: underline;
             transition: color 0.2s ease;
             z-index: 10;
@@ -136,7 +254,7 @@
             left: 20px;
             display: inline-flex;
             align-items: center;
-            color: white;
+            color: black;
             transition: color 0.2s ease;
             z-index: 10;
         }
@@ -154,7 +272,7 @@
         .substack-icon {
             width: 18px;
             height: 18px;
-            background-color: white;
+            background-color: black;
             border-radius: 6px;
             flex-shrink: 0;
         }
@@ -174,6 +292,14 @@
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="white" stroke="none"><path d="M18.37 2.63 14 7l-1.59-1.59a2 2 0 0 0-2.82 0L8 7l9 9 1.59-1.59a2 2 0 0 0 0-2.82L17 10l4.37-4.37a2.12 2.12 0 1 0-3-3Z"/><path d="M9 8c-2 3-4 3.5-7 4l8 10c2-1 6-5 6-7"/><path d="M14.5 17.5 4.5 15"/></svg>') 32 32, pointer;
         }
 
+        .hero-section.color-white .letter {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="black" stroke="none"><path d="M18.37 2.63 14 7l-1.59-1.59a2 2 0 0 0-2.82 0L8 7l9 9 1.59-1.59a2 2 0 0 0 0-2.82L17 10l4.37-4.37a2.12 2.12 0 1 0-3-3Z"/><path d="M9 8c-2 3-4 3.5-7 4l8 10c2-1 6-5 6-7"/><path d="M14.5 17.5 4.5 15"/></svg>') 32 32, pointer;
+        }
+
+        .hero-section.color-black .letter {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="white" stroke="none"><path d="M18.37 2.63 14 7l-1.59-1.59a2 2 0 0 0-2.82 0L8 7l9 9 1.59-1.59a2 2 0 0 0 0-2.82L17 10l4.37-4.37a2.12 2.12 0 1 0-3-3Z"/><path d="M9 8c-2 3-4 3.5-7 4l8 10c2-1 6-5 6-7"/><path d="M14.5 17.5 4.5 15"/></svg>') 32 32, pointer;
+        }
+
         .letter:hover {
             animation: none;
         }
@@ -189,6 +315,23 @@
             to {
                 color: white;
             }
+        }
+
+        @keyframes fadeBackToBlack {
+            from {
+                color: #BE5D1D;
+            }
+            to {
+                color: black;
+            }
+        }
+
+        .hero-section.color-white .letter.fade-out {
+            animation: fadeBackToBlack 0.5s ease 0.5s forwards;
+        }
+
+        .hero-section.color-black .letter.fade-out {
+            animation: fadeBackToWhite 0.5s ease 0.5s forwards;
         }
 
 
@@ -247,7 +390,7 @@
 
         h1 {
             font-family: 'EB Garamond', serif;
-            color: white;
+            color: black;
             font-size: 64px;
             font-weight: 700;
             text-align: center;
@@ -262,7 +405,7 @@
 
         .tagline {
             font-family: 'EB Garamond', serif;
-            color: white;
+            color: black;
             font-size: 32px;
             font-weight: 400;
             text-align: center;
@@ -277,7 +420,7 @@
 
         .location {
             font-family: 'Inter', sans-serif;
-            color: white;
+            color: black;
             font-size: 18px;
             font-weight: 600;
             text-align: center;
@@ -512,9 +655,21 @@
             </svg>
         </a>
         <div class="color-spinner">
-            <button class="color-circle red" onclick="changeColor('red')"></button>
-            <button class="color-circle green" onclick="changeColor('green')"></button>
-            <button class="color-circle navy" onclick="changeColor('navy')"></button>
+            <button class="color-circle red" onclick="changeColor('red')">
+                <div class="color-arrow" id="arrow-red"></div>
+            </button>
+            <button class="color-circle green" onclick="changeColor('green')">
+                <div class="color-arrow" id="arrow-green"></div>
+            </button>
+            <button class="color-circle navy" onclick="changeColor('navy')">
+                <div class="color-arrow" id="arrow-navy"></div>
+            </button>
+            <button class="color-circle white" onclick="changeColor('white')">
+                <div class="color-arrow" id="arrow-white"></div>
+            </button>
+            <button class="color-circle black" onclick="changeColor('black')">
+                <div class="color-arrow" id="arrow-black"></div>
+            </button>
         </div>
         <h1>Tools a Cowboy Would Use</h1>
         <p class="tagline">making tools people love</p>
@@ -539,18 +694,19 @@
     </div>
 
     <script>
-        // Color system with three brand colors
-        const brandColors = ['red', 'green', 'navy'];
+        // Color system with five brand colors
+        const brandColors = ['red', 'green', 'navy', 'white', 'black'];
         const colorValues = {
             red: '#7E202B',
             green: '#1F2C26',
-            navy: '#001E32'
+            navy: '#001E32',
+            white: '#ffffff',
+            black: '#000000'
         };
 
-        // Randomize initial state on page load
+        // Set white as default color on page load
         document.addEventListener('DOMContentLoaded', function() {
-            const randomColor = brandColors[Math.floor(Math.random() * brandColors.length)];
-            setColor(randomColor);
+            setColor('white');
 
             // Setup intersection observer for theme color changes
             const themeColor = document.querySelector('meta[name="theme-color"]');
@@ -570,6 +726,10 @@
                                 themeColor.content = colorValues.green;
                             } else if (body.classList.contains('color-navy')) {
                                 themeColor.content = colorValues.navy;
+                            } else if (body.classList.contains('color-white')) {
+                                themeColor.content = colorValues.white;
+                            } else if (body.classList.contains('color-black')) {
+                                themeColor.content = colorValues.black;
                             } else {
                                 themeColor.content = colorValues.red;
                             }
@@ -670,6 +830,25 @@
             
             // Update theme color for browser UI
             themeColor.content = colorValues[colorName];
+            
+            // Update arrow visibility
+            updateArrow(colorName);
+        }
+
+        function updateArrow(activeColor) {
+            // Hide all arrows
+            brandColors.forEach(color => {
+                const arrow = document.getElementById(`arrow-${color}`);
+                if (arrow) {
+                    arrow.classList.remove('active');
+                }
+            });
+            
+            // Show active arrow
+            const activeArrow = document.getElementById(`arrow-${activeColor}`);
+            if (activeArrow) {
+                activeArrow.classList.add('active');
+            }
         }
 
         function changeColor(colorName) {
