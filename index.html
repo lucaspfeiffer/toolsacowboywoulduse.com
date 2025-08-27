@@ -729,6 +729,30 @@
             .mobile-break {
                 display: inline;
             }
+
+            .color-spinner-container {
+                top: 24px;
+                right: 0;
+                transform: none;
+            }
+
+            .hanging-line {
+                right: 0;
+                top: 50%;
+                left: auto;
+                transform: translateY(-50%);
+                width: 32px;
+                height: 2px;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .color-spinner {
+                top: 0;
+                right: 32px;
+                position: relative;
+                flex-direction: column-reverse;
+                padding: 12px 8px;
+            }
             
             h1 {
                 font-size: 48px;
@@ -978,6 +1002,16 @@
                 updateHangingLine('white');
             }, 100);
 
+            // Update line position on window resize
+            window.addEventListener('resize', () => {
+                const currentColor = brandColors.find(color => 
+                    document.body.classList.contains(`color-${color}`)
+                ) || 'white';
+                setTimeout(() => {
+                    updateHangingLine(currentColor);
+                }, 100);
+            });
+
             // Setup intersection observer for theme color changes
             const themeColor = document.querySelector('meta[name="theme-color"]');
             const heroSection = document.querySelector('.hero-section');
@@ -1110,17 +1144,30 @@
             const colorSpinner = document.querySelector('.color-spinner');
             
             if (hangingLine && activeCircle && colorSpinner) {
-                // Calculate position relative to the spinner container
+                const isMobile = window.innerWidth <= 768;
                 const circleRect = activeCircle.getBoundingClientRect();
-                const spinnerRect = colorSpinner.getBoundingClientRect();
                 const containerRect = document.querySelector('.color-spinner-container').getBoundingClientRect();
                 
-                const circleCenter = circleRect.left + circleRect.width / 2;
-                const containerLeft = containerRect.left;
-                
-                const linePosition = circleCenter - containerLeft;
-                hangingLine.style.left = linePosition + 'px';
-                hangingLine.style.transform = 'translateX(-50%)';
+                if (isMobile) {
+                    // Vertical positioning for mobile - line moves up/down
+                    const circleCenter = circleRect.top + circleRect.height / 2;
+                    const containerTop = containerRect.top;
+                    const linePosition = circleCenter - containerTop;
+                    
+                    hangingLine.style.top = linePosition + 'px';
+                    hangingLine.style.right = '0px';
+                    hangingLine.style.left = 'auto';
+                    hangingLine.style.transform = 'translateY(-50%)';
+                } else {
+                    // Horizontal positioning for desktop
+                    const circleCenter = circleRect.left + circleRect.width / 2;
+                    const containerLeft = containerRect.left;
+                    const linePosition = circleCenter - containerLeft;
+                    
+                    hangingLine.style.left = linePosition + 'px';
+                    hangingLine.style.top = '0px';
+                    hangingLine.style.transform = 'translateX(-50%)';
+                }
             }
         }
 
