@@ -664,6 +664,7 @@
         .tool-description {
             font-family: 'Inter', sans-serif;
             font-size: 18px;
+            font-weight: 400 !important;
             line-height: 1.6;
             color: #333333;
             margin: 0;
@@ -723,28 +724,45 @@
             transform: translateX(2px);
         }
 
+        .mobile-break {
+            display: none;
+        }
+
+
         @media (max-width: 768px) {
             .hero-section {
                 min-height: 100svh;
                 gap: 20px;
             }
+
+
+            .mobile-break {
+                display: inline;
+            }
             
             h1 {
-                font-size: 28px;
-                font-weight: 600;
-                padding: 0;
+                font-size: 48px;
+                font-weight: 700;
+                padding: 0 20px;
                 width: 100%;
                 max-width: 100%;
                 box-sizing: border-box;
-                word-wrap: break-word;
+                word-break: keep-all;
+                overflow-wrap: break-word;
+                hyphens: none;
+                line-height: 1.1;
             }
             
             .tagline {
-                font-size: 20px;
+                font-size: 28px;
                 width: 100%;
                 max-width: 100%;
                 box-sizing: border-box;
-                word-wrap: break-word;
+                word-break: keep-all;
+                overflow-wrap: break-word;
+                hyphens: none;
+                line-height: 1.2;
+                padding: 0 20px;
             }
             
             .location {
@@ -819,6 +837,9 @@
             .tools-title {
                 font-size: 32px;
                 margin-bottom: 40px;
+                word-break: keep-all;
+                overflow-wrap: break-word;
+                hyphens: none;
             }
 
             .tools-divider {
@@ -858,6 +879,7 @@
 
             .tool-description {
                 font-size: 16px;
+                font-weight: 400;
                 margin-bottom: 24px;
             }
 
