@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#ffffff">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600;700&family=Inter:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600;700&family=Inter:wght@300;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -19,6 +19,10 @@
             font-family: 'EB Garamond', serif;
             overflow-x: hidden;
             width: 100%;
+        }
+
+        body.color-red {
+            background-color: #7E202B;
         }
 
         body.color-green {
@@ -264,10 +268,11 @@
             position: relative;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 4px;
             font-family: 'Inter', sans-serif;
             font-size: 15px;
-            font-weight: 500;
+            font-weight: 500 !important;
             color: #F4E6D7;
             text-decoration: none;
             transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -500,7 +505,7 @@
 
         .tagline {
             font-family: 'EB Garamond', serif;
-            color: black;
+            color: #666666;
             font-size: 32px;
             font-weight: 500;
             text-align: center;
@@ -648,7 +653,7 @@
 
         /* Our Tools Section Styles */
         .our-tools-section {
-            padding: 120px 60px;
+            padding: 120px 60px 60px 60px;
             background-color: #ffffff;
             min-height: 100vh;
             display: flex;
@@ -734,7 +739,7 @@
         }
 
         .tool-right {
-            flex: 0 0 140px;
+            flex: 0 0 80px;
             display: flex;
             align-items: flex-start;
             justify-content: flex-end;
@@ -761,7 +766,7 @@
             font-size: 18px;
             font-weight: 400 !important;
             line-height: 1.6;
-            color: #333333;
+            color: #000000;
             margin: 0;
             max-width: none;
         }
@@ -826,7 +831,7 @@
 
         @media (max-width: 768px) {
             .hero-section {
-                min-height: 110svh;
+                min-height: 120svh;
                 gap: 20px;
             }
 
@@ -839,7 +844,10 @@
                 gap: 0;
                 padding: 0;
                 top: 20px;
-                transform: translateX(-50%) scale(0.9);
+                left: 32px;
+                right: 32px;
+                width: calc(100vw - 64px);
+                transform: none;
                 flex-direction: column;
                 align-items: center;
             }
@@ -1045,7 +1053,7 @@
             }
 
             .app-store-button .app-store-badge {
-                width: 120px;
+                width: 160px;
             }
 
             .learn-more-button {
