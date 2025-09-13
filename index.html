@@ -12,6 +12,10 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --hero-bg-color: #ffffff;
+        }
+
         html, body {
             margin: 0;
             padding: 0;
@@ -45,7 +49,7 @@
             left: 0;
             right: 0;
             height: env(safe-area-inset-top);
-            background-color: inherit;
+            background-color: var(--hero-bg-color);
             z-index: -1;
         }
 
@@ -212,6 +216,23 @@
 
         .hero-section.color-white {
             background-color: #ffffff;
+        }
+
+        /* Update CSS variable when hero color changes */
+        .hero-section.color-red {
+            --hero-bg-color: #7E202B;
+        }
+
+        .hero-section.color-green {
+            --hero-bg-color: #1F2C26;
+        }
+
+        .hero-section.color-navy {
+            --hero-bg-color: #001E32;
+        }
+
+        .hero-section.color-white {
+            --hero-bg-color: #ffffff;
         }
 
 
@@ -1271,6 +1292,9 @@
             
             // Add new color class
             heroSection.classList.add(`color-${colorName}`);
+            
+            // Update CSS variable for safe area background
+            document.documentElement.style.setProperty('--hero-bg-color', colorValues[colorName]);
             
             // Update theme color for browser UI
             themeColor.content = colorValues[colorName];
