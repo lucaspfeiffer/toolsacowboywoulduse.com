@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Tools a Cowboy Would Use</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#ffffff">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,23 +19,9 @@
             font-family: 'EB Garamond', serif;
             overflow-x: hidden;
             width: 100%;
+            min-height: 100vh;
         }
 
-        body.color-red {
-            background-color: #7E202B;
-        }
-
-        body.color-green {
-            background-color: #1F2C26;
-        }
-
-        body.color-navy {
-            background-color: #001E32;
-        }
-
-        body.color-white {
-            background-color: #ffffff;
-        }
 
 
         .hero-section {
@@ -49,6 +35,18 @@
             background-color: #ffffff;
             position: relative;
             overflow: hidden;
+            padding-top: env(safe-area-inset-top);
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: calc(-1 * env(safe-area-inset-top));
+            left: 0;
+            right: 0;
+            height: env(safe-area-inset-top);
+            background-color: inherit;
+            z-index: -1;
         }
 
 
@@ -755,7 +753,7 @@
 
         .tool-meta {
             font-family: 'Inter', sans-serif;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 500;
             margin: 0;
             color: #666666;
@@ -875,6 +873,7 @@
 
             .nav-btn {
                 font-size: 13px;
+                font-weight: 600;
                 padding: 14px 20px;
                 flex: 1;
                 text-align: center;
@@ -1037,7 +1036,7 @@
             }
 
             .tool-meta {
-                font-size: 14px;
+                font-size: 16px;
             }
 
             .tool-description {
@@ -1251,14 +1250,12 @@
 
         function setColor(colorName) {
             const heroSection = document.querySelector('.hero-section');
-            const body = document.body;
             const themeColor = document.querySelector('meta[name="theme-color"]');
             const allCircles = document.querySelectorAll('.color-circle');
             
             // Remove all color classes
             brandColors.forEach(color => {
                 heroSection.classList.remove(`color-${color}`);
-                body.classList.remove(`color-${color}`);
             });
             
             // Remove pressed state from all circles
@@ -1274,7 +1271,6 @@
             
             // Add new color class
             heroSection.classList.add(`color-${colorName}`);
-            body.classList.add(`color-${colorName}`);
             
             // Update theme color for browser UI
             themeColor.content = colorValues[colorName];
