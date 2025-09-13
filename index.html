@@ -12,9 +12,6 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --hero-bg-color: #ffffff;
-        }
 
         html, body {
             margin: 0;
@@ -49,7 +46,7 @@
             left: 0;
             right: 0;
             height: env(safe-area-inset-top);
-            background-color: var(--hero-bg-color);
+            background-color: inherit;
             z-index: -1;
         }
 
@@ -218,22 +215,6 @@
             background-color: #ffffff;
         }
 
-        /* Update CSS variable when hero color changes */
-        .hero-section.color-red {
-            --hero-bg-color: #7E202B;
-        }
-
-        .hero-section.color-green {
-            --hero-bg-color: #1F2C26;
-        }
-
-        .hero-section.color-navy {
-            --hero-bg-color: #001E32;
-        }
-
-        .hero-section.color-white {
-            --hero-bg-color: #ffffff;
-        }
 
 
         .hero-section.color-white h1,
@@ -1165,6 +1146,8 @@
         // Set white (maple wood) as default color on page load
         document.addEventListener('DOMContentLoaded', function() {
             setColor('white');
+            // Ensure body starts with white background
+            document.body.style.backgroundColor = '#ffffff';
 
             // Setup intersection observer for theme color changes
             const themeColor = document.querySelector('meta[name="theme-color"]');
@@ -1177,17 +1160,21 @@
                         if (entry.target === toolsSection) {
                             // Tools section is visible - set to white
                             themeColor.content = '#ffffff';
+                            document.body.style.backgroundColor = '#ffffff';
                         } else if (entry.target === heroSection) {
                             // Hero section is visible - set to current hero color
-                            const body = document.body;
-                            if (body.classList.contains('color-green')) {
+                            if (heroSection.classList.contains('color-green')) {
                                 themeColor.content = colorValues.green;
-                            } else if (body.classList.contains('color-navy')) {
+                                document.body.style.backgroundColor = colorValues.green;
+                            } else if (heroSection.classList.contains('color-navy')) {
                                 themeColor.content = colorValues.navy;
-                            } else if (body.classList.contains('color-white')) {
+                                document.body.style.backgroundColor = colorValues.navy;
+                            } else if (heroSection.classList.contains('color-white')) {
                                 themeColor.content = colorValues.white;
+                                document.body.style.backgroundColor = colorValues.white;
                             } else {
                                 themeColor.content = colorValues.red;
+                                document.body.style.backgroundColor = colorValues.red;
                             }
                         }
                     }
@@ -1293,11 +1280,11 @@
             // Add new color class
             heroSection.classList.add(`color-${colorName}`);
             
-            // Update CSS variable for safe area background
-            document.documentElement.style.setProperty('--hero-bg-color', colorValues[colorName]);
-            
             // Update theme color for browser UI
             themeColor.content = colorValues[colorName];
+            
+            // Update body background to match hero for safe area
+            document.body.style.backgroundColor = colorValues[colorName];
         }
 
 
