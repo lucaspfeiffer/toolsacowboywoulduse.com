@@ -64,6 +64,7 @@
             background-color: #ffffff;
             min-height: 100vh;
             position: relative;
+            margin: 0;
         }
 
         .hero-section.color-dark {
@@ -315,11 +316,36 @@
             max-width: 800px;
             width: 100%;
             margin: 0 auto;
-            padding: 400px 60px 60px 60px;
+            padding: 400px 60px 0 60px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-end;
+        }
+
+        .sticky-navigation-container {
+            padding: 0;
+            width: 100%;
+            will-change: transform;
+        }
+
+        .sticky-navigation-container.is-sticky {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 105;
+            padding: 0;
+        }
+
+        .navigation-spacer {
+            height: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navigation-spacer.active {
+            height: var(--nav-height, 50px);
         }
 
         .hero-title {
@@ -349,7 +375,7 @@
             height: 1.5px;
             width: 100%;
             background-color: #000000;
-            margin-bottom: 60px;
+            margin: 0;
         }
 
         .hero-section.color-dark .hero-title {
@@ -398,6 +424,19 @@
 
         .hero-section.color-navy .hero-divider {
             background-color: #ffffff;
+        }
+
+        /* Sticky divider colors for different themes */
+        body.color-navy .sticky-navigation-container.is-sticky .hero-divider {
+            background-color: #ffffff;
+        }
+
+        body.color-green .sticky-navigation-container.is-sticky .hero-divider {
+            background-color: #ffffff;
+        }
+
+        body.color-beige .sticky-navigation-container.is-sticky .hero-divider {
+            background-color: #000000;
         }
 
         /* Body color classes for entire page background */
@@ -502,6 +541,23 @@
             color: #ffffff;
         }
 
+        /* Sticky navigation container background for different themes */
+        .sticky-navigation-container {
+            background-color: #ffffff;
+        }
+
+        body.color-beige .sticky-navigation-container {
+            background-color: #ffffff;
+        }
+
+        body.color-navy .sticky-navigation-container {
+            background-color: #001E32;
+        }
+
+        body.color-green .sticky-navigation-container {
+            background-color: #1F2C26;
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -512,7 +568,7 @@
             display: flex;
             justify-content: center;
             gap: 0;
-            margin: 20px 0;
+            margin: 0;
             border-bottom: none;
         }
 
@@ -548,7 +604,7 @@
             display: flex;
             flex-direction: column;
             gap: 0;
-            margin-top: 40px;
+            margin-top: 0;
         }
 
         .tool-card {
@@ -693,8 +749,12 @@
 
         @media (max-width: 768px) {
             .hero-container {
-                padding: 400px 20px 40px 20px;
+                padding: 400px 20px 0 20px;
                 min-height: auto;
+            }
+
+            .sticky-navigation-container {
+                padding: 0;
             }
 
             .navigation-bar {
@@ -781,7 +841,7 @@
             }
 
             .category-navigation {
-                margin: 15px 0;
+                margin: 0;
             }
 
             .category-tab {
@@ -875,14 +935,18 @@
         <div class="hero-container">
             <h1 class="hero-title">Shelves</h1>
             <p class="hero-description">Apps to explore</p>
-            <div class="category-navigation">
-                <button class="category-tab active" onclick="switchCategory('Apps')">Apps</button>
-                <button class="category-tab" onclick="switchCategory('Products')">Products</button>
-                <button class="category-tab" onclick="switchCategory('Content')">Content</button>
+            <div class="sticky-navigation-container" id="stickyNav">
+                <div class="category-navigation">
+                    <button class="category-tab active" onclick="switchCategory('Apps')">Apps</button>
+                    <button class="category-tab" onclick="switchCategory('Products')">Products</button>
+                    <button class="category-tab" onclick="switchCategory('Content')">Content</button>
+                </div>
+                <div class="hero-divider"></div>
             </div>
-            <div class="hero-divider"></div>
         </div>
     </section>
+
+    <div class="navigation-spacer" id="navSpacer"></div>
 
     <div class="container">
         <div class="loading" id="loading">Loading apps...</div>
@@ -1015,6 +1079,13 @@
             const grid = document.getElementById('tools-grid');
             grid.style.display = 'none';
 
+            // Lazy scroll to the beginning of the content area
+            const container = document.querySelector('.container');
+            if (container) {
+                const containerTop = container.offsetTop;
+                lazyScrollTo(containerTop - 60); // Account for sticky navigation
+            }
+
             // Display new category after a short delay to show loading
             setTimeout(() => {
                 displayCurrentCategory();
@@ -1120,10 +1191,94 @@
             document.body.style.backgroundColor = colorValues[colorName];
         }
 
+        // Custom lazy scroll function with easing
+        function lazyScrollTo(targetPosition) {
+            const startPosition = window.pageYOffset;
+            const distance = targetPosition - startPosition;
+            const duration = 500; // Snappier 500ms duration
+            let start = null;
+
+            // Ease-out quad function for gentle deceleration
+            function easeOutQuad(t) {
+                return t * (2 - t);
+            }
+
+            function animation(currentTime) {
+                if (start === null) start = currentTime;
+                const timeElapsed = currentTime - start;
+                const progress = Math.min(timeElapsed / duration, 1);
+
+                const easedProgress = easeOutQuad(progress);
+                const currentPosition = startPosition + (distance * easedProgress);
+
+                window.scrollTo(0, currentPosition);
+
+                if (progress < 1) {
+                    requestAnimationFrame(animation);
+                }
+            }
+
+            requestAnimationFrame(animation);
+        }
+
+        // Sticky navigation scroll detection
+        function initStickyNavigation() {
+            const stickyNav = document.getElementById('stickyNav');
+            const navSpacer = document.getElementById('navSpacer');
+            let navOffset = null;
+            let navHeight = null;
+            let ticking = false;
+
+            function updateNavOffset() {
+                if (!stickyNav.classList.contains('is-sticky')) {
+                    navOffset = stickyNav.getBoundingClientRect().top + window.pageYOffset;
+                    navHeight = stickyNav.offsetHeight;
+                    navSpacer.style.height = navHeight + 'px';
+                }
+            }
+
+            function handleScroll() {
+                if (!ticking) {
+                    requestAnimationFrame(function() {
+                        if (navOffset === null) {
+                            updateNavOffset();
+                        }
+
+                        const scrollTop = window.pageYOffset;
+
+                        if (scrollTop > navOffset) {
+                            if (!stickyNav.classList.contains('is-sticky')) {
+                                stickyNav.classList.add('is-sticky');
+                                navSpacer.classList.add('active');
+                            }
+                        } else {
+                            if (stickyNav.classList.contains('is-sticky')) {
+                                stickyNav.classList.remove('is-sticky');
+                                navSpacer.classList.remove('active');
+                            }
+                        }
+
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }
+
+            // Initialize offset after a brief delay to ensure layout is complete
+            setTimeout(updateNavOffset, 100);
+
+            // Listen for scroll events with passive option for better performance
+            window.addEventListener('scroll', handleScroll, { passive: true });
+
+            // Update offset on resize
+            window.addEventListener('resize', updateNavOffset);
+        }
+
         // Set default color and load recommendations on page load
         document.addEventListener('DOMContentLoaded', function() {
             changeColor('beige');
             loadRecommendations();
+            initStickyNavigation();
         });
     </script>
 </body>
