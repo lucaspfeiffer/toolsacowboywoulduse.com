@@ -71,7 +71,7 @@
         }
 
         .hero-section.color-beige {
-            background-color: #F5F1E8;
+            background-color: #ffffff;
         }
 
         .hero-section.color-green {
@@ -192,7 +192,7 @@
         }
 
         .color-circle.beige {
-            background-color: #F5F1E8;
+            background-color: #ffffff;
         }
 
         .color-circle.green {
@@ -376,7 +376,7 @@
 
         /* Body color classes for entire page background */
         body.color-beige {
-            background-color: #F5F1E8;
+            background-color: #ffffff;
         }
 
         body.color-navy {
@@ -389,7 +389,7 @@
 
         /* Container section styling for different themes */
         body.color-beige .container {
-            background-color: #F5F1E8;
+            background-color: #ffffff;
             color: #000000;
         }
 
@@ -441,6 +441,19 @@
             color: #000000;
         }
 
+        /* Tool card divider styling for different themes */
+        body.color-beige .tool-card {
+            border-bottom-color: #000000;
+        }
+
+        body.color-navy .tool-card {
+            border-bottom-color: #000000;
+        }
+
+        body.color-green .tool-card {
+            border-bottom-color: #000000;
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -463,8 +476,13 @@
         }
 
         .tool-card {
-            padding: 30px 0 10px 0;
+            padding: 30px 0 30px 0;
             transition: all 0.3s ease;
+            border-bottom: 1.5px solid #000000;
+        }
+
+        .tool-card:last-child {
+            border-bottom: none;
         }
 
         .tool-row {
@@ -909,7 +927,7 @@
 
         // Color values for theme-color and body background
         const colorValues = {
-            beige: '#F5F1E8',
+            beige: '#ffffff',
             navy: '#001E32',
             green: '#1F2C26'
         };
