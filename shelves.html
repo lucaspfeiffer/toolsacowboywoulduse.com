@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shelves - Tools a Cowboy Would Use</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;600;700&family=Inter:wght@300;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            font-family: 'EB Garamond', serif;
+            overflow-x: hidden;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            background-color: #ffffff;
+            border-bottom: 2px solid #000;
+            z-index: 100;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-family: 'EB Garamond', serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0;
+            color: #000;
+        }
+
+        .back-link {
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #000;
+            text-decoration: none;
+            padding: 12px 20px;
+            border: 2px solid #000;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .back-link:hover {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        .loading {
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            color: #666;
+            margin: 40px 0;
+        }
+
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .recommendation-card {
+            border: 2px solid #000;
+            border-radius: 12px;
+            padding: 24px;
+            background: #ffffff;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .recommendation-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .recommendation-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .recommendation-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            flex-shrink: 0;
+        }
+
+        .recommendation-info {
+            flex: 1;
+        }
+
+        .recommendation-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+            color: #000;
+        }
+
+        .recommendation-category {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: #666;
+            margin: 0;
+        }
+
+        .recommendation-description {
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+            margin-bottom: 16px;
+        }
+
+        .recommendation-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 2px solid #000;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .recommendation-link:hover {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .external-arrow {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 16px 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .container {
+                padding: 40px 20px;
+            }
+
+            .recommendations-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .recommendation-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Shelves</h1>
+    </header>
+
+    <div class="container">
+        <div class="loading" id="loading">Loading recommendations...</div>
+        <div class="recommendations-grid" id="recommendations-grid" style="display: none;"></div>
+    </div>
+
+    <script>
+        // Google Sheets configuration (Public sheet - no API key needed)
+        const SHEET_ID = 'REPLACE_WITH_YOUR_SHEET_ID';
+        const SHEET_NAME = 'Shelves';
+
+        // Function to extract domain from URL for favicon
+        function getFaviconUrl(url) {
+            try {
+                const domain = new URL(url).hostname;
+                return `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+            } catch (e) {
+                return 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24"><rect width="24" height="24" fill="%23ddd"/></svg>';
+            }
+        }
+
+        // Function to fetch and display recommendations
+        async function loadRecommendations() {
+            try {
+                const response = await fetch(
+                    `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}`
+                );
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+
+                const text = await response.text();
+                // Parse Google's JSON response (it has some extra stuff)
+                const json = JSON.parse(text.substr(47).slice(0, -2));
+
+                // Convert to simple array format
+                const rows = json.table.rows.map(row =>
+                    row.c.map(cell => cell ? cell.v : '')
+                );
+
+                displayRecommendations(rows);
+            } catch (error) {
+                console.error('Error loading recommendations:', error);
+                document.getElementById('loading').textContent = 'Error loading recommendations. Please check the sheet ID and make sure the sheet is public.';
+            }
+        }
+
+        function displayRecommendations(data) {
+            const loading = document.getElementById('loading');
+            const grid = document.getElementById('recommendations-grid');
+
+            if (data.length <= 1) {
+                loading.textContent = 'No recommendations available yet.';
+                return;
+            }
+
+            // Skip header row
+            const recommendations = data.slice(1);
+
+            grid.innerHTML = recommendations.map(([title, category, description, url]) => `
+                <div class="recommendation-card">
+                    <div class="recommendation-header">
+                        <img src="${getFaviconUrl(url)}" alt="${title} logo" class="recommendation-logo" onerror="this.src='data:image/svg+xml,<svg xmlns=\\"http://www.w3.org/2000/svg\\" width=\\"60\\" height=\\"60\\" viewBox=\\"0 0 24 24\\"><rect width=\\"24\\" height=\\"24\\" fill=\\"%23ddd\\"/></svg>'">
+                        <div class="recommendation-info">
+                            <h3 class="recommendation-title">${title}</h3>
+                            <p class="recommendation-category">${category}</p>
+                        </div>
+                    </div>
+                    <p class="recommendation-description">${description}</p>
+                    <a href="${url}" target="_blank" class="recommendation-link">
+                        Visit
+                        <svg class="external-arrow" viewBox="0 0 24 24">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                </div>
+            `).join('');
+
+            loading.style.display = 'none';
+            grid.style.display = 'grid';
+        }
+
+        // Load recommendations when page loads
+        document.addEventListener('DOMContentLoaded', loadRecommendations);
+    </script>
+</body>
+</html>
