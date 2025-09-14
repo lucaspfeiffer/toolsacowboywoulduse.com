@@ -80,7 +80,7 @@
             align-items: center;
             gap: 6px;
             background: 
-                linear-gradient(145deg, #4A1F1F 0%, #2F1318 50%, #1A0B0E 100%),
+                linear-gradient(145deg, #52221F 0%, #34151A 50%, #1E0C0F 100%),
                 linear-gradient(90deg, transparent 46%, rgba(74, 31, 31, 0.7) 50%, transparent 54%),
                 linear-gradient(0deg, transparent 47%, rgba(47, 19, 24, 0.6) 50%, transparent 53%),
                 linear-gradient(135deg, transparent 45%, rgba(90, 35, 25, 0.4) 50%, transparent 55%),
@@ -106,17 +106,17 @@
             border-radius: 0px;
             cursor: pointer;
             border: 2px solid;
-            border-top-color: rgba(90, 45, 35, 0.9);
-            border-left-color: rgba(90, 45, 35, 0.9);
-            border-right-color: rgba(26, 11, 14, 0.9);
-            border-bottom-color: rgba(26, 11, 14, 0.9);
+            border-top-color: rgba(90, 45, 35, 1);
+            border-left-color: rgba(90, 45, 35, 1);
+            border-right-color: rgba(26, 11, 14, 1);
+            border-bottom-color: rgba(26, 11, 14, 1);
             transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
             flex-shrink: 0;
             box-shadow: 
-                inset 0 1px 1px rgba(120, 60, 45, 0.5),
-                inset 0 -1px 1px rgba(26, 11, 14, 0.6),
-                2px 2px 4px rgba(0, 0, 0, 0.5),
-                0 0 0 1px rgba(58, 26, 24, 0.4);
+                inset 0 1px 1px rgba(120, 60, 45, 0.7),
+                inset 0 -1px 1px rgba(26, 11, 14, 0.8),
+                2px 2px 4px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(58, 26, 24, 0.6);
         }
 
         .color-circle:hover {
@@ -266,7 +266,7 @@
             text-decoration: none;
             transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             background: 
-                linear-gradient(145deg, #4A1F1F 0%, #2F1318 50%, #1A0B0E 100%),
+                linear-gradient(145deg, #52221F 0%, #34151A 50%, #1E0C0F 100%),
                 linear-gradient(90deg, transparent 46%, rgba(74, 31, 31, 0.7) 50%, transparent 54%),
                 linear-gradient(0deg, transparent 47%, rgba(47, 19, 24, 0.6) 50%, transparent 53%),
                 linear-gradient(135deg, transparent 45%, rgba(90, 35, 25, 0.4) 50%, transparent 55%),
@@ -318,7 +318,7 @@
             color: #F4E6D7;
             transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             background: 
-                linear-gradient(145deg, #4A1F1F 0%, #2F1318 50%, #1A0B0E 100%),
+                linear-gradient(145deg, #52221F 0%, #34151A 50%, #1E0C0F 100%),
                 linear-gradient(90deg, transparent 46%, rgba(74, 31, 31, 0.7) 50%, transparent 54%),
                 linear-gradient(0deg, transparent 47%, rgba(47, 19, 24, 0.6) 50%, transparent 53%),
                 linear-gradient(135deg, transparent 45%, rgba(90, 35, 25, 0.4) 50%, transparent 55%),
@@ -1086,10 +1086,10 @@
             <div class="nav-row-bottom">
                 <div class="color-spinner-container">
                     <div class="color-spinner">
+                        <button class="color-circle white" onclick="changeColor('white')"></button>
                         <button class="color-circle green" onclick="changeColor('green')"></button>
                         <button class="color-circle red" onclick="changeColor('red')"></button>
                         <button class="color-circle navy" onclick="changeColor('navy')"></button>
-                        <button class="color-circle white" onclick="changeColor('white')"></button>
                     </div>
                 </div>
             </div>
