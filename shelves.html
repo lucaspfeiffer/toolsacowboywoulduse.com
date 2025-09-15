@@ -325,8 +325,13 @@
             min-height: auto;
         }
 
+        .section-header {
+            padding: 20px 0 0 0;
+            text-align: center;
+        }
+
         .sticky-navigation-container {
-            padding: 20px 0;
+            padding: 240px 0 72px 0;
             width: 100%;
             will-change: transform;
             position: relative;
@@ -339,6 +344,13 @@
             right: 0;
             z-index: 105;
             padding: 20px 0;
+            background: rgba(244, 230, 215, 0.95);
+            backdrop-filter: blur(8px);
+        }
+
+        .sticky-navigation-container.is-sticky .hero-title,
+        .sticky-navigation-container.is-sticky .hero-description {
+            display: none;
         }
 
         .navigation-spacer {
@@ -646,7 +658,6 @@
             height: 80px;
             border-radius: 24px;
             object-fit: cover;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
         }
 
         .song-artwork {
@@ -654,7 +665,6 @@
             height: 375px;
             border-radius: 0;
             object-fit: cover;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
         }
 
         .book-artwork {
@@ -662,7 +672,6 @@
             height: 360px;
             border-radius: 0;
             object-fit: cover;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
         }
 
         .video-thumbnail {
@@ -670,7 +679,6 @@
             height: 270px;
             border-radius: 0;
             object-fit: cover;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
             position: relative;
         }
 
@@ -898,7 +906,7 @@
             }
 
             .sticky-navigation-container {
-                padding: 0;
+                padding: 240px 0 72px 0;
             }
 
             .navigation-bar {
@@ -1406,12 +1414,6 @@
             const grid = document.getElementById('tools-grid');
             grid.style.display = 'none';
 
-            // Scroll to navigation section
-            const container = document.querySelector('.container');
-            if (container) {
-                lazyScrollTo(container.offsetTop);
-            }
-
             // Display new category after a short delay to show loading
             setTimeout(() => {
                 displayCurrentCategory();
@@ -1758,57 +1760,71 @@
             requestAnimationFrame(animation);
         }
 
-        // Sticky navigation scroll detection
+        // Professional sticky navigation
         function initStickyNavigation() {
-            const stickyNav = document.getElementById('stickyNav');
+            const stickyContainer = document.getElementById('stickyNav');
             const navSpacer = document.getElementById('navSpacer');
-            let navOffset = null;
-            let navHeight = null;
-            let ticking = false;
+            const categoryNav = stickyContainer.querySelector('.category-navigation');
 
-            function updateNavOffset() {
-                if (!stickyNav.classList.contains('is-sticky')) {
-                    navOffset = stickyNav.getBoundingClientRect().top + window.pageYOffset;
-                    navHeight = stickyNav.offsetHeight;
-                    navSpacer.style.height = navHeight + 'px';
+            let isSticky = false;
+            let containerHeight = 0;
+            let stickyThreshold = 0;
+
+            function calculateThreshold() {
+                if (!isSticky) {
+                    const containerRect = stickyContainer.getBoundingClientRect();
+                    const categoryRect = categoryNav.getBoundingClientRect();
+                    stickyThreshold = window.pageYOffset + categoryRect.top;
+                    containerHeight = containerRect.height;
                 }
             }
 
             function handleScroll() {
+                const scrollY = window.pageYOffset;
+
+                if (scrollY >= stickyThreshold && !isSticky) {
+                    isSticky = true;
+                    stickyContainer.classList.add('is-sticky');
+                    navSpacer.style.height = `${containerHeight}px`;
+                    navSpacer.classList.add('active');
+                } else if (scrollY < stickyThreshold - 5 && isSticky) {
+                    isSticky = false;
+                    stickyContainer.classList.remove('is-sticky');
+                    navSpacer.style.height = '0px';
+                    navSpacer.classList.remove('active');
+                }
+            }
+
+            // Initialize
+            calculateThreshold();
+
+            // Throttled scroll handler
+            let ticking = false;
+            function onScroll() {
                 if (!ticking) {
-                    requestAnimationFrame(function() {
-                        if (navOffset === null) {
-                            updateNavOffset();
-                        }
-
-                        const scrollTop = window.pageYOffset;
-
-                        if (scrollTop > navOffset) {
-                            if (!stickyNav.classList.contains('is-sticky')) {
-                                stickyNav.classList.add('is-sticky');
-                                navSpacer.classList.add('active');
-                            }
-                        } else {
-                            if (stickyNav.classList.contains('is-sticky')) {
-                                stickyNav.classList.remove('is-sticky');
-                                navSpacer.classList.remove('active');
-                            }
-                        }
-
+                    requestAnimationFrame(() => {
+                        handleScroll();
                         ticking = false;
                     });
                     ticking = true;
                 }
             }
 
-            // Initialize offset after a brief delay to ensure layout is complete
-            setTimeout(updateNavOffset, 100);
+            // Recalculate on resize
+            function onResize() {
+                if (!isSticky) {
+                    calculateThreshold();
+                }
+            }
 
-            // Listen for scroll events with passive option for better performance
-            window.addEventListener('scroll', handleScroll, { passive: true });
+            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', onResize, { passive: true });
 
-            // Update offset on resize
-            window.addEventListener('resize', updateNavOffset);
+            // Cleanup function
+            return () => {
+                window.removeEventListener('scroll', onScroll);
+                window.removeEventListener('resize', onResize);
+            };
         }
 
         // Set default color and load data on page load
