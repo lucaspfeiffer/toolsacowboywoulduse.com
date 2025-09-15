@@ -343,7 +343,7 @@
             left: 0;
             right: 0;
             z-index: 105;
-            padding: 20px 0;
+            padding: 0;
             background: rgba(244, 230, 215, 0.95);
             backdrop-filter: blur(8px);
         }
@@ -907,6 +907,14 @@
 
             .sticky-navigation-container {
                 padding: 240px 0 72px 0;
+            }
+
+            .sticky-navigation-container.is-sticky {
+                padding: 0;
+            }
+
+            .sticky-navigation-container.is-sticky .hero-divider {
+                margin-bottom: 0;
             }
 
             .navigation-bar {
