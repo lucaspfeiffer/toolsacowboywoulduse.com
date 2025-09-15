@@ -633,8 +633,8 @@
 
         .tool-row {
             display: flex;
-            align-items: flex-start;
-            gap: 60px;
+            align-items: center;
+            gap: 24px;
             margin-bottom: 16px;
         }
 
@@ -643,7 +643,7 @@
         }
 
         .tool-left.song-layout {
-            flex: 0 0 320px;
+            flex: 0 0 240px;
         }
 
         .tool-logo {
@@ -670,8 +670,8 @@
         }
 
         .song-artwork {
-            width: 300px;
-            height: 375px;
+            width: 240px;
+            height: 300px;
             border-radius: 0;
             object-fit: cover;
         }
@@ -734,7 +734,7 @@
             font-size: 18px;
             font-weight: 600;
             margin: 0 0 4px 0;
-            color: #666666;
+            color: #000000;
         }
 
         .song-album {
@@ -748,7 +748,7 @@
         /* Dark theme adjustments for song text */
         body.color-navy .song-artist,
         body.color-green .song-artist {
-            color: #cccccc;
+            color: #000000;
         }
 
         body.color-navy .song-album,
@@ -1472,15 +1472,11 @@
                                 </div>
                                 <div class="tool-center">
                                     <div class="song-info">
+                                        <p class="song-artist">${artistName}${albumName ? `, ${albumName}` : ''}</p>
                                         <a href="${appleMusicUrl}" target="_blank" class="tool-name-link">
                                             <h3 class="tool-name">${trackName}</h3>
                                         </a>
-                                        <p class="song-artist">${artistName}</p>
-                                        ${albumName ? `<p class="song-album">${albumName}</p>` : ''}
                                     </div>
-                                    <p class="tool-description">
-                                        Listen to "${trackName}" by ${artistName}${albumName ? ` from the album "${albumName}"` : ''}.
-                                    </p>
                                 </div>
                                 <div class="tool-right">
                                     <a href="${appleMusicUrl}" target="_blank" class="app-store-button">
