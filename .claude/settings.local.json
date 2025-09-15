@@ -7,7 +7,15 @@
       "Bash(open http://localhost:8000)",
       "Bash(git checkout:*)",
       "WebSearch",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:docs.google.com)",
+      "Bash(for sheet in \"Tools\" \"Software\" \"Hardware\" \"Books\" \"Services\" \"Websites\" \"Resources\")",
+      "Bash(do echo \"Trying sheet: $sheet\")",
+      "Bash(curl:*)",
+      "Bash(done)",
+      "WebFetch(domain:artists.apple.com)",
+      "WebFetch(domain:tools.applemediaservices.com)",
+      "WebFetch(domain:toolbox.marketingtools.apple.com)"
     ],
     "defaultMode": "acceptEdits"
   },
