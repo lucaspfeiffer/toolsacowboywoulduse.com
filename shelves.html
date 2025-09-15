@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Shelves - Tools a Cowboy Would Use</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#ffffff">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -62,9 +62,10 @@
         /* Hero Section */
         .hero-section {
             background-color: #ffffff;
-            min-height: 100vh;
+            min-height: auto;
             position: relative;
             margin: 0;
+            padding: 0;
         }
 
         .hero-section.color-dark {
@@ -321,13 +322,14 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 120vh;
+            min-height: auto;
         }
 
         .sticky-navigation-container {
-            padding: 0;
+            padding: 20px 0;
             width: 100%;
             will-change: transform;
+            position: relative;
         }
 
         .sticky-navigation-container.is-sticky {
@@ -336,7 +338,7 @@
             left: 0;
             right: 0;
             z-index: 105;
-            padding: 0;
+            padding: 20px 0;
         }
 
         .navigation-spacer {
@@ -355,7 +357,7 @@
             font-weight: 700;
             text-align: center;
             margin: 0 0 20px 0;
-            color: #ff0000;
+            color: #000000;
             line-height: 1.1;
             display: block;
             visibility: visible;
@@ -367,7 +369,7 @@
             font-size: 20px;
             font-weight: 400;
             text-align: center;
-            margin: 0 0 10vh 0;
+            margin: 0 0 72px 0;
             color: #000000;
             line-height: 1.4;
         }
@@ -379,11 +381,15 @@
             margin: 0;
         }
 
-        .hero-section.color-dark .hero-title {
+        .hero-section.color-dark .hero-title,
+        body.color-navy .hero-title,
+        body.color-green .hero-title {
             color: #ffffff;
         }
 
-        .hero-section.color-dark .hero-description {
+        .hero-section.color-dark .hero-description,
+        body.color-navy .hero-description,
+        body.color-green .hero-description {
             color: #ffffff;
         }
 
@@ -391,11 +397,13 @@
             background-color: #ffffff;
         }
 
-        .hero-section.color-beige .hero-title {
+        .hero-section.color-beige .hero-title,
+        body.color-beige .hero-title {
             color: #000000;
         }
 
-        .hero-section.color-beige .hero-description {
+        .hero-section.color-beige .hero-description,
+        body.color-beige .hero-description {
             color: #000000;
         }
 
@@ -403,24 +411,8 @@
             background-color: #000000;
         }
 
-        .hero-section.color-green .hero-title {
-            color: #ffffff;
-        }
-
-        .hero-section.color-green .hero-description {
-            color: #ffffff;
-        }
-
         .hero-section.color-green .hero-divider {
             background-color: #ffffff;
-        }
-
-        .hero-section.color-navy .hero-title {
-            color: #ffffff;
-        }
-
-        .hero-section.color-navy .hero-description {
-            color: #ffffff;
         }
 
         .hero-section.color-navy .hero-divider {
@@ -898,7 +890,11 @@
         @media (max-width: 768px) {
             .hero-container {
                 padding: 0 20px;
-                min-height: 120vh;
+                min-height: auto;
+            }
+
+            .hero-section {
+                padding: 80px 0;
             }
 
             .sticky-navigation-container {
@@ -1133,26 +1129,26 @@
             </div>
         </div>
         <div class="hero-container">
-            <h1 class="hero-title">Shelves</h1>
-            <p class="hero-description">Apps to explore</p>
-            <div class="sticky-navigation-container" id="stickyNav">
-                <div class="category-navigation">
-                    <button class="category-tab active" onclick="switchCategory('Apps')">Apps</button>
-                    <button class="category-tab" onclick="switchCategory('Books')">Books</button>
-                    <button class="category-tab" onclick="switchCategory('Songs')">Songs</button>
-                    <button class="category-tab" onclick="switchCategory('Videos')">Videos</button>
-                    <button class="category-tab" onclick="switchCategory('Writing')">Writing</button>
-                    <button class="category-tab" onclick="switchCategory('Websites')">Websites</button>
-                </div>
-                <div class="hero-divider"></div>
-            </div>
         </div>
     </section>
 
     <div class="navigation-spacer" id="navSpacer"></div>
 
-    <div class="container">
-        <div class="loading" id="loading">Loading apps...</div>
+    <div class="container" style="display: block;">
+        <div class="sticky-navigation-container" id="stickyNav">
+            <h1 class="hero-title">Shelves</h1>
+            <p class="hero-description">to explore</p>
+            <div class="category-navigation">
+                <button class="category-tab" onclick="switchCategory('Apps')">Apps</button>
+                <button class="category-tab" onclick="switchCategory('Books')">Books</button>
+                <button class="category-tab" onclick="switchCategory('Songs')">Songs</button>
+                <button class="category-tab" onclick="switchCategory('Videos')">Videos</button>
+                <button class="category-tab" onclick="switchCategory('Writing')">Writing</button>
+                <button class="category-tab" onclick="switchCategory('Websites')">Websites</button>
+            </div>
+            <div class="hero-divider"></div>
+        </div>
+        <div class="loading" id="loading" style="display: none;">Loading...</div>
         <div class="tools-grid" id="tools-grid" style="display: none;"></div>
     </div>
 
@@ -1168,7 +1164,7 @@
             'Websites': 'Websites'
         };
 
-        let currentCategory = 'Apps';
+        let currentCategory = null;
         let allData = {};
 
         // Function to extract App Store ID from URL
@@ -1377,6 +1373,12 @@
 
         // Function to display current category
         function displayCurrentCategory() {
+            if (!currentCategory) {
+                // No category selected - hide loading and grid
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('tools-grid').style.display = 'none';
+                return;
+            }
             const data = allData[currentCategory] || [];
             displayRecommendations(data);
         }
@@ -1404,18 +1406,11 @@
             const grid = document.getElementById('tools-grid');
             grid.style.display = 'none';
 
-            // Scroll directly to where content starts
-            setTimeout(() => {
-                const toolsGrid = document.getElementById('tools-grid');
-                if (toolsGrid && toolsGrid.style.display !== 'none') {
-                    lazyScrollTo(toolsGrid.offsetTop - 20);
-                } else {
-                    const container = document.querySelector('.container');
-                    if (container) {
-                        lazyScrollTo(container.offsetTop);
-                    }
-                }
-            }, 150); // Wait for content to load
+            // Scroll to navigation section
+            const container = document.querySelector('.container');
+            if (container) {
+                lazyScrollTo(container.offsetTop);
+            }
 
             // Display new category after a short delay to show loading
             setTimeout(() => {
@@ -1555,10 +1550,12 @@
                                     </p>
                                 </div>
                                 <div class="tool-right">
-                                    <a href="${youtubeUrl}" target="_blank" class="learn-more-button">
+                                    <a href="${youtubeUrl}" target="_blank" class="read-link-button">
                                         Watch
-                                        <svg class="arrow-icon" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M8.59 16.59L13.17 12L8.59 7.41L10 6l6 6-6 6-1.41-1.41z"/>
+                                        <svg class="external-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                            <polyline points="15,3 21,3 21,9"></polyline>
+                                            <line x1="10" y1="14" x2="21" y2="3"></line>
                                         </svg>
                                     </a>
                                 </div>
@@ -1814,10 +1811,10 @@
             window.addEventListener('resize', updateNavOffset);
         }
 
-        // Set default color and load recommendations on page load
+        // Set default color and load data on page load
         document.addEventListener('DOMContentLoaded', function() {
             changeColor('beige');
-            loadRecommendations();
+            loadRecommendations(); // Load data but don't display any category
             initStickyNavigation();
         });
     </script>
