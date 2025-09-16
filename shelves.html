@@ -634,12 +634,12 @@
         .tool-row {
             display: flex;
             align-items: center;
-            gap: 24px;
+            gap: 16px;
             margin-bottom: 16px;
         }
 
         .tool-left {
-            flex: 0 0 280px;
+            flex: 0 0 96px;
         }
 
         .tool-left.song-layout {
@@ -1024,7 +1024,7 @@
 
             .tool-row {
                 flex-direction: column;
-                gap: 20px;
+                gap: 16px;
                 margin-bottom: 24px;
             }
 
@@ -1668,12 +1668,11 @@
                                     <a href="${appStoreUrl}" target="_blank" class="tool-logo">
                                         <img src="${icon}" alt="${title} App Logo" class="tool-app-logo" onerror="this.src='https://www.google.com/s2/favicons?domain=apps.apple.com&sz=64'">
                                     </a>
+                                </div>
+                                <div class="tool-center">
                                     <a href="${appStoreUrl}" target="_blank" class="tool-name-link">
                                         <h3 class="tool-name">${title}</h3>
                                     </a>
-                                    <p class="tool-meta">${creator}</p>
-                                </div>
-                                <div class="tool-center">
                                     <p class="tool-description">
                                         ${description}
                                     </p>
