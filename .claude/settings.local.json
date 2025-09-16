@@ -15,7 +15,9 @@
       "Bash(done)",
       "WebFetch(domain:artists.apple.com)",
       "WebFetch(domain:tools.applemediaservices.com)",
-      "WebFetch(domain:toolbox.marketingtools.apple.com)"
+      "WebFetch(domain:toolbox.marketingtools.apple.com)",
+      "Bash(open http://localhost:8000/shelves.html)",
+      "WebFetch(domain:itunes.apple.com)"
     ],
     "defaultMode": "acceptEdits"
   },
