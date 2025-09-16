@@ -684,8 +684,8 @@
         }
 
         .video-thumbnail {
-            width: 480px;
-            height: 270px;
+            width: 320px;
+            height: 180px;
             border-radius: 0;
             object-fit: cover;
             position: relative;
@@ -718,7 +718,7 @@
         }
 
         .tool-left.video-layout {
-            flex: 0 0 520px;
+            flex: 0 0 320px;
         }
 
         .song-info {
@@ -748,7 +748,7 @@
         /* Dark theme adjustments for song text */
         body.color-navy .song-artist,
         body.color-green .song-artist {
-            color: #000000;
+            color: #ffffff;
         }
 
         body.color-navy .song-album,
@@ -769,7 +769,7 @@
             font-size: 18px;
             font-weight: 600;
             margin: 0 0 4px 0;
-            color: #666666;
+            color: #000000;
         }
 
         .book-genre {
@@ -783,7 +783,7 @@
         /* Dark theme adjustments for book text */
         body.color-navy .book-author,
         body.color-green .book-author {
-            color: #cccccc;
+            color: #ffffff;
         }
 
         body.color-navy .book-genre,
@@ -1511,19 +1511,20 @@
                                 </div>
                                 <div class="tool-center">
                                     <div class="book-info">
+                                        ${authorName ? `<p class="book-author">${authorName}</p>` : ''}
                                         <a href="${appleBooksUrl}" target="_blank" class="tool-name-link">
                                             <h3 class="tool-name">${bookTitle}</h3>
                                         </a>
-                                        ${authorName ? `<p class="book-author">${authorName}</p>` : ''}
-                                        ${genre ? `<p class="book-genre">${genre}</p>` : ''}
                                     </div>
-                                    <p class="tool-description">
-                                        ${description}
-                                    </p>
                                 </div>
                                 <div class="tool-right">
-                                    <a href="${appleBooksUrl}" target="_blank" class="app-store-button">
-                                        <img src="images/Get_it_on_Apple_Books_Badge.svg" alt="Get it on Apple Books" class="app-store-badge">
+                                    <a href="${appleBooksUrl}" target="_blank" class="read-link-button">
+                                        Read
+                                        <svg class="external-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                            <polyline points="15,3 21,3 21,9"></polyline>
+                                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                                        </svg>
                                     </a>
                                 </div>
                             </div>
@@ -1559,9 +1560,6 @@
                                     <a href="${youtubeUrl}" target="_blank" class="tool-name-link">
                                         <h3 class="tool-name">${videoTitle}</h3>
                                     </a>
-                                    <p class="tool-description">
-                                        Watch "${videoTitle}" on YouTube.
-                                    </p>
                                 </div>
                                 <div class="tool-right">
                                     <a href="${youtubeUrl}" target="_blank" class="read-link-button">
