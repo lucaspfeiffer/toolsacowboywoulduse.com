@@ -856,6 +856,14 @@
             max-width: none;
         }
 
+        .tool-description-row {
+            margin-top: 16px;
+        }
+
+        .tool-description-row .tool-description {
+            margin: 0;
+        }
+
         .tool-actions {
             display: flex;
             align-items: center;
@@ -1120,6 +1128,15 @@
             .learn-more-button {
                 font-size: 14px;
                 padding: 10px 16px;
+            }
+
+            .tool-description-row {
+                margin-top: 20px;
+            }
+
+            .tool-description-row .tool-description {
+                font-size: 16px;
+                margin-bottom: 0;
             }
         }
     </style>
@@ -1622,12 +1639,12 @@
                                     <a href="${url}" target="_blank" class="tool-logo">
                                         <img src="https://www.google.com/s2/favicons?domain=${new URL(url).hostname}&sz=128" alt="${title} Icon" class="tool-app-logo">
                                     </a>
+                                </div>
+                                <div class="tool-center">
+                                    <p class="tool-meta">${new URL(url).hostname}</p>
                                     <a href="${url}" target="_blank" class="tool-name-link">
                                         <h3 class="tool-name">${title}</h3>
                                     </a>
-                                    <p class="tool-meta">${new URL(url).hostname}</p>
-                                </div>
-                                <div class="tool-center">
                                     <p class="tool-description">
                                         ${description || `Visit ${title}.`}
                                     </p>
