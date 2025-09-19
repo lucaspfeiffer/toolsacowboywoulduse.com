@@ -622,7 +622,8 @@
         }
 
         .tool-card {
-            padding: 20px 0 20px 0;
+            padding: 32px 0;
+            margin-bottom: 32px;
             transition: all 0.3s ease;
             border-bottom: 1.5px solid #000000;
         }
@@ -640,6 +641,13 @@
 
         .tool-left {
             flex: 0 0 96px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tool-left:has(.tool-favicon) {
+            flex: 0 0 128px;
         }
 
         .tool-left.song-layout {
@@ -647,7 +655,7 @@
         }
 
         .tool-logo {
-            margin-bottom: 16px;
+            margin-bottom: 0;
             display: block;
             text-decoration: none;
         }
@@ -662,11 +670,39 @@
             color: #BE5D1D;
         }
 
+        .tool-logo {
+            position: relative;
+            display: inline-block;
+            margin: 0;
+        }
+
+        .tool-logo:has(.tool-app-logo)::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 24px;
+            pointer-events: none;
+        }
+
         .tool-app-logo {
             width: 80px;
             height: 80px;
             border-radius: 24px;
             object-fit: cover;
+            display: block;
+        }
+
+        .tool-favicon {
+            width: 112px;
+            height: 112px;
+            border-radius: 0;
+            object-fit: cover;
+            display: block;
+            aspect-ratio: 1/1;
         }
 
         .song-artwork {
@@ -1010,7 +1046,7 @@
             }
 
             .hero-divider {
-                margin-bottom: 40px;
+                margin-bottom: 0;
             }
 
             .container {
@@ -1019,21 +1055,33 @@
 
             .category-navigation {
                 margin: 0;
+                justify-content: flex-start;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+
+            .category-navigation::-webkit-scrollbar {
+                display: none;
             }
 
             .category-tab {
                 font-size: 16px;
                 padding: 12px 24px;
+                flex-shrink: 0;
+                white-space: nowrap;
             }
 
             .tool-card {
-                padding: 40px 0;
+                padding: 24px 0;
+                margin-bottom: 24px;
             }
 
             .tool-row {
                 flex-direction: column;
                 gap: 16px;
-                margin-bottom: 24px;
+                margin-bottom: 0;
                 align-items: flex-start;
             }
 
@@ -1435,6 +1483,22 @@
             });
             event.target.classList.add('active');
 
+            // Scroll active tab into view on mobile
+            if (window.innerWidth <= 768) {
+                const activeTab = event.target;
+                const navigation = document.querySelector('.category-navigation');
+                const tabRect = activeTab.getBoundingClientRect();
+                const navRect = navigation.getBoundingClientRect();
+
+                // Calculate scroll position to center the active tab
+                const scrollLeft = activeTab.offsetLeft - (navRect.width / 2) + (tabRect.width / 2);
+
+                navigation.scrollTo({
+                    left: Math.max(0, scrollLeft),
+                    behavior: 'smooth'
+                });
+            }
+
             // Update description text
             const description = document.querySelector('.hero-description');
             description.textContent = `${category} to explore`;
@@ -1603,7 +1667,7 @@
                             <div class="tool-row">
                                 <div class="tool-left">
                                     <a href="${url}" target="_blank" class="tool-logo">
-                                        <img src="https://www.google.com/s2/favicons?domain=${new URL(url).hostname}&sz=128" alt="${title} Icon" class="tool-app-logo">
+                                        <img src="https://www.google.com/s2/favicons?domain=${new URL(url).hostname}&sz=128" alt="${title} Icon" class="tool-favicon">
                                     </a>
                                 </div>
                                 <div class="tool-center">
@@ -1639,7 +1703,7 @@
                             <div class="tool-row">
                                 <div class="tool-left">
                                     <a href="${url}" target="_blank" class="tool-logo">
-                                        <img src="https://www.google.com/s2/favicons?domain=${new URL(url).hostname}&sz=128" alt="${title} Icon" class="tool-app-logo">
+                                        <img src="https://www.google.com/s2/favicons?domain=${new URL(url).hostname}&sz=128" alt="${title} Icon" class="tool-favicon">
                                     </a>
                                 </div>
                                 <div class="tool-center">
@@ -1670,22 +1734,33 @@
                 itemCards = await Promise.all(items.map(async ([appStoreUrl, manualName, category, ourDescription]) => {
                     if (!appStoreUrl) return null;
 
-                    // Try to get app metadata from App Store
-                    const appMeta = await getAppMetadata(appStoreUrl);
+                    // Check if it's an App Store URL
+                    const isAppStore = appStoreUrl.includes('apps.apple.com') || appStoreUrl.includes('itunes.apple.com');
 
-                    // Use App Store data if available, fallback to manual data
-                    const title = appMeta?.name || manualName || 'Unknown App';
-                    const creator = appMeta?.subtitle || category || '';
-                    const icon = appMeta?.icon ? getAppIcon(appMeta.icon) : `https://www.google.com/s2/favicons?domain=apps.apple.com&sz=64`;
-                    // Use only manual description
-                    const description = ourDescription || '';
+                    let title, icon, description;
+
+                    if (isAppStore) {
+                        // Try to get app metadata from App Store
+                        const appMeta = await getAppMetadata(appStoreUrl);
+                        title = appMeta?.name || manualName || 'Unknown App';
+                        icon = appMeta?.icon ? getAppIcon(appMeta.icon) : `https://www.google.com/s2/favicons?domain=apps.apple.com&sz=64`;
+                    } else {
+                        // For non-App Store apps, use manual data and favicon
+                        title = manualName || 'Unknown App';
+                        icon = `https://www.google.com/s2/favicons?domain=${new URL(appStoreUrl).hostname}&sz=128`;
+                    }
+
+                    description = ourDescription || '';
+
+                    // Choose the appropriate download button
+                    const downloadButton = `<img src="images/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="Download on the App Store" class="app-store-badge">`;
 
                     return `
                         <div class="tool-card">
                             <div class="tool-row">
                                 <div class="tool-left">
                                     <a href="${appStoreUrl}" target="_blank" class="tool-logo">
-                                        <img src="${icon}" alt="${title} App Logo" class="tool-app-logo" onerror="this.src='https://www.google.com/s2/favicons?domain=apps.apple.com&sz=64'">
+                                        <img src="${icon}" alt="${title} App Logo" class="tool-app-logo" onerror="this.src='https://www.google.com/s2/favicons?domain=${new URL(appStoreUrl).hostname}&sz=64'">
                                     </a>
                                 </div>
                                 <div class="tool-center">
@@ -1698,7 +1773,7 @@
                                 </div>
                                 <div class="tool-right">
                                     <a href="${appStoreUrl}" target="_blank" class="app-store-button">
-                                        <img src="images/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="Download on the App Store" class="app-store-badge">
+                                        ${downloadButton}
                                     </a>
                                 </div>
                             </div>
@@ -1717,8 +1792,7 @@
         // Color values for theme-color and body background
         const colorValues = {
             beige: '#ffffff',
-            navy: '#000000',
-            green: '#000000'
+            navy: '#000000'
         };
 
         // Color switcher functionality
