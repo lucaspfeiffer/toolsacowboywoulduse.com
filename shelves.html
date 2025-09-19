@@ -635,8 +635,13 @@
         .tool-row {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 32px;
             margin-bottom: 16px;
+        }
+
+        /* Websites section keeps original spacing */
+        .tool-row:has(.tool-favicon) {
+            gap: 16px;
         }
 
         .tool-left {
@@ -762,6 +767,14 @@
         }
 
         .song-info .tool-name {
+            margin-bottom: 8px;
+        }
+
+        .video-info {
+            margin-bottom: 20px;
+        }
+
+        .video-info .tool-name {
             margin-bottom: 8px;
         }
 
@@ -1080,9 +1093,14 @@
 
             .tool-row {
                 flex-direction: column;
-                gap: 16px;
+                gap: 32px;
                 margin-bottom: 0;
                 align-items: flex-start;
+            }
+
+            /* Websites section keeps original spacing on mobile */
+            .tool-row:has(.tool-favicon) {
+                gap: 16px;
             }
 
             .tool-left {
@@ -1319,8 +1337,22 @@
                     }
                 }
 
+                // Try to get the actual video title using oEmbed API
+                let actualTitle = fallbackTitle;
+                try {
+                    const oembedResponse = await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent(youtubeUrl)}&format=json`);
+                    if (oembedResponse.ok) {
+                        const oembedData = await oembedResponse.json();
+                        if (oembedData.title) {
+                            actualTitle = oembedData.title;
+                        }
+                    }
+                } catch (error) {
+                    console.log('Could not fetch YouTube title via oEmbed:', error);
+                }
+
                 return {
-                    title: fallbackTitle,
+                    title: actualTitle,
                     thumbnail: thumbnail,
                     videoId: videoId
                 };
@@ -1559,11 +1591,11 @@
                                             <h3 class="tool-name">${trackName}</h3>
                                         </a>
                                     </div>
-                                </div>
-                                <div class="tool-right">
-                                    <a href="${appleMusicUrl}" target="_blank" class="app-store-button">
-                                        <img src="images/Listen_on_Apple_Music_Badge.svg" alt="Listen on Apple Music" class="app-store-badge">
-                                    </a>
+                                    <div class="tool-actions">
+                                        <a href="${appleMusicUrl}" target="_blank" class="app-store-button">
+                                            <img src="images/Listen_on_Apple_Music_Badge.svg" alt="Listen on Apple Music" class="app-store-badge">
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1598,16 +1630,16 @@
                                             <h3 class="tool-name">${bookTitle}</h3>
                                         </a>
                                     </div>
-                                </div>
-                                <div class="tool-right">
-                                    <a href="${appleBooksUrl}" target="_blank" class="read-link-button">
-                                        Read
-                                        <svg class="external-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                            <polyline points="15,3 21,3 21,9"></polyline>
-                                            <line x1="10" y1="14" x2="21" y2="3"></line>
-                                        </svg>
-                                    </a>
+                                    <div class="tool-actions">
+                                        <a href="${appleBooksUrl}" target="_blank" class="read-link-button">
+                                            Read
+                                            <svg class="external-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                                <polyline points="15,3 21,3 21,9"></polyline>
+                                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                                            </svg>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1622,7 +1654,8 @@
                     const videoMeta = await getVideoMetadata(youtubeUrl, title);
                     if (!videoMeta) return null;
 
-                    const videoTitle = videoMeta.title || title;
+                    const sheetTitle = title; // Our custom title from the sheet
+                    const youtubeTitle = videoMeta.title || ''; // Actual YouTube title as subtitle
                     const thumbnail = videoMeta.thumbnail || `https://www.google.com/s2/favicons?domain=youtube.com&sz=64`;
 
                     return `
@@ -1630,7 +1663,7 @@
                             <div class="tool-row">
                                 <div class="tool-left video-layout">
                                     <a href="${youtubeUrl}" target="_blank" class="tool-logo" style="position: relative; display: block;">
-                                        <img src="${thumbnail}" alt="${videoTitle} Thumbnail" class="video-thumbnail" onerror="this.src='https://www.google.com/s2/favicons?domain=youtube.com&sz=64'">
+                                        <img src="${thumbnail}" alt="${sheetTitle} Thumbnail" class="video-thumbnail" onerror="this.src='https://www.google.com/s2/favicons?domain=youtube.com&sz=64'">
                                         <div class="video-play-overlay">
                                             <svg class="video-play-icon" viewBox="0 0 24 24">
                                                 <path d="M8 5v14l11-7z"/>
@@ -1639,19 +1672,22 @@
                                     </a>
                                 </div>
                                 <div class="tool-center">
-                                    <a href="${youtubeUrl}" target="_blank" class="tool-name-link">
-                                        <h3 class="tool-name">${videoTitle}</h3>
-                                    </a>
-                                </div>
-                                <div class="tool-right">
-                                    <a href="${youtubeUrl}" target="_blank" class="read-link-button">
-                                        Watch
-                                        <svg class="external-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                            <polyline points="15,3 21,3 21,9"></polyline>
-                                            <line x1="10" y1="14" x2="21" y2="3"></line>
-                                        </svg>
-                                    </a>
+                                    <div class="video-info">
+                                        <a href="${youtubeUrl}" target="_blank" class="tool-name-link">
+                                            <h3 class="tool-name">${sheetTitle}</h3>
+                                        </a>
+                                        ${youtubeTitle && youtubeTitle !== sheetTitle ? `<p class="tool-meta">${youtubeTitle}</p>` : ''}
+                                    </div>
+                                    <div class="tool-actions">
+                                        <a href="${youtubeUrl}" target="_blank" class="read-link-button">
+                                            Watch
+                                            <svg class="external-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                                <polyline points="15,3 21,3 21,9"></polyline>
+                                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                                            </svg>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
