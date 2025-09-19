@@ -1014,7 +1014,7 @@
             }
 
             .container {
-                padding: 0 20px 40px 20px;
+                padding: 0 16px 40px 16px;
             }
 
             .category-navigation {
@@ -1034,6 +1034,7 @@
                 flex-direction: column;
                 gap: 16px;
                 margin-bottom: 24px;
+                align-items: flex-start;
             }
 
             .tool-left {
@@ -1042,25 +1043,21 @@
 
             .tool-left.song-layout {
                 flex: none;
-                width: calc(100vw - 48px);
-                margin-left: 4px;
-                margin-right: 4px;
+                width: 200px;
                 display: flex;
                 flex-direction: column;
             }
 
             .song-artwork {
-                width: 100%;
-                height: auto;
-                aspect-ratio: 4/5;
+                width: 200px;
+                height: 250px;
                 border-radius: 0;
                 margin-bottom: 20px;
             }
 
             .book-artwork {
-                width: 100%;
-                height: auto;
-                aspect-ratio: 2/3;
+                width: 200px;
+                height: 300px;
                 border-radius: 0;
                 margin-bottom: 20px;
             }
@@ -1094,11 +1091,15 @@
 
             .tool-center {
                 flex: none;
+                text-align: left;
+                width: 100%;
+                align-self: flex-start;
             }
 
             .tool-right {
                 flex: none;
                 justify-content: flex-start;
+                align-self: flex-start;
             }
 
             .tool-name {
@@ -1119,6 +1120,7 @@
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 16px;
+                width: 100%;
             }
 
             .app-store-button .app-store-badge {
@@ -1603,12 +1605,12 @@
                                     <a href="${url}" target="_blank" class="tool-logo">
                                         <img src="https://www.google.com/s2/favicons?domain=${new URL(url).hostname}&sz=128" alt="${title} Icon" class="tool-app-logo">
                                     </a>
+                                </div>
+                                <div class="tool-center">
+                                    ${author ? `<p class="tool-meta">by ${author}</p>` : ''}
                                     <a href="${url}" target="_blank" class="tool-name-link">
                                         <h3 class="tool-name">${title}</h3>
                                     </a>
-                                    ${author ? `<p class="tool-meta">by ${author}</p>` : ''}
-                                </div>
-                                <div class="tool-center">
                                     <p class="tool-description">
                                         ${description || `Read "${title}"${author ? ` by ${author}` : ''}.`}
                                     </p>
