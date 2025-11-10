@@ -89,9 +89,21 @@
             width: 100%;
             height: auto;
             display: block;
-            border: 1px solid #ccc;
+            border: 1px solid #000;
             max-height: 400px;
             object-fit: cover;
+            background-color: #f5f5f5;
+        }
+
+        .featured-small-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            border: 1px solid #000;
+            max-height: 200px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            background-color: #f5f5f5;
         }
 
         .featured-title {
@@ -439,8 +451,14 @@
         <div class="featured-main">
             <!-- Featured Writing with hero image -->
             <div class="featured-box" id="featured-writing-box" style="display: none;">
-                <div class="featured-header">Featured Writing</div>
+                <div class="featured-header">Featured Reading</div>
                 <div id="featured-writing-content"></div>
+            </div>
+
+            <!-- Featured Video -->
+            <div class="featured-box" id="featured-video-box" style="display: none;">
+                <div class="featured-header">Watch This</div>
+                <div id="featured-video-content"></div>
             </div>
 
             <!-- Featured Song -->
@@ -467,6 +485,12 @@
             <div class="featured-box" id="featured-website-box" style="display: none;">
                 <div class="featured-header">Link of Note</div>
                 <div id="featured-website-content"></div>
+            </div>
+
+            <!-- More Writing -->
+            <div class="featured-box" id="featured-writing2-box" style="display: none;">
+                <div class="featured-header">Also Read</div>
+                <ul class="featured-list" id="featured-writing2-list"></ul>
             </div>
         </div>
     </section>
@@ -830,22 +854,138 @@
             `;
         }
 
+        // Fetch Open Graph image from URL using Microlink API
+        async function getOpenGraphImage(url) {
+            try {
+                // Use Microlink API to get Open Graph image
+                // Free tier: 50 requests/day, 1 req/sec
+                const microlinkUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&embed=screenshot.url`;
+
+                const response = await fetch(microlinkUrl);
+                const data = await response.json();
+
+                if (data.status === 'success' && data.data && data.data.screenshot) {
+                    return data.data.screenshot.url;
+                }
+
+                // Fallback to trying to get OG image
+                if (data.status === 'success' && data.data && data.data.image) {
+                    return data.data.image.url;
+                }
+
+                return null;
+            } catch (error) {
+                console.error('Error fetching OG image:', error);
+                return null;
+            }
+        }
+
+        // Try to extract image from YouTube URL with fallbacks
+        function getYouTubeThumbnail(videoId) {
+            if (!videoId) return null;
+            // Return hqdefault which is always available (480x360)
+            // We'll use this as it's reliable and good quality
+            return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+        }
+
+        // Get best available YouTube thumbnail
+        async function getBestYouTubeThumbnail(url) {
+            const videoId = getYouTubeVideoId(url);
+            if (!videoId) return null;
+
+            // Try different qualities in order of preference
+            const thumbnails = [
+                `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+                `https://img.youtube.com/vi/${videoId}/sddefault.jpg`,
+                `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+            ];
+
+            // Try to load the highest quality available
+            for (const thumb of thumbnails) {
+                try {
+                    const response = await fetch(thumb, { method: 'HEAD' });
+                    if (response.ok) {
+                        return thumb;
+                    }
+                } catch {
+                    continue;
+                }
+            }
+
+            // Fallback to hqdefault which always exists
+            return thumbnails[2];
+        }
+
         // Generate featured content
         async function generateFeaturedContent() {
             const featuredSections = document.getElementById('featured-sections');
             let hasContent = false;
 
-            // Featured Writing (first item)
+            // Featured Writing (first item) with hero image
             if (allData['Writing'] && allData['Writing'].length > 1) {
                 const [title, url, author, description] = allData['Writing'][1];
                 if (title && url) {
                     const domain = new URL(url).hostname;
+                    const ogImage = await getOpenGraphImage(url);
+
+                    let imageHtml = '';
+                    if (ogImage) {
+                        imageHtml = `<div class="featured-hero"><img src="${ogImage}" alt="${title}" onerror="this.parentElement.style.display='none'"></div>`;
+                    }
+
                     document.getElementById('featured-writing-content').innerHTML = `
+                        ${imageHtml}
                         <div class="featured-title"><a href="${url}" target="_blank">${title}</a></div>
                         ${author ? `<div class="featured-byline">by ${author}</div>` : ''}
                         ${description ? `<div class="featured-excerpt">${description}</div>` : ''}
                     `;
                     document.getElementById('featured-writing-box').style.display = 'block';
+                    hasContent = true;
+                }
+            }
+
+            // More Writing items (2-4)
+            if (allData['Writing'] && allData['Writing'].length > 2) {
+                const writings = allData['Writing'].slice(2, 5); // Get items 2-4
+                const writingItems = writings.map(([title, url, author]) => {
+                    if (!title || !url) return null;
+                    return `
+                        <li class="featured-list-item">
+                            <a href="${url}" target="_blank">${title}</a>
+                            ${author ? `<div class="featured-list-meta">by ${author}</div>` : ''}
+                        </li>
+                    `;
+                });
+                const filteredItems = writingItems.filter(item => item !== null);
+                if (filteredItems.length > 0) {
+                    document.getElementById('featured-writing2-list').innerHTML = filteredItems.join('');
+                    document.getElementById('featured-writing2-box').style.display = 'block';
+                    hasContent = true;
+                }
+            }
+
+            // Featured Video with thumbnail
+            if (allData['Videos'] && allData['Videos'].length > 1) {
+                const [title, youtubeUrl] = allData['Videos'][1];
+                if (title && youtubeUrl) {
+                    const videoMeta = await getVideoMetadata(youtubeUrl, title);
+                    const thumbnail = await getBestYouTubeThumbnail(youtubeUrl);
+
+                    console.log('YouTube URL:', youtubeUrl);
+                    console.log('Video ID:', getYouTubeVideoId(youtubeUrl));
+                    console.log('Thumbnail URL:', thumbnail);
+
+                    let imageHtml = '';
+                    if (thumbnail) {
+                        imageHtml = `<div class="featured-hero"><img src="${thumbnail}" alt="${title}" onerror="console.error('Image failed to load:', this.src); this.parentElement.style.display='none';"></div>`;
+                    }
+
+                    document.getElementById('featured-video-content').innerHTML = `
+                        ${imageHtml}
+                        <div class="featured-title"><a href="${youtubeUrl}" target="_blank">${title}</a></div>
+                        ${videoMeta?.author ? `<div class="featured-byline">${videoMeta.author}</div>` : ''}
+                    `;
+                    document.getElementById('featured-video-box').style.display = 'block';
                     hasContent = true;
                 }
             }
@@ -906,12 +1046,20 @@
                 }
             }
 
-            // Featured Website (first item)
+            // Featured Website (first item) with small image
             if (allData['Websites'] && allData['Websites'].length > 1) {
                 const [title, url, description] = allData['Websites'][1];
                 if (title && url) {
                     const domain = new URL(url).hostname;
+                    const ogImage = await getOpenGraphImage(url);
+
+                    let imageHtml = '';
+                    if (ogImage) {
+                        imageHtml = `<img src="${ogImage}" alt="${title}" class="featured-small-image" onerror="this.style.display='none'">`;
+                    }
+
                     document.getElementById('featured-website-content').innerHTML = `
+                        ${imageHtml}
                         <div class="featured-title"><a href="${url}" target="_blank">${title}</a></div>
                         <div class="featured-byline">${domain}</div>
                         ${description ? `<div class="featured-excerpt">${description.substring(0, 120)}${description.length > 120 ? '...' : ''}</div>` : ''}
