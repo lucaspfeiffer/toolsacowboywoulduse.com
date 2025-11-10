@@ -45,6 +45,120 @@
             color: #666;
         }
 
+        /* Featured sections - newspaper layout */
+        .featured-sections {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .featured-main {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .featured-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .featured-box {
+            border: 2px solid #000;
+            padding: 15px;
+            background-color: #fff;
+        }
+
+        .featured-header {
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 5px;
+            margin-bottom: 12px;
+        }
+
+        .featured-hero {
+            margin-bottom: 15px;
+        }
+
+        .featured-hero img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border: 1px solid #ccc;
+            max-height: 400px;
+            object-fit: cover;
+        }
+
+        .featured-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .featured-title a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .featured-title a:hover {
+            text-decoration: underline;
+        }
+
+        .featured-byline {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .featured-excerpt {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .featured-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .featured-list-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .featured-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .featured-list-item a {
+            color: #00008b;
+            text-decoration: underline;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .featured-list-item a:visited {
+            color: #551a8b;
+        }
+
+        .featured-list-item a:hover {
+            text-decoration: none;
+        }
+
+        .featured-list-meta {
+            font-size: 12px;
+            color: #666;
+            margin-top: 3px;
+        }
+
         /* Craigslist-style navigation */
         .navigation {
             background-color: #f8f8f8;
@@ -196,6 +310,15 @@
                 font-size: 36px;
             }
 
+            .featured-sections {
+                grid-template-columns: 1fr;
+            }
+
+            .featured-sidebar {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: auto;
+            }
+
             .items-grid {
                 column-count: 2;
                 column-gap: 20px;
@@ -219,6 +342,23 @@
 
             .masthead-subtitle {
                 font-size: 12px;
+            }
+
+            .featured-sections {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .featured-sidebar {
+                grid-template-columns: 1fr;
+            }
+
+            .featured-title {
+                font-size: 20px;
+            }
+
+            .featured-hero img {
+                max-height: 250px;
             }
 
             .navigation {
@@ -293,6 +433,43 @@
         <h1 class="masthead-title">SHELVES</h1>
         <p class="masthead-subtitle">A Curated Collection from Tools a Cowboy Would Use</p>
     </header>
+
+    <!-- Featured sections - newspaper front page style -->
+    <section class="featured-sections" id="featured-sections" style="display: none;">
+        <div class="featured-main">
+            <!-- Featured Writing with hero image -->
+            <div class="featured-box" id="featured-writing-box" style="display: none;">
+                <div class="featured-header">Featured Writing</div>
+                <div id="featured-writing-content"></div>
+            </div>
+
+            <!-- Featured Song -->
+            <div class="featured-box" id="featured-song-box" style="display: none;">
+                <div class="featured-header">On Repeat</div>
+                <div id="featured-song-content"></div>
+            </div>
+        </div>
+
+        <div class="featured-sidebar">
+            <!-- Recently Added Apps -->
+            <div class="featured-box" id="featured-apps-box" style="display: none;">
+                <div class="featured-header">New Apps</div>
+                <ul class="featured-list" id="featured-apps-list"></ul>
+            </div>
+
+            <!-- Featured Book -->
+            <div class="featured-box" id="featured-book-box" style="display: none;">
+                <div class="featured-header">Worth Reading</div>
+                <div id="featured-book-content"></div>
+            </div>
+
+            <!-- Featured Website -->
+            <div class="featured-box" id="featured-website-box" style="display: none;">
+                <div class="featured-header">Link of Note</div>
+                <div id="featured-website-content"></div>
+            </div>
+        </div>
+    </section>
 
     <!-- Craigslist-style navigation -->
     <nav class="navigation">
@@ -653,9 +830,106 @@
             `;
         }
 
+        // Generate featured content
+        async function generateFeaturedContent() {
+            const featuredSections = document.getElementById('featured-sections');
+            let hasContent = false;
+
+            // Featured Writing (first item)
+            if (allData['Writing'] && allData['Writing'].length > 1) {
+                const [title, url, author, description] = allData['Writing'][1];
+                if (title && url) {
+                    const domain = new URL(url).hostname;
+                    document.getElementById('featured-writing-content').innerHTML = `
+                        <div class="featured-title"><a href="${url}" target="_blank">${title}</a></div>
+                        ${author ? `<div class="featured-byline">by ${author}</div>` : ''}
+                        ${description ? `<div class="featured-excerpt">${description}</div>` : ''}
+                    `;
+                    document.getElementById('featured-writing-box').style.display = 'block';
+                    hasContent = true;
+                }
+            }
+
+            // Recent Apps (first 5 items)
+            if (allData['Apps'] && allData['Apps'].length > 1) {
+                const apps = allData['Apps'].slice(1, 6); // Get first 5
+                const appItems = await Promise.all(apps.map(async ([appStoreUrl, manualName]) => {
+                    if (!appStoreUrl) return null;
+                    const appMeta = await getAppMetadata(appStoreUrl);
+                    const title = appMeta?.name || manualName || 'Unknown App';
+                    return `
+                        <li class="featured-list-item">
+                            <a href="${appStoreUrl}" target="_blank">${title}</a>
+                        </li>
+                    `;
+                }));
+                const filteredItems = appItems.filter(item => item !== null);
+                if (filteredItems.length > 0) {
+                    document.getElementById('featured-apps-list').innerHTML = filteredItems.join('');
+                    document.getElementById('featured-apps-box').style.display = 'block';
+                    hasContent = true;
+                }
+            }
+
+            // Featured Song (first item)
+            if (allData['Songs'] && allData['Songs'].length > 1) {
+                const [title, appleMusicUrl, artist] = allData['Songs'][1];
+                if (title && appleMusicUrl) {
+                    const songMeta = await getSongMetadata(appleMusicUrl);
+                    const trackName = songMeta?.trackName || title;
+                    const artistName = songMeta?.artistName || artist;
+                    const albumName = songMeta?.albumName || '';
+                    document.getElementById('featured-song-content').innerHTML = `
+                        <div class="featured-title"><a href="${appleMusicUrl}" target="_blank">${trackName}</a></div>
+                        <div class="featured-byline">${artistName}${albumName ? ` - ${albumName}` : ''}</div>
+                    `;
+                    document.getElementById('featured-song-box').style.display = 'block';
+                    hasContent = true;
+                }
+            }
+
+            // Featured Book (first item)
+            if (allData['Books'] && allData['Books'].length > 1) {
+                const [title, appleBooksUrl, ourDescription] = allData['Books'][1];
+                if (title && appleBooksUrl) {
+                    const bookMeta = await getBookMetadata(appleBooksUrl);
+                    const bookTitle = bookMeta?.trackName || title;
+                    const authorName = bookMeta?.artistName || '';
+                    const description = ourDescription || bookMeta?.description || '';
+                    document.getElementById('featured-book-content').innerHTML = `
+                        <div class="featured-title"><a href="${appleBooksUrl}" target="_blank">${bookTitle}</a></div>
+                        ${authorName ? `<div class="featured-byline">by ${authorName}</div>` : ''}
+                        ${description ? `<div class="featured-excerpt">${description.substring(0, 150)}${description.length > 150 ? '...' : ''}</div>` : ''}
+                    `;
+                    document.getElementById('featured-book-box').style.display = 'block';
+                    hasContent = true;
+                }
+            }
+
+            // Featured Website (first item)
+            if (allData['Websites'] && allData['Websites'].length > 1) {
+                const [title, url, description] = allData['Websites'][1];
+                if (title && url) {
+                    const domain = new URL(url).hostname;
+                    document.getElementById('featured-website-content').innerHTML = `
+                        <div class="featured-title"><a href="${url}" target="_blank">${title}</a></div>
+                        <div class="featured-byline">${domain}</div>
+                        ${description ? `<div class="featured-excerpt">${description.substring(0, 120)}${description.length > 120 ? '...' : ''}</div>` : ''}
+                    `;
+                    document.getElementById('featured-website-box').style.display = 'block';
+                    hasContent = true;
+                }
+            }
+
+            if (hasContent) {
+                featuredSections.style.display = 'grid';
+            }
+        }
+
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', async function() {
             await loadAllData();
+            await generateFeaturedContent();
         });
     </script>
 </body>
