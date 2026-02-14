@@ -397,6 +397,11 @@
         .footer-patch {
             max-width: 250px;
             height: auto;
+            transition: transform 0.2s ease;
+        }
+
+        .footer-patch:hover {
+            transform: scale(1.05);
         }
 
         .hero-section h1 {
@@ -846,7 +851,7 @@
 
         @media (max-width: 768px) {
             .hero-section {
-                min-height: 120svh;
+                min-height: 100dvh;
                 gap: 20px;
             }
 
