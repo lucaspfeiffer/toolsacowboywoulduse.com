@@ -74,3 +74,5 @@ const items = [
 ];
 
 const FOLLOW_URL = 'https://blog.toolsacowboywoulduse.com';
+// "Request shirt" primary button on the detail page.
+const REQUEST_URL = 'mailto:lpfeif19@gmail.com?subject=Tools%20a%20Cowboy%20-%20Shirt%20request';
