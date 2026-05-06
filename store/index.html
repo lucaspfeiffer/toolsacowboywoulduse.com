@@ -1,42 +1,997 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Store - Tools a Cowboy Would Use</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#ffffff">
+    <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon-16.png">
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --item-spacing: clamp(0px, 0.5vw, 8px);
+            --image-scale: clamp(0.85, 0.9 + 0.2 * (100vw - 600px) / 1000, 1.15);
+            --bar-height: 80px;
+            --bar-pad: 24px 32px;
+            --border: #000;
+            --muted: #494949;
+            --bg: #ffffff;
         }
 
         html, body {
-            height: 100%;
-            width: 100%;
-            background-color: #ffffff;
+            background: var(--bg);
             font-family: 'EB Garamond', serif;
+            color: #000;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            min-height: 100dvh;
+        }
+
+        .page-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Top bar: brand + categories */
+        .top-bar-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg);
+            z-index: 1000;
+            padding-top: env(safe-area-inset-top, 0);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .top-bar {
+            height: var(--bar-height);
+            padding: var(--bar-pad);
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            box-sizing: border-box;
+        }
+
+        .brand-link {
+            font-family: 'EB Garamond', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: #000;
+            text-decoration: none;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .brand-link:hover {
+            text-decoration: underline;
+        }
+
+        .brand-arrow {
+            font-size: 18px;
+            line-height: 1;
+        }
+
+        .categories {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            flex: 1;
+            justify-content: flex-end;
+            min-width: 0;
+        }
+
+        .categories::-webkit-scrollbar { display: none; }
+
+        .category-chip {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: #FFEECC;
+            text-decoration: none;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            background:
+                linear-gradient(145deg, #6B2D27 0%, #421A1C 50%, #2A1014 100%),
+                linear-gradient(90deg, transparent 46%, rgba(74, 31, 31, 0.7) 50%, transparent 54%),
+                linear-gradient(0deg, transparent 47%, rgba(47, 19, 24, 0.6) 50%, transparent 53%),
+                linear-gradient(135deg, transparent 45%, rgba(90, 35, 25, 0.4) 50%, transparent 55%),
+                linear-gradient(67deg, transparent 48%, rgba(30, 12, 8, 0.8) 52%, transparent 56%);
+            background-size: 100% 100%, 2px 2px, 4px 4px, 8px 8px, 16px 16px;
+            padding: 8px 16px;
+            border: 2px solid;
+            border-top-color: rgba(140, 70, 50, 1);
+            border-left-color: rgba(140, 70, 50, 1);
+            border-right-color: rgba(15, 6, 8, 1);
+            border-bottom-color: rgba(15, 6, 8, 1);
+            box-shadow:
+                inset 0 1px 2px rgba(180, 100, 70, 0.6),
+                inset 0 -1px 2px rgba(15, 6, 8, 0.7),
+                3px 3px 8px 1px rgba(0, 0, 0, 0.5);
+            text-shadow: 1px 1px 3px rgba(15, 6, 8, 0.8);
+            border-radius: 0;
+        }
+
+        .category-chip:hover {
+            color: #FFF4D8;
+            border-top-color: rgba(170, 90, 60, 1);
+            border-left-color: rgba(170, 90, 60, 1);
+            box-shadow:
+                inset 0 1px 2px rgba(200, 120, 80, 0.6),
+                inset 0 -1px 2px rgba(15, 6, 8, 0.7),
+                3px 3px 10px 2px rgba(0, 0, 0, 0.55);
+        }
+
+        .category-chip.active,
+        .category-chip.active:hover {
+            color: #FFEECC;
+            border-top-color: rgba(10, 4, 5, 1);
+            border-left-color: rgba(10, 4, 5, 1);
+            border-right-color: rgba(70, 35, 25, 0.7);
+            border-bottom-color: rgba(70, 35, 25, 0.7);
+            background:
+                linear-gradient(145deg, #2A1014 0%, #1A0709 50%, #0E0407 100%),
+                linear-gradient(90deg, transparent 46%, rgba(74, 31, 31, 0.7) 50%, transparent 54%),
+                linear-gradient(0deg, transparent 47%, rgba(47, 19, 24, 0.6) 50%, transparent 53%),
+                linear-gradient(135deg, transparent 45%, rgba(90, 35, 25, 0.4) 50%, transparent 55%),
+                linear-gradient(67deg, transparent 48%, rgba(30, 12, 8, 0.8) 52%, transparent 56%);
+            background-size: 100% 100%, 2px 2px, 4px 4px, 8px 8px, 16px 16px;
+            box-shadow:
+                inset 4px 4px 10px rgba(0, 0, 0, 1),
+                inset 6px 6px 16px rgba(0, 0, 0, 0.7),
+                inset -2px -2px 4px rgba(120, 60, 45, 0.12),
+                0px 0px 1px rgba(0, 0, 0, 0.4);
+            text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.9);
+        }
+
+        /* Horizontal scroll content */
+        .timeline-view {
+            display: flex;
+            flex-direction: row;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            padding: var(--bar-height) 32px var(--bar-height) 80px;
+            flex: 1;
+            scrollbar-width: none;
+            overscroll-behavior-x: contain;
+            cursor: grab;
+            position: relative;
+        }
+
+        .timeline-view::-webkit-scrollbar { display: none; }
+
+        .items-row {
+            display: flex;
+            flex-direction: row;
+            gap: 0;
+            padding: 0;
+            align-items: center;
+            justify-content: flex-start;
+            min-width: min-content;
+        }
+
+        .item {
+            flex: 0 0 auto;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-right: var(--item-spacing);
+            will-change: transform;
+        }
+
+        .item-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: auto;
+            height: auto;
+            transform-origin: center center;
+            transform: scale(var(--image-scale));
+            padding: 2px;
+        }
+
+        .item-image img,
+        .item-image .placeholder {
+            height: auto;
+            width: auto;
+            max-height: 88vh;
+            object-fit: contain;
+            display: block;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        @media (hover: hover) {
+            .item-image img:hover,
+            .item-image .placeholder:hover {
+                transform: scale(1.08);
+            }
+        }
+
+        .placeholder {
+            width: 360px;
+            height: 480px;
+            background: #f0eee9;
+            border: 1px solid #d8d4cb;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: 'EB Garamond', serif;
+            font-size: 22px;
+            color: #888;
+            font-weight: 500;
+        }
+
+        /* Bottom ticker bar */
+        .bottom-bar-wrapper {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg);
+            z-index: 1000;
+            padding-bottom: env(safe-area-inset-bottom, 0);
+            border-top: 1px solid var(--border);
+        }
+
+        .bottom-bar {
+            height: var(--bar-height);
+            padding: var(--bar-pad);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-sizing: border-box;
+        }
+
+        .current-date {
+            font-family: 'EB Garamond', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: #000;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        .follow-link {
+            font-family: 'EB Garamond', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        .follow-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Timeline reference marker (dot above bottom bar showing where the ticker is reading from) */
+        .timeline-reference-marker {
+            position: fixed;
+            width: 1.5px;
+            background-color: #888;
+            z-index: 1001;
+            pointer-events: none;
+            transition: left 0.3s ease;
+            bottom: calc(var(--bar-height) + env(safe-area-inset-bottom, 0));
+            height: 16px;
+        }
+
+        .timeline-reference-marker::after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #BE5D1D;
+            border-radius: 50%;
+            top: -5px;
+            left: -4px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            display: none;
+            flex: 0 0 auto;
+            margin: auto;
+            padding: 0 80px;
+            font-family: 'EB Garamond', serif;
+            font-size: 22px;
+            color: var(--muted);
+        }
+
+        .timeline-view.empty .items-row { display: none; }
+        .timeline-view.empty .empty-state { display: flex; }
+
+        /* MOBILE */
+        @media (max-width: 599px) {
+            :root {
+                --item-spacing: clamp(0px, 1vw, 8px);
+                --image-scale: clamp(0.7, 0.7 + 0.2 * (100vw - 320px) / 280, 0.95);
+                --bar-pad: 16px 20px;
+                --bar-height: 64px;
+            }
+
+            .top-bar {
+                gap: 12px;
+            }
+
+            .brand-link {
+                font-size: 16px;
+            }
+
+            .category-chip {
+                font-size: 12px;
+                padding: 7px 12px;
+            }
+
+            .categories {
+                gap: 6px;
+            }
+
+            .current-date,
+            .follow-link {
+                font-size: 17px;
+            }
+
+            .timeline-view {
+                padding: calc(var(--bar-height) + 16px) 24px calc(var(--bar-height) + 16px) 16px;
+            }
+
+            .placeholder {
+                width: 220px;
+                height: 300px;
+                font-size: 17px;
+            }
+
+            .item-image img,
+            .item-image .placeholder {
+                max-height: 65vh;
+            }
+
+            .timeline-reference-marker::after {
+                width: 7px;
+                height: 7px;
+                top: -3.5px;
+                left: -2.75px;
+            }
+        }
+
+        /* MODAL */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 100vh;
+            height: 100dvh;
+            background: var(--bg);
+            z-index: 2000;
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease-out, visibility 0.15s ease-out;
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
         }
 
-        .year {
-            font-size: 120px;
-            font-weight: 700;
-            color: #000000;
-            user-select: none;
+        .modal.active {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: all;
         }
 
-        @media (max-width: 768px) {
-            .year {
-                font-size: 80px;
+        .modal-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: var(--bar-pad);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid var(--border);
+            background: var(--bg);
+            z-index: 2001;
+            height: var(--bar-height);
+            box-sizing: border-box;
+            padding-bottom: calc(24px + env(safe-area-inset-bottom, 0));
+        }
+
+        .modal-title {
+            font-family: 'EB Garamond', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: #000;
+            margin-right: auto;
+        }
+
+        .modal-nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .modal-nav-button {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            width: 52px;
+            height: 52px;
+            background: transparent;
+            border: none;
+            border-radius: 50%;
+            transition: transform 0.1s ease-out;
+        }
+
+        .modal-nav-button:active {
+            transform: scale(0.95);
+        }
+
+        .modal-nav-button.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .modal-content {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            position: relative;
+            height: calc(100vh - var(--bar-height));
+            height: calc(100dvh - var(--bar-height));
+            padding-bottom: var(--bar-height);
+        }
+
+        .modal-content-inner {
+            opacity: 0;
+            transition: opacity 0.15s ease-out;
+            max-width: 1280px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 48px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal.active .modal-content-inner {
+            opacity: 1;
+        }
+
+        .modal-item {
+            display: flex;
+            flex-direction: row;
+            gap: 48px;
+            padding-top: 32px;
+            align-items: center;
+        }
+
+        .modal-item-image {
+            flex: 0 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            max-width: 50%;
+            position: sticky;
+            top: 32px;
+        }
+
+        .modal-item-image img,
+        .modal-item-image .placeholder {
+            width: auto;
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            display: block;
+        }
+
+        .modal-item-image .placeholder {
+            width: 480px;
+            height: 600px;
+            max-height: 70vh;
+        }
+
+        .modal-item-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            padding-bottom: 64px;
+        }
+
+        .modal-item-title {
+            font-family: 'EB Garamond', serif;
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1.05;
+            color: #000;
+        }
+
+        .modal-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-top: 8px;
+            align-self: flex-start;
+        }
+
+        .btn-primary {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 500 !important;
+            color: #F4E6D7;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            background:
+                linear-gradient(145deg, #52221F 0%, #34151A 50%, #1E0C0F 100%),
+                linear-gradient(90deg, transparent 46%, rgba(74, 31, 31, 0.7) 50%, transparent 54%),
+                linear-gradient(0deg, transparent 47%, rgba(47, 19, 24, 0.6) 50%, transparent 53%),
+                linear-gradient(135deg, transparent 45%, rgba(90, 35, 25, 0.4) 50%, transparent 55%),
+                linear-gradient(67deg, transparent 48%, rgba(30, 12, 8, 0.8) 52%, transparent 56%);
+            background-size: 100% 100%, 2px 2px, 4px 4px, 8px 8px, 16px 16px;
+            padding: 14px 24px;
+            white-space: nowrap;
+            border: 2px solid;
+            border-top-color: rgba(90, 45, 35, 0.9);
+            border-left-color: rgba(90, 45, 35, 0.9);
+            border-right-color: rgba(26, 11, 14, 1);
+            border-bottom-color: rgba(26, 11, 14, 1);
+            box-shadow:
+                inset 0 1px 1px rgba(120, 60, 45, 0.4),
+                inset 0 -1px 2px rgba(26, 11, 14, 0.6),
+                2px 2px 6px 1px rgba(47, 19, 24, 0.4);
+            text-shadow: 1px 1px 3px rgba(26, 11, 14, 0.6);
+            border-radius: 0;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            color: #FFEECC;
+            border-top-color: rgba(120, 60, 45, 1);
+            border-left-color: rgba(120, 60, 45, 1);
+            box-shadow:
+                inset 0 1px 2px rgba(150, 80, 60, 0.5),
+                inset 0 -1px 2px rgba(26, 11, 14, 0.7),
+                2px 2px 8px 2px rgba(47, 19, 24, 0.5);
+        }
+
+        .btn-primary:active {
+            border-top-color: rgba(26, 11, 14, 1);
+            border-left-color: rgba(26, 11, 14, 1);
+            border-right-color: rgba(90, 45, 35, 0.9);
+            border-bottom-color: rgba(90, 45, 35, 0.9);
+            box-shadow:
+                inset 4px 4px 8px rgba(26, 11, 14, 0.9),
+                inset -2px -2px 4px rgba(120, 60, 45, 0.1),
+                0px 0px 1px rgba(47, 19, 24, 0.2);
+        }
+
+        .btn-link {
+            display: inline-flex;
+            align-items: center;
+            font-family: 'EB Garamond', serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: #000;
+            text-decoration: underline;
+            white-space: nowrap;
+        }
+
+        .btn-link:hover {
+            color: #BE5D1D;
+        }
+
+        @media (max-width: 599px) {
+            .modal-nav {
+                padding-top: calc(16px + env(safe-area-inset-top, 0));
+                padding-bottom: 16px;
+                top: 0;
+                bottom: auto;
+                border-top: none;
+                border-bottom: 1px solid var(--border);
+                height: var(--bar-height);
+            }
+
+            .modal-content {
+                margin-top: var(--bar-height);
+                padding-bottom: 24px;
+                height: calc(100dvh - var(--bar-height));
+            }
+
+            .modal-content-inner {
+                padding: 24px;
+            }
+
+            .modal-item {
+                flex-direction: column;
+                gap: 24px;
+                padding-top: 0;
+            }
+
+            .modal-item-image {
+                position: static;
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .modal-item-image .placeholder {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 4 / 5;
+                max-height: 50vh;
+            }
+
+            .modal-item-image img,
+            .modal-item-image .placeholder {
+                max-height: 50vh;
+            }
+
+            .modal-item-title {
+                font-size: 36px;
+            }
+
+            .modal-item-actions {
+                gap: 16px;
+            }
+
+            .btn-link {
+                font-size: 17px;
+            }
+
+            .btn-primary {
+                font-size: 14px;
+                padding: 11px 18px;
+            }
+
+            .modal-title {
+                font-size: 17px;
+            }
+
+            .modal-nav-button {
+                width: 44px;
+                height: 44px;
+            }
+
+            .modal-nav-button svg {
+                width: 24px;
+                height: 24px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="year">2026</div>
+    <div class="page-wrapper">
+        <div class="content-wrapper">
+            <div class="top-bar-wrapper">
+                <div class="top-bar">
+                    <a href="../" class="brand-link"><span class="brand-arrow">←</span> Tools a Cowboy Would Use</a>
+                    <div class="categories" id="categories"></div>
+                </div>
+            </div>
+
+            <div class="timeline-view" id="timeline-view">
+                <div class="items-row" id="items-row"></div>
+                <div class="empty-state">No items in this collection yet.</div>
+            </div>
+
+            <div class="timeline-reference-marker"></div>
+
+            <div class="bottom-bar-wrapper">
+                <div class="bottom-bar">
+                    <div class="current-date" id="current-date">May 2026</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="item-modal">
+        <nav class="modal-nav">
+            <div class="modal-title" id="modal-title"></div>
+            <div class="modal-nav-controls">
+                <button class="modal-nav-button" id="prev-btn" aria-label="Previous item">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 18L9 12L15 6" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button class="modal-nav-button" id="next-btn" aria-label="Next item">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 18L15 12L9 6" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <button class="modal-nav-button" id="close-btn" aria-label="Close">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 6L6 18M6 6L18 18" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+        <div class="modal-content">
+            <div class="modal-content-inner" id="modal-content-inner"></div>
+        </div>
+    </div>
+
+    <script src="store.js"></script>
+    <script>
+        const MONTH_NAMES = [
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        let activeCategory = 'All';
+        let visibleItems = [];
+
+        // ------------- RENDER -------------
+
+        function getAllCollections() {
+            const set = new Set();
+            items.forEach(item => (item.collections || []).forEach(c => set.add(c)));
+            return [...set];
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('categories');
+            const collections = getAllCollections();
+            const categories = ['All', ...collections];
+
+            container.innerHTML = '';
+            categories.forEach(cat => {
+                const chip = document.createElement('button');
+                chip.className = 'category-chip' + (cat === activeCategory ? ' active' : '');
+                chip.textContent = cat;
+                chip.addEventListener('click', () => {
+                    activeCategory = cat;
+                    renderCategories();
+                    renderItems();
+                });
+                container.appendChild(chip);
+            });
+        }
+
+        function renderItems() {
+            const row = document.getElementById('items-row');
+            const view = document.getElementById('timeline-view');
+
+            const filtered = activeCategory === 'All'
+                ? [...items]
+                : items.filter(i => (i.collections || []).includes(activeCategory));
+
+            // Sort newest first (descending year, then month)
+            filtered.sort((a, b) => (b.year - a.year) || (b.month - a.month));
+            visibleItems = filtered;
+
+            row.innerHTML = '';
+            view.classList.toggle('empty', filtered.length === 0);
+
+            filtered.forEach((item, index) => {
+                const el = document.createElement('div');
+                el.className = 'item';
+                el.dataset.itemId = item.id;
+                el.dataset.month = item.month;
+                el.dataset.year = item.year;
+
+                const imgHTML = item.image
+                    ? `<img src="${item.image}" alt="${item.title}" />`
+                    : `<div class="placeholder">${item.title}</div>`;
+
+                el.innerHTML = `<div class="item-image">${imgHTML}</div>`;
+                if (index === filtered.length - 1) el.style.marginRight = '0';
+
+                el.addEventListener('click', () => openModal(item.id));
+                row.appendChild(el);
+            });
+
+            // Reset scroll to start
+            view.scrollLeft = 0;
+            updateCurrentDate();
+            alignTimelineMarker();
+        }
+
+        // ------------- TICKER -------------
+
+        function updateCurrentDate() {
+            const view = document.getElementById('timeline-view');
+            const marker = document.querySelector('.timeline-reference-marker');
+            if (!marker) return;
+
+            const refX = marker.getBoundingClientRect().left;
+            const itemEls = view.querySelectorAll('.item');
+            if (itemEls.length === 0) return;
+
+            let current = null;
+            let minDist = Infinity;
+
+            itemEls.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                const dist = rect.left - refX;
+                // Item that is at or just past the reference line
+                if ((dist <= 0 && dist > -rect.width) || (dist > 0 && dist < 200)) {
+                    if (Math.abs(dist) < minDist) {
+                        minDist = Math.abs(dist);
+                        current = el;
+                    }
+                }
+            });
+
+            // Default to first item if none cross the line yet
+            if (!current) current = itemEls[0];
+
+            const month = parseInt(current.dataset.month, 10);
+            const year = parseInt(current.dataset.year, 10);
+            const label = `${MONTH_NAMES[month - 1]} ${year}`;
+            const dateEl = document.getElementById('current-date');
+            if (dateEl.textContent !== label) {
+                dateEl.textContent = label;
+            }
+        }
+
+        function alignTimelineMarker() {
+            const dateEl = document.getElementById('current-date');
+            const marker = document.querySelector('.timeline-reference-marker');
+            if (!dateEl || !marker) return;
+            const rect = dateEl.getBoundingClientRect();
+            marker.style.left = `${rect.left + rect.width / 2}px`;
+        }
+
+        // ------------- MODAL -------------
+
+        let savedScroll = 0;
+
+        function openModal(itemId) {
+            const idx = visibleItems.findIndex(i => i.id === itemId);
+            if (idx === -1) return;
+            const item = visibleItems[idx];
+
+            const modal = document.getElementById('item-modal');
+            const inner = document.getElementById('modal-content-inner');
+            const title = document.getElementById('modal-title');
+            const prev = document.getElementById('prev-btn');
+            const next = document.getElementById('next-btn');
+
+            savedScroll = document.getElementById('timeline-view').scrollLeft;
+
+            title.textContent = `${MONTH_NAMES[item.month - 1]} ${item.year}`;
+
+            const imgHTML = item.image
+                ? `<img src="${item.image}" alt="${item.title}" />`
+                : `<div class="placeholder">${item.title}</div>`;
+
+            const requestBtnHTML = item.requestable
+                ? `<a href="${REQUEST_URL}" class="btn-primary">Request shirt</a>`
+                : '';
+
+            inner.innerHTML = `
+                <div class="modal-item">
+                    <div class="modal-item-image">${imgHTML}</div>
+                    <div class="modal-item-content">
+                        <h2 class="modal-item-title">${item.title}</h2>
+                        <div class="modal-item-actions">
+                            ${requestBtnHTML}
+                            <a href="${FOLLOW_URL}" target="_blank" class="btn-link">Follow along</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Scroll modal content to top
+            modal.querySelector('.modal-content').scrollTop = 0;
+
+            prev.classList.toggle('disabled', idx === 0);
+            next.classList.toggle('disabled', idx === visibleItems.length - 1);
+            prev.onclick = () => idx > 0 && openModal(visibleItems[idx - 1].id);
+            next.onclick = () => idx < visibleItems.length - 1 && openModal(visibleItems[idx + 1].id);
+
+            document.body.style.overflow = 'hidden';
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('item-modal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+            // Restore horizontal scroll position
+            document.getElementById('timeline-view').scrollLeft = savedScroll;
+        }
+
+        document.getElementById('close-btn').addEventListener('click', closeModal);
+
+        document.addEventListener('keydown', (e) => {
+            const modal = document.getElementById('item-modal');
+            if (!modal.classList.contains('active')) return;
+            if (e.key === 'Escape') closeModal();
+            if (e.key === 'ArrowLeft') document.getElementById('prev-btn').click();
+            if (e.key === 'ArrowRight') document.getElementById('next-btn').click();
+        });
+
+        // ------------- DRAG SCROLL (desktop) -------------
+
+        const view = document.getElementById('timeline-view');
+        let isDown = false, startX = 0, scrollLeftStart = 0;
+
+        view.addEventListener('mousedown', (e) => {
+            isDown = true;
+            view.style.cursor = 'grabbing';
+            startX = e.pageX - view.offsetLeft;
+            scrollLeftStart = view.scrollLeft;
+        });
+        view.addEventListener('mouseleave', () => { isDown = false; view.style.cursor = 'grab'; });
+        view.addEventListener('mouseup', () => { isDown = false; view.style.cursor = 'grab'; });
+        view.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - view.offsetLeft;
+            view.scrollLeft = scrollLeftStart - (x - startX) * 2;
+        });
+
+        view.addEventListener('scroll', () => {
+            requestAnimationFrame(updateCurrentDate);
+        });
+
+        // ------------- INIT -------------
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCategories();
+            renderItems();
+            // Wait for layout to settle, then position the marker
+            setTimeout(() => {
+                alignTimelineMarker();
+                updateCurrentDate();
+            }, 100);
+        });
+
+        window.addEventListener('resize', () => {
+            alignTimelineMarker();
+            updateCurrentDate();
+        });
+    </script>
 </body>
 </html>
