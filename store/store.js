@@ -6,6 +6,8 @@
 //   collections: array of collection names (empty = uncollected). Collections
 //                show up automatically as filter chips at the top of the page.
 //   image:       path to the item image (webp).
+//   requestable: optional. When true, the detail page shows a "Request shirt"
+//                primary button. Omit/false to hide it.
 const items = [
     {
         id: 'dawn-and-dusk',
@@ -13,7 +15,8 @@ const items = [
         month: 1,
         year: 2025,
         collections: ['Legendary Tools'],
-        image: './images/dawn_and_dusk.webp'
+        image: './images/dawn_and_dusk.webp',
+        requestable: true
     },
     {
         id: 'lets-grow',
@@ -21,7 +24,8 @@ const items = [
         month: 5,
         year: 2026,
         collections: [],
-        image: './images/lets_grow.webp'
+        image: './images/lets_grow.webp',
+        requestable: true
     },
     {
         id: 'mail',
@@ -69,7 +73,8 @@ const items = [
         month: 6,
         year: 2025,
         collections: [],
-        image: './images/tacwu.webp'
+        image: './images/tacwu.webp',
+        requestable: true
     }
 ];
 

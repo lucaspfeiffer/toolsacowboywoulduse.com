@@ -729,7 +729,6 @@
             <div class="bottom-bar-wrapper">
                 <div class="bottom-bar">
                     <div class="current-date" id="current-date">May 2026</div>
-                    <a href="https://blog.toolsacowboywoulduse.com" target="_blank" class="follow-link">Follow along</a>
                 </div>
             </div>
         </div>
@@ -906,13 +905,17 @@
                 ? `<img src="${item.image}" alt="${item.title}" />`
                 : `<div class="placeholder">${item.title}</div>`;
 
+            const requestBtnHTML = item.requestable
+                ? `<a href="${REQUEST_URL}" class="btn-primary">Request shirt</a>`
+                : '';
+
             inner.innerHTML = `
                 <div class="modal-item">
                     <div class="modal-item-image">${imgHTML}</div>
                     <div class="modal-item-content">
                         <h2 class="modal-item-title">${item.title}</h2>
                         <div class="modal-item-actions">
-                            <a href="${REQUEST_URL}" target="_blank" class="btn-primary">Request shirt</a>
+                            ${requestBtnHTML}
                             <a href="${FOLLOW_URL}" target="_blank" class="btn-link">Follow along</a>
                         </div>
                     </div>
