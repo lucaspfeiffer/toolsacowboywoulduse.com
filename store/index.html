@@ -80,7 +80,7 @@
 
         .categories {
             display: flex;
-            gap: 8px;
+            gap: 0;
             overflow-x: auto;
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
@@ -92,14 +92,26 @@
 
         .categories::-webkit-scrollbar { display: none; }
 
+        /* Home stands on its own; the filter chips (All, collections...)
+           connect to each other via shared borders. */
+        .nav-home {
+            margin-right: 8px;
+        }
+
+        .category-chip:not(:last-child):not(.nav-home) {
+            border-right: none;
+        }
+
+        .categories::-webkit-scrollbar { display: none; }
+
         .category-chip {
             position: relative;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 15px;
+            font-weight: 500 !important;
             color: #FFEECC;
             text-decoration: none;
             cursor: pointer;
@@ -113,7 +125,7 @@
                 linear-gradient(135deg, transparent 45%, rgba(90, 35, 25, 0.4) 50%, transparent 55%),
                 linear-gradient(67deg, transparent 48%, rgba(30, 12, 8, 0.8) 52%, transparent 56%);
             background-size: 100% 100%, 2px 2px, 4px 4px, 8px 8px, 16px 16px;
-            padding: 8px 16px;
+            padding: 12px 20px;
             border: 2px solid;
             border-top-color: rgba(140, 70, 50, 1);
             border-left-color: rgba(140, 70, 50, 1);
@@ -342,8 +354,8 @@
             }
 
             .category-chip {
-                font-size: 12px;
-                padding: 7px 12px;
+                font-size: 13px;
+                padding: 10px 16px;
             }
 
             .categories {
