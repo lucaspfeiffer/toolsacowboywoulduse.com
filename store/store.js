@@ -5,7 +5,10 @@
 //   year:        4-digit year
 //   collections: array of collection names (empty = uncollected). Collections
 //                show up automatically as filter chips at the top of the page.
-//   image:       path to the item image (webp).
+//   image:       path to the item image (webp) shown in the horizontal scroll.
+//   detailImage: optional. If set, this image is used on the detail modal
+//                instead of `image` — typically a tighter crop that fills
+//                more of the modal. Falls back to `image`.
 //   requestable: optional. When true, the detail page shows a "Request shirt"
 //                primary button. Omit/false to hide it.
 const items = [
@@ -16,6 +19,7 @@ const items = [
         year: 2025,
         collections: ['Legendary Tools'],
         image: './images/dawn_and_dusk.webp',
+        detailImage: './images/dawn_and_dusk2.webp',
         requestable: true
     },
     {
@@ -25,6 +29,7 @@ const items = [
         year: 2026,
         collections: [],
         image: './images/lets_grow.webp',
+        detailImage: './images/lets_grow2.webp',
         requestable: true
     },
     {
@@ -33,7 +38,8 @@ const items = [
         month: 5,
         year: 2026,
         collections: ['Legendary Tools'],
-        image: './images/mail.webp'
+        image: './images/mail.webp',
+        detailImage: './images/mail2.webp'
     },
     {
         id: 'maps',
@@ -41,7 +47,8 @@ const items = [
         month: 5,
         year: 2026,
         collections: ['Legendary Tools'],
-        image: './images/maps.webp'
+        image: './images/maps.webp',
+        detailImage: './images/maps2.webp'
     },
     {
         id: 'notes',
@@ -49,7 +56,8 @@ const items = [
         month: 5,
         year: 2026,
         collections: ['Legendary Tools'],
-        image: './images/notes.webp'
+        image: './images/notes.webp',
+        detailImage: './images/notes2.webp'
     },
     {
         id: 'plane',
@@ -57,7 +65,8 @@ const items = [
         month: 5,
         year: 2026,
         collections: ['Legendary Tools'],
-        image: './images/plane.webp'
+        image: './images/plane.webp',
+        detailImage: './images/plane2.webp'
     },
     {
         id: 'steel',
@@ -65,7 +74,8 @@ const items = [
         month: 5,
         year: 2026,
         collections: ['Legendary Tools'],
-        image: './images/steel.webp'
+        image: './images/steel.webp',
+        detailImage: './images/steel2.webp'
     },
     {
         id: 'tools-a-cowboy-will-use',
@@ -74,6 +84,7 @@ const items = [
         year: 2025,
         collections: [],
         image: './images/tacwu.webp',
+        detailImage: './images/tacwu2.webp',
         requestable: true
     }
 ];

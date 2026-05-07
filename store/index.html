@@ -78,28 +78,6 @@
             box-sizing: border-box;
         }
 
-        .brand-link {
-            font-family: 'EB Garamond', serif;
-            font-size: 20px;
-            font-weight: 600;
-            color: #000;
-            text-decoration: none;
-            white-space: nowrap;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            flex-shrink: 0;
-        }
-
-        .brand-link:hover {
-            text-decoration: underline;
-        }
-
-        .brand-arrow {
-            font-size: 18px;
-            line-height: 1;
-        }
-
         .categories {
             display: flex;
             gap: 8px;
@@ -107,8 +85,9 @@
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
             flex: 1;
-            justify-content: flex-end;
+            justify-content: flex-start;
             min-width: 0;
+            padding-right: 12px;
         }
 
         .categories::-webkit-scrollbar { display: none; }
@@ -125,6 +104,7 @@
             text-decoration: none;
             cursor: pointer;
             white-space: nowrap;
+            flex-shrink: 0;
             transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
             background:
                 linear-gradient(145deg, #6B2D27 0%, #421A1C 50%, #2A1014 100%),
@@ -207,6 +187,7 @@
             align-items: center;
             justify-content: flex-start;
             min-width: min-content;
+            transition: opacity 0.2s ease;
         }
 
         .item {
@@ -491,10 +472,10 @@
         .modal-content-inner {
             opacity: 0;
             transition: opacity 0.15s ease-out;
-            max-width: 1280px;
+            max-width: 1440px;
             width: 100%;
             margin: 0 auto;
-            padding: 48px;
+            padding: 32px 40px;
             display: flex;
             flex-direction: column;
         }
@@ -515,8 +496,8 @@
             flex: 0 0 auto;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
-            max-width: 50%;
+            align-items: center;
+            max-width: 62%;
             position: sticky;
             top: 32px;
         }
@@ -525,7 +506,7 @@
         .modal-item-image .placeholder {
             width: auto;
             max-width: 100%;
-            max-height: 70vh;
+            max-height: 82vh;
             object-fit: contain;
             display: block;
         }
@@ -533,7 +514,7 @@
         .modal-item-image .placeholder {
             width: 480px;
             height: 600px;
-            max-height: 70vh;
+            max-height: 82vh;
         }
 
         .modal-item-content {
@@ -642,6 +623,20 @@
                 height: var(--bar-height);
             }
 
+            .modal-title {
+                font-size: 17px;
+            }
+
+            .modal-nav-button {
+                width: 44px;
+                height: 44px;
+            }
+
+            .modal-nav-button svg {
+                width: 24px;
+                height: 24px;
+            }
+
             .modal-content {
                 margin-top: var(--bar-height);
                 padding-bottom: 24px;
@@ -652,10 +647,28 @@
                 padding: 24px;
             }
 
+            .modal-item-title {
+                font-size: 36px;
+            }
+
+            .btn-link {
+                font-size: 17px;
+            }
+
+            .btn-primary {
+                font-size: 14px;
+                padding: 11px 18px;
+            }
+        }
+
+        /* Modal layout: switch to stacked column whenever side-by-side
+           would squeeze the text column too narrow. */
+        @media (max-width: 899px) {
             .modal-item {
                 flex-direction: column;
                 gap: 24px;
                 padding-top: 0;
+                align-items: center;
             }
 
             .modal-item-image {
@@ -673,38 +686,24 @@
 
             .modal-item-image img,
             .modal-item-image .placeholder {
-                max-height: 50vh;
+                width: 100%;
+                max-width: 100%;
+                height: auto;
+                max-height: 65vh;
             }
 
-            .modal-item-title {
-                font-size: 36px;
+            .modal-item-content {
+                flex: 0 0 auto;
+                padding-bottom: 0;
+                align-items: center;
+                text-align: center;
+                width: 100%;
             }
 
             .modal-item-actions {
                 gap: 16px;
-            }
-
-            .btn-link {
-                font-size: 17px;
-            }
-
-            .btn-primary {
-                font-size: 14px;
-                padding: 11px 18px;
-            }
-
-            .modal-title {
-                font-size: 17px;
-            }
-
-            .modal-nav-button {
-                width: 44px;
-                height: 44px;
-            }
-
-            .modal-nav-button svg {
-                width: 24px;
-                height: 24px;
+                justify-content: center;
+                align-self: center;
             }
         }
     </style>
@@ -714,7 +713,6 @@
         <div class="content-wrapper">
             <div class="top-bar-wrapper">
                 <div class="top-bar">
-                    <a href="../" class="brand-link"><span class="brand-arrow">←</span> Tools a Cowboy Would Use</a>
                     <div class="categories" id="categories"></div>
                 </div>
             </div>
@@ -760,7 +758,7 @@
         </div>
     </div>
 
-    <script src="store.js"></script>
+    <script src="store.js?v=2"></script>
     <script>
         const MONTH_NAMES = [
             'January', 'February', 'March', 'April', 'May', 'June',
@@ -784,6 +782,15 @@
             const categories = ['All', ...collections];
 
             container.innerHTML = '';
+
+            // Home link — leaves the store and returns to the main site.
+            // Always raised; never has an active state.
+            const home = document.createElement('a');
+            home.href = '../';
+            home.className = 'category-chip nav-home';
+            home.textContent = 'Home';
+            container.appendChild(home);
+
             categories.forEach(cat => {
                 const chip = document.createElement('button');
                 chip.className = 'category-chip' + (cat === activeCategory ? ' active' : '');
@@ -801,39 +808,55 @@
             const row = document.getElementById('items-row');
             const view = document.getElementById('timeline-view');
 
-            const filtered = activeCategory === 'All'
-                ? [...items]
-                : items.filter(i => (i.collections || []).includes(activeCategory));
+            const build = () => {
+                const filtered = activeCategory === 'All'
+                    ? [...items]
+                    : items.filter(i => (i.collections || []).includes(activeCategory));
 
-            // Sort newest first (descending year, then month)
-            filtered.sort((a, b) => (b.year - a.year) || (b.month - a.month));
-            visibleItems = filtered;
+                // Sort newest first (descending year, then month)
+                filtered.sort((a, b) => (b.year - a.year) || (b.month - a.month));
+                visibleItems = filtered;
 
-            row.innerHTML = '';
-            view.classList.toggle('empty', filtered.length === 0);
+                row.innerHTML = '';
+                view.classList.toggle('empty', filtered.length === 0);
 
-            filtered.forEach((item, index) => {
-                const el = document.createElement('div');
-                el.className = 'item';
-                el.dataset.itemId = item.id;
-                el.dataset.month = item.month;
-                el.dataset.year = item.year;
+                filtered.forEach((item, index) => {
+                    const el = document.createElement('div');
+                    el.className = 'item';
+                    el.dataset.itemId = item.id;
+                    el.dataset.month = item.month;
+                    el.dataset.year = item.year;
 
-                const imgHTML = item.image
-                    ? `<img src="${item.image}" alt="${item.title}" />`
-                    : `<div class="placeholder">${item.title}</div>`;
+                    const imgHTML = item.image
+                        ? `<img src="${item.image}" alt="${item.title}" />`
+                        : `<div class="placeholder">${item.title}</div>`;
 
-                el.innerHTML = `<div class="item-image">${imgHTML}</div>`;
-                if (index === filtered.length - 1) el.style.marginRight = '0';
+                    el.innerHTML = `<div class="item-image">${imgHTML}</div>`;
+                    if (index === filtered.length - 1) el.style.marginRight = '0';
 
-                el.addEventListener('click', () => openModal(item.id));
-                row.appendChild(el);
-            });
+                    el.addEventListener('click', () => openModal(item.id));
+                    row.appendChild(el);
+                });
 
-            // Reset scroll to start
-            view.scrollLeft = 0;
-            updateCurrentDate();
-            alignTimelineMarker();
+                view.scrollLeft = 0;
+                updateCurrentDate();
+                alignTimelineMarker();
+            };
+
+            // Fade out, swap, fade in. Skip the fade on initial render
+            // (when the row is still empty).
+            if (row.children.length === 0) {
+                build();
+                return;
+            }
+
+            row.style.opacity = '0';
+            setTimeout(() => {
+                build();
+                requestAnimationFrame(() => {
+                    row.style.opacity = '1';
+                });
+            }, 200);
         }
 
         // ------------- TICKER -------------
@@ -901,8 +924,9 @@
 
             title.textContent = `${MONTH_NAMES[item.month - 1]} ${item.year}`;
 
-            const imgHTML = item.image
-                ? `<img src="${item.image}" alt="${item.title}" />`
+            const detailSrc = item.detailImage || item.image;
+            const imgHTML = detailSrc
+                ? `<img src="${detailSrc}" alt="${item.title}" />`
                 : `<div class="placeholder">${item.title}</div>`;
 
             const requestBtnHTML = item.requestable
