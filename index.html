@@ -579,7 +579,10 @@
             width: 100%;
             height: 100vh;
             height: 100dvh;
-            padding: var(--bar-height) 32px var(--bar-height) 80px;
+            /* Right padding is computed in JS (adjustEndPadding) so the
+               last item lands at the ticker marker on any viewport. The
+               40px here is just a fallback before JS runs. */
+            padding: var(--bar-height) 40px var(--bar-height) 80px;
             scrollbar-width: none;
             overscroll-behavior-x: contain;
             cursor: grab;
@@ -597,6 +600,38 @@
             justify-content: flex-start;
             min-width: min-content;
             transition: opacity 0.2s ease;
+        }
+
+        /* Editorial preamble shown as the first "slide" in the horizontal
+           scroll. Reads as an intro before the user encounters the items. */
+        .store-hero {
+            flex: 0 0 auto;
+            max-width: 640px;
+            min-width: 420px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            padding: 0 60px 0 0;
+            margin-right: 80px;
+        }
+
+        .store-hero-title {
+            font-family: 'EB Garamond', serif;
+            font-size: 64px;
+            font-weight: 700;
+            line-height: 1.05;
+            color: var(--theme-text);
+            margin: 0;
+        }
+
+        .store-hero-description {
+            font-family: 'EB Garamond', serif;
+            font-size: 20px;
+            font-weight: 500;
+            line-height: 1.5;
+            color: var(--theme-muted);
+            margin: 0;
+            max-width: 540px;
         }
 
         .item {
@@ -854,13 +889,13 @@
         }
 
         .modal-item-description {
-            font-family: 'EB Garamond', serif;
-            font-size: 22px;
-            font-weight: 500;
-            line-height: 1.35;
+            font-family: 'Inter', sans-serif;
+            font-size: 26px;
+            font-weight: 400;
+            line-height: 1.45;
             color: var(--theme-muted);
-            margin-top: -8px;
-            max-width: 480px;
+            margin: 0;
+            max-width: 540px;
         }
 
         .modal-item-actions {
@@ -1027,10 +1062,21 @@
             .current-date { font-size: 17px; }
 
             .timeline-view {
-                padding: calc(var(--bar-height) + 16px) 24px calc(var(--bar-height) + 16px) 16px;
+                padding: calc(var(--bar-height) + 16px) 16px calc(var(--bar-height) + 16px) 16px;
             }
 
             .placeholder { width: 220px; height: 300px; font-size: 17px; }
+
+            .store-hero {
+                max-width: 280px;
+                min-width: 260px;
+                padding: 0 32px 0 0;
+                margin-right: 32px;
+                gap: 16px;
+            }
+
+            .store-hero-title { font-size: 36px; }
+            .store-hero-description { font-size: 15px; }
 
             .item-image img,
             .item-image .placeholder { max-height: 65vh; }
@@ -1064,7 +1110,7 @@
 
             .modal-content-inner { padding: 24px; }
             .modal-item-title { font-size: 36px; }
-            .modal-item-description { font-size: 17px; margin-top: -4px; }
+            .modal-item-description { font-size: 18px; }
 
             .btn-primary { font-size: 14px; padding: 11px 18px; }
         }
@@ -1184,12 +1230,19 @@
     <!-- ============================ STORE VIEW ============================ -->
     <div class="store-view">
         <div class="timeline-view" id="timeline-view">
-            <div class="items-row" id="items-row"></div>
+            <div class="items-row" id="items-row">
+                <section class="store-hero">
+                    <h2 class="store-hero-title">2026 Summer Collection</h2>
+                    <p class="store-hero-description">
+                        this summer, tools a cowboy would use is elevating their first tool, dawn and dusk, into a category of other legendary consumer tools. the collection is a set of t-shirts with completley hand-done embroidery and created with an unreasonable amount of detail. stamped with a tools a cowboy would use patch.
+                    </p>
+                </section>
+            </div>
         </div>
         <div class="timeline-reference-marker"></div>
         <div class="bottom-bar-wrapper">
             <div class="bottom-bar">
-                <div class="current-date" id="current-date">May 2026</div>
+                <div class="current-date" id="current-ticker"></div>
             </div>
         </div>
     </div>
@@ -1221,7 +1274,7 @@
         </div>
     </div>
 
-    <script src="store/store.js"></script>
+    <script src="store/store.js?v=6"></script>
     <script>
         // ─────────────────────────────────────────────────────────────
         // VIEW SWITCHING (Home ⇄ Store, no page reload)
@@ -1264,7 +1317,7 @@
                 // tick before measuring for the ticker.
                 requestAnimationFrame(() => {
                     alignTimelineMarker();
-                    updateCurrentDate();
+                    updateCurrentTicker();
                 });
             }
         }
@@ -1395,17 +1448,20 @@
 
         function renderItems() {
             const row = document.getElementById('items-row');
+            // Manual ordering via `ordinal`. Items without one sink to the end.
             const sorted = [...items].sort((a, b) =>
-                (b.year - a.year) || (b.month - a.month));
+                (a.ordinal ?? Infinity) - (b.ordinal ?? Infinity));
             visibleItems = sorted;
 
-            row.innerHTML = '';
+            // Only remove previously-rendered items — leave the static
+            // hero (and anything else non-item) in place.
+            row.querySelectorAll('.item').forEach(el => el.remove());
+
             sorted.forEach((item, i) => {
                 const el = document.createElement('div');
                 el.className = 'item';
                 el.dataset.itemId = item.id;
-                el.dataset.month = item.month;
-                el.dataset.year = item.year;
+                el.dataset.title = item.title;
                 const inner = item.image
                     ? `<img src="${item.image}" alt="${item.title}" />`
                     : `<div class="placeholder">${item.title}</div>`;
@@ -1416,40 +1472,76 @@
             });
         }
 
-        function updateCurrentDate() {
+        function updateCurrentTicker() {
             const marker = document.querySelector('.timeline-reference-marker');
-            const dateEl = document.getElementById('current-date');
-            if (!marker || !dateEl) return;
+            const tickerEl = document.getElementById('current-ticker');
+            if (!marker || !tickerEl) return;
 
             const itemEls = document.querySelectorAll('.item');
             if (itemEls.length === 0) return;
 
-            const refX = marker.getBoundingClientRect().left;
-            let current = null, minDist = Infinity;
-
+            // Walk items in DOM order; the last one whose left edge has
+            // reached the marker is the "current" one. Defaults to the
+            // first item while still scrolled before any have passed, and
+            // sticks on the last item once you've scrolled past all of them.
+            const threshold = marker.getBoundingClientRect().left + 60;
+            let current = itemEls[0];
             itemEls.forEach(el => {
-                const rect = el.getBoundingClientRect();
-                const dist = rect.left - refX;
-                // The item at/just past the reference line.
-                if ((dist <= 0 && dist > -rect.width) || (dist > 0 && dist < 200)) {
-                    if (Math.abs(dist) < minDist) {
-                        minDist = Math.abs(dist);
-                        current = el;
-                    }
-                }
+                if (el.getBoundingClientRect().left <= threshold) current = el;
             });
-            if (!current) current = itemEls[0];
 
-            const label = `${MONTH_NAMES[+current.dataset.month - 1]} ${current.dataset.year}`;
-            if (dateEl.textContent !== label) dateEl.textContent = label;
+            const label = current.dataset.title;
+            if (tickerEl.textContent !== label) {
+                tickerEl.textContent = label;
+                alignTimelineMarker();
+            }
         }
 
         function alignTimelineMarker() {
-            const dateEl = document.getElementById('current-date');
+            const tickerEl = document.getElementById('current-ticker');
             const marker = document.querySelector('.timeline-reference-marker');
-            if (!dateEl || !marker) return;
-            const rect = dateEl.getBoundingClientRect();
+            if (!tickerEl || !marker) return;
+            const rect = tickerEl.getBoundingClientRect();
             marker.style.left = `${rect.left + rect.width / 2}px`;
+        }
+
+        // Set the timeline-view's right padding so the last item can scroll
+        // exactly to the ticker marker on any viewport. We measure the
+        // marker's worst-case position (when the longest item title is in
+        // the ticker, since that pushes the marker furthest right) so the
+        // padding is correct regardless of viewport or item sizing.
+        function adjustEndPadding() {
+            const view = document.getElementById('timeline-view');
+            const tickerEl = document.getElementById('current-ticker');
+            const items = view.querySelectorAll('.item');
+            if (!tickerEl || items.length === 0) return;
+
+            const lastItem = items[items.length - 1];
+            const viewportWidth = view.clientWidth;
+            const lastWidth = lastItem.getBoundingClientRect().width;
+
+            // Find the longest title — that's where the marker sits furthest
+            // right, since the marker is centered on the ticker text.
+            let longest = '';
+            items.forEach(el => {
+                const t = el.dataset.title || '';
+                if (t.length > longest.length) longest = t;
+            });
+
+            // Temp-swap the ticker text to measure that worst-case marker x.
+            const saved = tickerEl.textContent;
+            tickerEl.textContent = longest;
+            const r = tickerEl.getBoundingClientRect();
+            const markerX = r.left + r.width / 2;
+            tickerEl.textContent = saved;
+
+            // Geometry: at max scroll, last_item.left = viewport - pR - lastW.
+            // Want that to equal markerX (+ small overshoot to clear threshold).
+            const paddingRight = Math.max(
+                40,
+                viewportWidth - markerX - lastWidth + 40
+            );
+            view.style.paddingRight = `${paddingRight}px`;
         }
 
         function openModal(itemId) {
@@ -1464,7 +1556,7 @@
             const next = document.getElementById('next-btn');
 
             savedScroll = document.getElementById('timeline-view').scrollLeft;
-            title.textContent = `${MONTH_NAMES[item.month - 1]} ${item.year}`;
+            title.textContent = item.title;
 
             const detailSrc = item.detailImage || item.image;
             const imgHTML = detailSrc
@@ -1481,7 +1573,6 @@
                 <div class="modal-item">
                     <div class="modal-item-image">${imgHTML}</div>
                     <div class="modal-item-content">
-                        <h2 class="modal-item-title">${item.title}</h2>
                         ${descHTML}
                         <div class="modal-item-actions">${requestBtn}</div>
                     </div>
@@ -1536,7 +1627,7 @@
             });
 
             view.addEventListener('scroll', () => {
-                requestAnimationFrame(updateCurrentDate);
+                requestAnimationFrame(updateCurrentTicker);
             });
         })();
 
@@ -1552,13 +1643,15 @@
 
             setTimeout(() => {
                 alignTimelineMarker();
-                updateCurrentDate();
+                adjustEndPadding();
+                updateCurrentTicker();
             }, 100);
         });
 
         window.addEventListener('resize', () => {
             alignTimelineMarker();
-            updateCurrentDate();
+            adjustEndPadding();
+            updateCurrentTicker();
         });
     </script>
 </body>

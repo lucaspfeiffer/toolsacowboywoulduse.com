@@ -2,21 +2,22 @@
 //   id:          unique slug
 //   title:       display name
 //   description: one-line copy shown on the detail page under the title
-//   month:       1-12  (drives the bottom ticker; items also sort newest-first by date)
-//   year:        4-digit year
-//   collections: array of collection names (empty = uncollected). Collections
-//                show up automatically as filter chips at the top of the page.
-//   image:       path to the item image (webp) shown in the horizontal scroll.
-//   detailImage: optional. If set, this image is used on the detail modal
-//                instead of `image` — typically a tighter crop that fills
-//                more of the modal. Falls back to `image`.
-//   requestable: optional. When true, the detail page shows a "Request shirt"
-//                primary button. Omit/false to hide it.
+//   ordinal:     manual display order in the horizontal scroll (lower
+//                = earlier). Items without an ordinal render last.
+//   month:       1-12  (drives the bottom ticker only; not sort order)
+//   year:        4-digit year (ticker only)
+//   collections: array of collection names (empty = uncollected)
+//   image:       path to the scroll image (webp)
+//   detailImage: optional tighter crop used on the detail modal; falls
+//                back to `image` when omitted
+//   requestable: when true, the detail page shows the "Request shirt"
+//                primary button
 const items = [
     {
         id: 'dawn-and-dusk',
         title: 'Dawn and Dusk',
         description: 'For sunrise watchers and sunset chasers.',
+        ordinal: 1,
         month: 1,
         year: 2025,
         collections: ['Legendary Tools'],
@@ -28,6 +29,7 @@ const items = [
         id: 'lets-grow',
         title: "Let's Grow",
         description: 'A garden, an idea, a habit — pick one and start.',
+        ordinal: 2,
         month: 5,
         year: 2026,
         collections: [],
@@ -39,6 +41,7 @@ const items = [
         id: 'mail',
         title: 'Mail',
         description: 'For messages worth waiting for.',
+        ordinal: 3,
         month: 5,
         year: 2026,
         collections: ['Legendary Tools'],
@@ -49,6 +52,7 @@ const items = [
         id: 'maps',
         title: 'Maps',
         description: 'Find your way, or lose it on purpose.',
+        ordinal: 4,
         month: 5,
         year: 2026,
         collections: ['Legendary Tools'],
@@ -59,6 +63,7 @@ const items = [
         id: 'notes',
         title: 'Notes',
         description: 'For the thoughts you don’t want to forget.',
+        ordinal: 5,
         month: 5,
         year: 2026,
         collections: ['Legendary Tools'],
@@ -69,6 +74,7 @@ const items = [
         id: 'plane',
         title: 'Plane',
         description: 'Window seat preferred.',
+        ordinal: 6,
         month: 5,
         year: 2026,
         collections: ['Legendary Tools'],
@@ -79,6 +85,7 @@ const items = [
         id: 'steel',
         title: 'Steel',
         description: 'Made the old way, made to last.',
+        ordinal: 7,
         month: 5,
         year: 2026,
         collections: ['Legendary Tools'],
@@ -89,6 +96,7 @@ const items = [
         id: 'tools-a-cowboy-will-use',
         title: 'Tools a Cowboy Will Use',
         description: 'The first shirt — a reminder of the spirit behind the work.',
+        ordinal: 8,
         month: 6,
         year: 2025,
         collections: [],
