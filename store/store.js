@@ -12,11 +12,13 @@
 //                back to `image` when omitted
 //   requestable: when true, the detail page shows the "Request shirt"
 //                primary button
+//   hidden:      when true, the item is excluded from the store view
+//                (kept in the file so it's easy to bring back later)
 const items = [
     {
         id: 'dawn-and-dusk',
         title: 'Dawn and Dusk',
-        description: 'For sunrise watchers and sunset chasers.',
+        description: 'The first product from Tools a Cowboy Would Used, designed to help us experience more sunrises and sunsets. Launched in 2025, people love using Dawn and Dusk each day around the world.',
         ordinal: 1,
         month: 1,
         year: 2025,
@@ -28,7 +30,7 @@ const items = [
     {
         id: 'lets-grow',
         title: "Let's Grow",
-        description: 'A garden, an idea, a habit — pick one and start.',
+        description: "Inspired by 'GT' Greg Taylor. Get better every day.",
         ordinal: 2,
         month: 5,
         year: 2026,
@@ -40,7 +42,7 @@ const items = [
     {
         id: 'mail',
         title: 'Mail',
-        description: 'For messages worth waiting for.',
+        description: 'Email — a legendary technology built on the SMTP protocol. This tool is an inspiration for Tools a Cowboy Would Use. Artwork inspired by Apple Mail.',
         ordinal: 3,
         month: 5,
         year: 2026,
@@ -51,7 +53,7 @@ const items = [
     {
         id: 'maps',
         title: 'Maps',
-        description: 'Find your way, or lose it on purpose.',
+        description: 'Maps are one of the most foundational tools of mankind. Artwork inspired by Apple Maps.',
         ordinal: 4,
         month: 5,
         year: 2026,
@@ -62,7 +64,7 @@ const items = [
     {
         id: 'notes',
         title: 'Notes',
-        description: 'For the thoughts you don’t want to forget.',
+        description: 'So simple, yet so much depth. The closest thing we have to human .md files. Artwork inspired by Apple Notes.',
         ordinal: 5,
         month: 5,
         year: 2026,
@@ -73,7 +75,7 @@ const items = [
     {
         id: 'plane',
         title: 'Plane',
-        description: 'Window seat preferred.',
+        description: 'One of the most revolutionary milestones for mankind. A celebration of how air travel has changed the world, and those who pioneered it. Shout out to the Wright Brothers.',
         ordinal: 6,
         month: 5,
         year: 2026,
@@ -84,7 +86,7 @@ const items = [
     {
         id: 'steel',
         title: 'Steel',
-        description: 'Made the old way, made to last.',
+        description: "The same material that industrialized the world, is used for the rockets that'll make it to the Moon and Mars. A material worth celebrating. Artwork inspired by the RuneScape steel bar.",
         ordinal: 7,
         month: 5,
         year: 2026,
@@ -102,7 +104,8 @@ const items = [
         collections: [],
         image: './store/images/tacwu.webp',
         detailImage: './store/images/tacwu2.webp',
-        requestable: true
+        requestable: true,
+        hidden: true
     }
 ];
 

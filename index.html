@@ -1450,7 +1450,7 @@
         </div>
     </div>
 
-    <script src="store/store.js?v=6"></script>
+    <script src="store/store.js?v=7"></script>
     <script>
         // ─────────────────────────────────────────────────────────────
         // VIEW SWITCHING (Home ⇄ Store, no page reload)
@@ -1624,9 +1624,11 @@
 
         function renderItems() {
             const row = document.getElementById('items-row');
-            // Manual ordering via `ordinal`. Items without one sink to the end.
-            const sorted = [...items].sort((a, b) =>
-                (a.ordinal ?? Infinity) - (b.ordinal ?? Infinity));
+            // Manual ordering via `ordinal`. Items without one sink to the
+            // end. Hidden items are skipped entirely.
+            const sorted = items
+                .filter(i => !i.hidden)
+                .sort((a, b) => (a.ordinal ?? Infinity) - (b.ordinal ?? Infinity));
             visibleItems = sorted;
 
             // Only remove previously-rendered items — leave the static
