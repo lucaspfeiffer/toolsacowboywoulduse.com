@@ -20,8 +20,8 @@ const items = [
         month: 1,
         year: 2025,
         collections: ['Legendary Tools'],
-        image: './images/dawn_and_dusk.webp',
-        detailImage: './images/dawn_and_dusk2.webp',
+        image: './store/images/dawn_and_dusk.webp',
+        detailImage: './store/images/dawn_and_dusk2.webp',
         requestable: true
     },
     {
@@ -31,8 +31,8 @@ const items = [
         month: 5,
         year: 2026,
         collections: [],
-        image: './images/lets_grow.webp',
-        detailImage: './images/lets_grow2.webp',
+        image: './store/images/lets_grow.webp',
+        detailImage: './store/images/lets_grow2.webp',
         requestable: true
     },
     {
@@ -42,8 +42,8 @@ const items = [
         month: 5,
         year: 2026,
         collections: ['Legendary Tools'],
-        image: './images/mail.webp',
-        detailImage: './images/mail2.webp'
+        image: './store/images/mail.webp',
+        detailImage: './store/images/mail2.webp'
     },
     {
         id: 'maps',
@@ -52,8 +52,8 @@ const items = [
         month: 5,
         year: 2026,
         collections: ['Legendary Tools'],
-        image: './images/maps.webp',
-        detailImage: './images/maps2.webp'
+        image: './store/images/maps.webp',
+        detailImage: './store/images/maps2.webp'
     },
     {
         id: 'notes',
@@ -62,8 +62,8 @@ const items = [
         month: 5,
         year: 2026,
         collections: ['Legendary Tools'],
-        image: './images/notes.webp',
-        detailImage: './images/notes2.webp'
+        image: './store/images/notes.webp',
+        detailImage: './store/images/notes2.webp'
     },
     {
         id: 'plane',
@@ -72,8 +72,8 @@ const items = [
         month: 5,
         year: 2026,
         collections: ['Legendary Tools'],
-        image: './images/plane.webp',
-        detailImage: './images/plane2.webp'
+        image: './store/images/plane.webp',
+        detailImage: './store/images/plane2.webp'
     },
     {
         id: 'steel',
@@ -82,8 +82,8 @@ const items = [
         month: 5,
         year: 2026,
         collections: ['Legendary Tools'],
-        image: './images/steel.webp',
-        detailImage: './images/steel2.webp'
+        image: './store/images/steel.webp',
+        detailImage: './store/images/steel2.webp'
     },
     {
         id: 'tools-a-cowboy-will-use',
@@ -92,8 +92,8 @@ const items = [
         month: 6,
         year: 2025,
         collections: [],
-        image: './images/tacwu.webp',
-        detailImage: './images/tacwu2.webp',
+        image: './store/images/tacwu.webp',
+        detailImage: './store/images/tacwu2.webp',
         requestable: true
     }
 ];
