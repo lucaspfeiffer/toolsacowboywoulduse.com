@@ -248,9 +248,13 @@
                 0px 0px 1px rgba(47, 19, 24, 0.2);
         }
 
-        /* "You are here" pressed state — used on the active view link. */
+        /* "You are here" pressed state — used on the active view link
+           in the top nav, and on the gallery toggle when gallery view
+           is on. */
         .nav-btn.active,
-        .nav-btn.active:hover {
+        .nav-btn.active:hover,
+        .nav-icon-btn.active,
+        .nav-icon-btn.active:hover {
             cursor: default;
             color: #F4E6D7;
             border-top-color: rgba(10, 4, 5, 1);
@@ -271,6 +275,15 @@
                 0px 0px 1px rgba(0, 0, 0, 0.4);
             text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.9);
         }
+
+        /* Bottom-bar gallery toggle: always anchored to the right edge,
+           regardless of whether the ticker is visible. The gallery icon
+           swap is handled in CSS so it can be themed via currentColor. */
+        .js-gallery-toggle {
+            margin-left: auto;
+        }
+
+        .gallery-icon { display: block; }
 
         .nav-icon-btn {
             position: relative;
@@ -625,10 +638,10 @@
         }
 
         .store-hero-description {
-            font-family: 'EB Garamond', serif;
-            font-size: 20px;
-            font-weight: 500;
-            line-height: 1.5;
+            font-family: 'Inter', sans-serif;
+            font-size: 17px;
+            font-weight: 400;
+            line-height: 1.55;
             color: var(--theme-muted);
             margin: 0;
             max-width: 540px;
@@ -736,6 +749,122 @@
             border-radius: 50%;
             top: -5px;
             left: -4px;
+        }
+
+        /* ─────────────────────────────────────────────────────────────
+           GALLERY MODE
+           Toggled via the gallery icon in the bottom bar. Items become a
+           4×2 grid (2×4 on smaller viewports) that fits between the nav
+           and the bottom bar. Hero, ticker, marker, and bar border are
+           all hidden while in gallery mode.
+           ───────────────────────────────────────────────────────────── */
+        .store-view.gallery-mode .timeline-view {
+            display: flex;
+            overflow: hidden auto;
+            cursor: default;
+            padding: calc(var(--bar-height) + 32px) 48px;
+        }
+
+        .store-view.gallery-mode .items-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, minmax(140px, 1fr));
+            gap: 32px;
+            flex: 1;
+            min-width: 0;
+            align-items: stretch;
+            justify-items: stretch;
+        }
+
+        .store-view.gallery-mode .store-hero { display: none; }
+
+        .store-view.gallery-mode .item {
+            margin: 0;
+            min-width: 0;
+            min-height: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Stagger fade-in when entering gallery mode. */
+            animation: galleryItemIn 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+            animation-delay: var(--gallery-delay, 0ms);
+        }
+
+        .store-view.gallery-mode .item-image {
+            transform: none;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .store-view.gallery-mode .item-image img,
+        .store-view.gallery-mode .item-image .placeholder {
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
+        }
+
+        @media (hover: hover) {
+            .store-view.gallery-mode .item-image img:hover,
+            .store-view.gallery-mode .item-image .placeholder:hover {
+                transform: scale(1.06);
+            }
+        }
+
+        @keyframes galleryItemIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .store-view.gallery-mode #current-ticker,
+        .store-view.gallery-mode .timeline-reference-marker { display: none; }
+
+        .store-view.gallery-mode .bottom-bar-wrapper { border-top: none; }
+
+        /* When the top nav stacks (≤768px), the gallery becomes a single
+           vertically-scrollable column. Items render at their natural
+           shirt aspect and the user just scrolls through them. */
+        @media (max-width: 768px) {
+            .store-view.gallery-mode .timeline-view {
+                display: block;
+                padding: 200px 24px calc(var(--bar-height) + 32px);
+            }
+
+            .store-view.gallery-mode .items-row {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 40px;
+            }
+
+            .store-view.gallery-mode .item {
+                width: 100%;
+                max-width: 420px;
+                height: auto;
+                min-height: 0;
+                flex: 0 0 auto;
+            }
+
+            .store-view.gallery-mode .item-image {
+                width: 100%;
+                height: auto;
+            }
+
+            .store-view.gallery-mode .item-image img,
+            .store-view.gallery-mode .item-image .placeholder {
+                width: 100%;
+                max-width: 100%;
+                height: auto;
+                max-height: none;
+            }
         }
 
         /* ─────────────────────────────────────────────────────────────
@@ -997,8 +1126,10 @@
             }
 
             /* Each top-row button takes an equal share, but won't shrink
-               below ~80px — if four don't fit, they wrap to a second row. */
-            .nav-btn {
+               below ~80px — if four don't fit, they wrap to a second row.
+               Scoped to nav-row-top so other .nav-btns (e.g. the gallery
+               toggle in the bottom bar) don't get stretched. */
+            .nav-row-top .nav-btn {
                 font-size: 15px;
                 font-weight: 600;
                 padding: 14px 20px;
@@ -1006,7 +1137,7 @@
                 text-align: center;
             }
 
-            .nav-icon-btn {
+            .nav-row-top .nav-icon-btn {
                 padding: 14px 16px;
                 flex: 1 1 60px;
                 display: flex;
@@ -1243,6 +1374,19 @@
         <div class="bottom-bar-wrapper">
             <div class="bottom-bar">
                 <div class="current-date" id="current-ticker"></div>
+                <button type="button" class="nav-icon-btn js-gallery-toggle" id="gallery-toggle" aria-label="Toggle gallery view">
+                    <svg class="gallery-icon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                        <rect x="4" y="4" width="4" height="4"/>
+                        <rect x="10" y="4" width="4" height="4"/>
+                        <rect x="16" y="4" width="4" height="4"/>
+                        <rect x="4" y="10" width="4" height="4"/>
+                        <rect x="10" y="10" width="4" height="4"/>
+                        <rect x="16" y="10" width="4" height="4"/>
+                        <rect x="4" y="16" width="4" height="4"/>
+                        <rect x="10" y="16" width="4" height="4"/>
+                        <rect x="16" y="16" width="4" height="4"/>
+                    </svg>
+                </button>
             </div>
         </div>
     </div>
@@ -1462,6 +1606,8 @@
                 el.className = 'item';
                 el.dataset.itemId = item.id;
                 el.dataset.title = item.title;
+                // Stagger delay for the gallery-mode fade-in.
+                el.style.setProperty('--gallery-delay', `${i * 40}ms`);
                 const inner = item.image
                     ? `<img src="${item.image}" alt="${item.title}" />`
                     : `<div class="placeholder">${item.title}</div>`;
@@ -1509,8 +1655,15 @@
         // exactly to the ticker marker on any viewport. We measure the
         // marker's worst-case position (when the longest item title is in
         // the ticker, since that pushes the marker furthest right) so the
-        // padding is correct regardless of viewport or item sizing.
+        // padding is correct regardless of viewport or item sizing. When
+        // the ticker is hidden (mobile), we fall back to a simple landing
+        // position ~20% from the left edge.
         function adjustEndPadding() {
+            const storeView = document.querySelector('.store-view');
+            // Gallery mode controls its own padding via CSS — skip here so
+            // the inline override doesn't fight it.
+            if (storeView?.classList.contains('gallery-mode')) return;
+
             const view = document.getElementById('timeline-view');
             const tickerEl = document.getElementById('current-ticker');
             const items = view.querySelectorAll('.item');
@@ -1520,26 +1673,30 @@
             const viewportWidth = view.clientWidth;
             const lastWidth = lastItem.getBoundingClientRect().width;
 
-            // Find the longest title — that's where the marker sits furthest
-            // right, since the marker is centered on the ticker text.
-            let longest = '';
-            items.forEach(el => {
-                const t = el.dataset.title || '';
-                if (t.length > longest.length) longest = t;
-            });
-
-            // Temp-swap the ticker text to measure that worst-case marker x.
-            const saved = tickerEl.textContent;
-            tickerEl.textContent = longest;
-            const r = tickerEl.getBoundingClientRect();
-            const markerX = r.left + r.width / 2;
-            tickerEl.textContent = saved;
+            let targetX;
+            if (getComputedStyle(tickerEl).display === 'none') {
+                targetX = viewportWidth * 0.20;
+            } else {
+                // Find the longest title — that's where the marker sits
+                // furthest right, since the marker is centered on the
+                // ticker text. Pad for that worst case.
+                let longest = '';
+                items.forEach(el => {
+                    const t = el.dataset.title || '';
+                    if (t.length > longest.length) longest = t;
+                });
+                const saved = tickerEl.textContent;
+                tickerEl.textContent = longest;
+                const r = tickerEl.getBoundingClientRect();
+                targetX = r.left + r.width / 2;
+                tickerEl.textContent = saved;
+            }
 
             // Geometry: at max scroll, last_item.left = viewport - pR - lastW.
-            // Want that to equal markerX (+ small overshoot to clear threshold).
+            // Want that to equal targetX (+ small overshoot to clear threshold).
             const paddingRight = Math.max(
                 40,
-                viewportWidth - markerX - lastWidth + 40
+                viewportWidth - targetX - lastWidth + 40
             );
             view.style.paddingRight = `${paddingRight}px`;
         }
@@ -1630,6 +1787,36 @@
                 requestAnimationFrame(updateCurrentTicker);
             });
         })();
+
+        // Gallery toggle — switches the store view between horizontal scroll
+        // and an all-items-on-one-screen grid.
+        document.getElementById('gallery-toggle').addEventListener('click', () => {
+            const storeView = document.querySelector('.store-view');
+            const timelineView = document.getElementById('timeline-view');
+            const on = storeView.classList.toggle('gallery-mode');
+            document.getElementById('gallery-toggle').classList.toggle('active', on);
+            if (on) {
+                // Drop the inline paddingRight that adjustEndPadding set;
+                // gallery mode wants its own CSS-driven padding to apply.
+                timelineView.style.paddingRight = '';
+                // Reset horizontal scroll so the grid starts visible.
+                timelineView.scrollLeft = 0;
+                // Replay the stagger animation each time gallery is opened.
+                storeView.querySelectorAll('.item').forEach(el => {
+                    el.style.animation = 'none';
+                    // Force reflow, then restore.
+                    void el.offsetWidth;
+                    el.style.animation = '';
+                });
+            } else {
+                // Coming back from horizontal scroll — re-measure.
+                requestAnimationFrame(() => {
+                    alignTimelineMarker();
+                    adjustEndPadding();
+                    updateCurrentTicker();
+                });
+            }
+        });
 
         // ─────────────────────────────────────────────────────────────
         // INIT
