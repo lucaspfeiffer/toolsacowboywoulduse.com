@@ -545,6 +545,16 @@
             color: #000;
         }
 
+        .modal-item-description {
+            font-family: 'EB Garamond', serif;
+            font-size: 22px;
+            font-weight: 500;
+            line-height: 1.35;
+            color: var(--muted);
+            margin-top: -8px;
+            max-width: 480px;
+        }
+
         .modal-item-actions {
             display: flex;
             align-items: center;
@@ -663,6 +673,11 @@
                 font-size: 36px;
             }
 
+            .modal-item-description {
+                font-size: 17px;
+                margin-top: -4px;
+            }
+
             .btn-link {
                 font-size: 17px;
             }
@@ -770,7 +785,7 @@
         </div>
     </div>
 
-    <script src="store.js?v=2"></script>
+    <script src="store.js?v=3"></script>
     <script>
         const MONTH_NAMES = [
             'January', 'February', 'March', 'April', 'May', 'June',
@@ -942,7 +957,11 @@
                 : `<div class="placeholder">${item.title}</div>`;
 
             const requestBtnHTML = item.requestable
-                ? `<a href="${REQUEST_URL}" class="btn-primary">Request shirt</a>`
+                ? `<a href="${REQUEST_URL}" class="btn-primary">Request shirt&nbsp;&nbsp;—&nbsp;&nbsp;$300</a>`
+                : '';
+
+            const descriptionHTML = item.description
+                ? `<p class="modal-item-description">${item.description}</p>`
                 : '';
 
             inner.innerHTML = `
@@ -950,9 +969,9 @@
                     <div class="modal-item-image">${imgHTML}</div>
                     <div class="modal-item-content">
                         <h2 class="modal-item-title">${item.title}</h2>
+                        ${descriptionHTML}
                         <div class="modal-item-actions">
                             ${requestBtnHTML}
-                            <a href="${FOLLOW_URL}" target="_blank" class="btn-link">Follow along</a>
                         </div>
                     </div>
                 </div>

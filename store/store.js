@@ -1,6 +1,7 @@
 // Store items. Each item:
 //   id:          unique slug
 //   title:       display name
+//   description: one-line copy shown on the detail page under the title
 //   month:       1-12  (drives the bottom ticker; items also sort newest-first by date)
 //   year:        4-digit year
 //   collections: array of collection names (empty = uncollected). Collections
@@ -15,6 +16,7 @@ const items = [
     {
         id: 'dawn-and-dusk',
         title: 'Dawn and Dusk',
+        description: 'For sunrise watchers and sunset chasers.',
         month: 1,
         year: 2025,
         collections: ['Legendary Tools'],
@@ -25,6 +27,7 @@ const items = [
     {
         id: 'lets-grow',
         title: "Let's Grow",
+        description: 'A garden, an idea, a habit — pick one and start.',
         month: 5,
         year: 2026,
         collections: [],
@@ -35,6 +38,7 @@ const items = [
     {
         id: 'mail',
         title: 'Mail',
+        description: 'For messages worth waiting for.',
         month: 5,
         year: 2026,
         collections: ['Legendary Tools'],
@@ -44,6 +48,7 @@ const items = [
     {
         id: 'maps',
         title: 'Maps',
+        description: 'Find your way, or lose it on purpose.',
         month: 5,
         year: 2026,
         collections: ['Legendary Tools'],
@@ -53,6 +58,7 @@ const items = [
     {
         id: 'notes',
         title: 'Notes',
+        description: 'For the thoughts you don’t want to forget.',
         month: 5,
         year: 2026,
         collections: ['Legendary Tools'],
@@ -62,6 +68,7 @@ const items = [
     {
         id: 'plane',
         title: 'Plane',
+        description: 'Window seat preferred.',
         month: 5,
         year: 2026,
         collections: ['Legendary Tools'],
@@ -71,6 +78,7 @@ const items = [
     {
         id: 'steel',
         title: 'Steel',
+        description: 'Made the old way, made to last.',
         month: 5,
         year: 2026,
         collections: ['Legendary Tools'],
@@ -80,6 +88,7 @@ const items = [
     {
         id: 'tools-a-cowboy-will-use',
         title: 'Tools a Cowboy Will Use',
+        description: 'The first shirt — a reminder of the spirit behind the work.',
         month: 6,
         year: 2025,
         collections: [],

@@ -31,7 +31,8 @@
       "Bash(gh pr *)",
       "Bash(identify lets_grow.webp)",
       "Bash(python3 -c ' *)",
-      "Bash(webpinfo __TRACKED_VAR__.webp)"
+      "Bash(webpinfo __TRACKED_VAR__.webp)",
+      "Bash(git fetch *)"
     ],
     "defaultMode": "acceptEdits"
   },
