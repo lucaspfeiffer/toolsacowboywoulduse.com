@@ -10,6 +10,7 @@
                 params.get('view') === 'store' ? 'store' : 'home';
         })();
     </script>
+    <meta charset="UTF-8">
     <title>Tools a Cowboy Would Use</title>
     <meta name="description" content="Art project in San Francisco">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -28,6 +29,29 @@
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Inter:wght@300;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; }
+
+        /* Theme variables driven by data-theme-color on <html>. Set by
+           setColor(). Anything that should follow the picked color (modal
+           bg, ticker text, etc.) reads these vars. */
+        :root {
+            --theme-bg: #ffffff;
+            --theme-text: #000;
+            --theme-muted: #494949;
+            --theme-border: rgba(0, 0, 0, 0.12);
+        }
+
+        html[data-theme-color="red"]   { --theme-bg: #7E202B; }
+        html[data-theme-color="green"] { --theme-bg: #1F2C26; }
+        html[data-theme-color="navy"]  { --theme-bg: #001E32; }
+        html[data-theme-color="white"] { --theme-bg: #ffffff; }
+
+        html[data-theme-color="red"],
+        html[data-theme-color="green"],
+        html[data-theme-color="navy"] {
+            --theme-text: #ffffff;
+            --theme-muted: rgba(255, 255, 255, 0.7);
+            --theme-border: rgba(255, 255, 255, 0.2);
+        }
 
         html, body {
             margin: 0;
@@ -535,9 +559,6 @@
             --image-scale: clamp(0.85, 0.9 + 0.2 * (100vw - 600px) / 1000, 1.15);
             --bar-height: 80px;
             --bar-pad: 24px 32px;
-            --border: #000;
-            --muted: #494949;
-            --bg: #ffffff;
         }
 
         .store-view {
@@ -546,7 +567,7 @@
             height: 100dvh;
             overflow: hidden;
             position: relative;
-            background: var(--bg);
+            background: transparent;
         }
 
         .timeline-view {
@@ -633,10 +654,10 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: var(--bg);
+            background: transparent;
             z-index: 50;
             padding-bottom: env(safe-area-inset-bottom, 0);
-            border-top: 1px solid var(--border);
+            border-top: 1px solid var(--theme-border);
         }
 
         html[data-view="home"] .bottom-bar-wrapper,
@@ -655,7 +676,7 @@
             font-family: 'EB Garamond', serif;
             font-size: 24px;
             font-weight: 600;
-            color: #000;
+            color: var(--theme-text);
             user-select: none;
         }
 
@@ -690,7 +711,7 @@
             inset: 0;
             height: 100vh;
             height: 100dvh;
-            background: var(--bg);
+            background: var(--theme-bg);
             z-index: 2000;
             visibility: hidden;
             opacity: 0;
@@ -716,8 +737,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-top: 1px solid var(--border);
-            background: var(--bg);
+            border-top: 1px solid var(--theme-border);
+            background: var(--theme-bg);
             z-index: 2001;
             height: var(--bar-height);
             box-sizing: border-box;
@@ -728,7 +749,7 @@
             font-family: 'EB Garamond', serif;
             font-size: 24px;
             font-weight: 600;
-            color: #000;
+            color: var(--theme-text);
             margin-right: auto;
         }
 
@@ -743,7 +764,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #000;
+            color: var(--theme-text);
             width: 52px;
             height: 52px;
             background: transparent;
@@ -829,7 +850,7 @@
             font-size: 56px;
             font-weight: 700;
             line-height: 1.05;
-            color: #000;
+            color: var(--theme-text);
         }
 
         .modal-item-description {
@@ -837,7 +858,7 @@
             font-size: 22px;
             font-weight: 500;
             line-height: 1.35;
-            color: var(--muted);
+            color: var(--theme-muted);
             margin-top: -8px;
             max-width: 480px;
         }
@@ -931,6 +952,7 @@
                 gap: 0;
                 width: 100%;
                 justify-content: center;
+                flex-wrap: wrap;
             }
 
             .color-spinner-container {
@@ -939,17 +961,19 @@
                 justify-content: center;
             }
 
+            /* Each top-row button takes an equal share, but won't shrink
+               below ~80px — if four don't fit, they wrap to a second row. */
             .nav-btn {
                 font-size: 15px;
                 font-weight: 600;
                 padding: 14px 20px;
-                flex: 1;
+                flex: 1 1 80px;
                 text-align: center;
             }
 
             .nav-icon-btn {
                 padding: 14px 16px;
-                flex: 1;
+                flex: 1 1 60px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -1024,7 +1048,7 @@
                 top: 0;
                 bottom: auto;
                 border-top: none;
-                border-bottom: 1px solid var(--border);
+                border-bottom: 1px solid var(--theme-border);
                 height: var(--bar-height);
             }
 
@@ -1177,17 +1201,17 @@
             <div class="modal-nav-controls">
                 <button class="modal-nav-button" id="prev-btn" aria-label="Previous item">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M15 18L9 12L15 6" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
                 <button class="modal-nav-button" id="next-btn" aria-label="Next item">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9 18L15 12L9 6" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
                 <button class="modal-nav-button" id="close-btn" aria-label="Close">
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M18 6L6 18M6 6L18 18" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </button>
             </div>
@@ -1221,15 +1245,8 @@
                 el.classList.toggle('active', el.dataset.view === view);
             });
 
-            // Theme color: store is always white; home reflects the
-            // current hero color (or white as the default).
-            const themeMeta = document.querySelector('meta[name="theme-color"]');
-            if (view === 'store') {
-                themeMeta.content = '#ffffff';
-                document.body.style.backgroundColor = '#ffffff';
-            } else {
-                applyHeroThemeColor();
-            }
+            // Theme color reflects the currently picked color on both views.
+            applyHeroThemeColor();
 
             // Push history entry; never reload.
             if (push) {
@@ -1291,11 +1308,11 @@
             const activeCircle = document.querySelector(`.color-circle.${colorName}`);
             if (activeCircle) activeCircle.classList.add('pressed');
 
-            // Only push the new color to the document chrome if we're on home.
-            if (document.documentElement.dataset.view !== 'store') {
-                themeColor.content = colorValues[colorName];
-                document.body.style.backgroundColor = colorValues[colorName];
-            }
+            // Apply globally so the body bg, theme-color, and CSS hooks for
+            // dark-vs-light text follow the picked color on both views.
+            document.documentElement.dataset.themeColor = colorName;
+            themeColor.content = colorValues[colorName];
+            document.body.style.backgroundColor = colorValues[colorName];
         }
 
         function changeColor(colorName) { setColor(colorName); }
