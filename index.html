@@ -829,6 +829,20 @@
 
         .store-view.gallery-mode .bottom-bar-wrapper { border-top: none; }
 
+        /* Mid-breakpoint (≤1024px): nav still fits in one row but the
+           editorial title at 64px starts crowding the hero column. Scale
+           it down for a more balanced layout. */
+        @media (max-width: 1024px) {
+            .store-hero {
+                max-width: 520px;
+                min-width: 360px;
+                padding: 0 48px 0 0;
+                margin-right: 48px;
+            }
+
+            .store-hero-title { font-size: 52px; }
+        }
+
         /* When the top nav stacks (≤768px), the gallery becomes a single
            vertically-scrollable column. Items render at their natural
            shirt aspect and the user just scrolls through them. */
@@ -1180,6 +1194,24 @@
             .tool-meta { font-size: 16px; }
             .tool-description { font-size: 16px; margin-bottom: 12px; }
             .app-store-button .app-store-badge { width: 160px; }
+
+            /* Store layout when the top nav has stacked into two rows —
+               the editorial copy needs more headroom below the nav and
+               more breathing room on the left edge. */
+            .timeline-view {
+                padding: 200px 32px calc(var(--bar-height) + 32px) 36px;
+            }
+
+            .store-hero {
+                max-width: 460px;
+                min-width: 300px;
+                padding: 0 36px 0 0;
+                margin-right: 36px;
+                gap: 20px;
+            }
+
+            .store-hero-title { font-size: 48px; }
+            .store-hero-description { font-size: 16px; }
         }
 
         @media (max-width: 599px) {
@@ -1193,16 +1225,16 @@
             .current-date { font-size: 17px; }
 
             .timeline-view {
-                padding: calc(var(--bar-height) + 16px) 16px calc(var(--bar-height) + 16px) 16px;
+                padding: 180px 24px calc(var(--bar-height) + 24px) 28px;
             }
 
             .placeholder { width: 220px; height: 300px; font-size: 17px; }
 
             .store-hero {
                 max-width: 280px;
-                min-width: 260px;
-                padding: 0 32px 0 0;
-                margin-right: 32px;
+                min-width: 240px;
+                padding: 0 28px 0 0;
+                margin-right: 28px;
                 gap: 16px;
             }
 
