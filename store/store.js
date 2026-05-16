@@ -64,7 +64,7 @@ const items = [
     {
         id: 'notes',
         title: 'Notes',
-        description: 'So simple, yet so much depth. The closest thing we have to human .md files. Artwork inspired by Apple Notes.',
+        description: 'The closest thing we have to human .md files. Artwork inspired by Apple Notes.',
         ordinal: 5,
         month: 5,
         year: 2026,
@@ -75,7 +75,7 @@ const items = [
     {
         id: 'plane',
         title: 'Plane',
-        description: 'One of the most revolutionary milestones for mankind. A celebration of how air travel has changed the world, and those who pioneered it. Shout out to the Wright Brothers.',
+        description: 'Human flight is one of the most revolutionary milestones for mankind. A celebration of how air travel has changed the world, and those who pioneered it. Artwork inspired by the Wright Brothers.',
         ordinal: 6,
         month: 5,
         year: 2026,
