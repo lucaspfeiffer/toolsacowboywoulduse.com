@@ -102,6 +102,33 @@
 
         .nav-row-top, .nav-row-bottom { display: contents; }
 
+        /* Compact "show nav" button. Hidden everywhere by default. Only
+           on mobile gallery (≤768px) do we render it and animate between
+           the expanded nav and a single hamburger when scrolled. Selector
+           is scoped to .navigation-bar so it outranks the bare
+           .nav-icon-btn rule that sets display: inline-flex. */
+        .navigation-bar > .nav-compact-toggle { display: none; }
+
+        /* Make the compact toggle visibly "sink" on press: deeper inset
+           shadow on top/left, swap border highlights, and nudge the icon
+           down-right by 1px so the press reads from the SVG too. */
+        .nav-compact-toggle:active {
+            border-top-color: rgba(20, 8, 10, 1);
+            border-left-color: rgba(20, 8, 10, 1);
+            border-right-color: rgba(110, 55, 40, 0.95);
+            border-bottom-color: rgba(110, 55, 40, 0.95);
+            box-shadow:
+                inset 6px 6px 10px rgba(0, 0, 0, 0.85),
+                inset -2px -2px 4px rgba(140, 80, 60, 0.15),
+                inset 0 0 2px rgba(0, 0, 0, 0.8);
+        }
+        .nav-compact-toggle:active svg {
+            transform: translate(1px, 1px);
+        }
+        .nav-compact-toggle svg {
+            transition: transform 0.08s ease;
+        }
+
         .color-spinner-container {
             position: relative;
             z-index: 10;
@@ -1133,6 +1160,50 @@
                 flex-wrap: wrap;
             }
 
+            /* Collapsible nav (mobile only, only activates when JS adds
+               .collapsed — JS only does so on store + gallery-mode). The
+               rows shrink to height 0 while fading; the compact toggle
+               expands from 0 height while fading in. */
+            .navigation-bar > .nav-row-top,
+            .navigation-bar > .nav-row-bottom {
+                opacity: 1;
+                max-height: 200px;
+                overflow: hidden;
+                transition: opacity 0.22s ease, max-height 0.28s ease;
+            }
+
+            .navigation-bar.collapsed > .nav-row-top,
+            .navigation-bar.collapsed > .nav-row-bottom {
+                opacity: 0;
+                max-height: 0;
+                pointer-events: none;
+            }
+
+            .navigation-bar > .nav-compact-toggle {
+                display: inline-flex;
+                opacity: 0;
+                max-height: 0;
+                padding-top: 0;
+                padding-bottom: 0;
+                padding-left: 16px;
+                padding-right: 16px;
+                overflow: hidden;
+                pointer-events: none;
+                transition:
+                    opacity 0.22s ease,
+                    max-height 0.28s ease,
+                    padding-top 0.22s ease,
+                    padding-bottom 0.22s ease;
+            }
+
+            .navigation-bar.collapsed > .nav-compact-toggle {
+                opacity: 1;
+                max-height: 60px;
+                padding-top: 14px;
+                padding-bottom: 14px;
+                pointer-events: auto;
+            }
+
             .color-spinner-container {
                 flex: 3;
                 display: flex;
@@ -1333,6 +1404,12 @@
 <body>
     <!-- Shared nav (fixed, both views) -->
     <nav class="navigation-bar">
+        <button type="button" class="nav-icon-btn nav-compact-toggle" aria-label="Scroll to top">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 19V5"/>
+                <path d="M5 12l7-7 7 7"/>
+            </svg>
+        </button>
         <div class="nav-row-top">
             <a href="/" class="nav-btn js-view-link" data-view="home">Home</a>
             <a href="https://www.instagram.com/tools_a_cowboy_would_use/" target="_blank" class="nav-icon-btn" aria-label="Instagram">
@@ -1889,6 +1966,66 @@
                 updateCurrentTicker();
             }, 100);
         });
+
+        // ─────────────────────────────────────────────────────────────
+        // COLLAPSIBLE NAV
+        // Mobile (≤768px), on home view OR store gallery view. When the
+        // active scroller passes a small threshold the full nav shrinks
+        // to a single wooden "scroll to top" arrow. Tapping it smooth-
+        // scrolls to the top — the nav auto-expands as scroll drops back
+        // under the threshold.
+        //
+        // Active scroller depends on view:
+        //   home          → window
+        //   store gallery → #timeline-view (100vh with overflow:auto)
+        //   store scroll  → none (horizontal-scroll layout, no collapse)
+        // ─────────────────────────────────────────────────────────────
+        (function initCollapsibleNav() {
+            const navBar = document.querySelector('.navigation-bar');
+            const toggle = navBar.querySelector('.nav-compact-toggle');
+            const storeView = document.querySelector('.store-view');
+            const timelineEl = document.getElementById('timeline-view');
+            const THRESHOLD = 80;
+            const MOBILE_MAX = 768;
+
+            function activeScroller() {
+                if (window.innerWidth > MOBILE_MAX) return null;
+                const view = document.documentElement.dataset.view;
+                if (view === 'home') return window;
+                if (view === 'store' && storeView?.classList.contains('gallery-mode')) {
+                    return timelineEl;
+                }
+                return null;
+            }
+
+            function scrollPos(el) {
+                return el === window ? window.scrollY : (el?.scrollTop ?? 0);
+            }
+
+            function updateNav() {
+                const el = activeScroller();
+                const shouldCollapse = !!el && scrollPos(el) > THRESHOLD;
+                navBar.classList.toggle('collapsed', shouldCollapse);
+            }
+
+            toggle.addEventListener('click', () => {
+                const el = activeScroller();
+                if (el === window) window.scrollTo({ top: 0, behavior: 'smooth' });
+                else el?.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            window.addEventListener('scroll', updateNav, { passive: true });
+            timelineEl?.addEventListener('scroll', updateNav, { passive: true });
+            window.addEventListener('resize', updateNav, { passive: true });
+
+            // Re-evaluate when the user enters gallery mode or changes view.
+            new MutationObserver(updateNav).observe(storeView, {
+                attributes: true, attributeFilter: ['class']
+            });
+            new MutationObserver(updateNav).observe(document.documentElement, {
+                attributes: true, attributeFilter: ['data-view']
+            });
+        })();
 
         window.addEventListener('resize', () => {
             alignTimelineMarker();
