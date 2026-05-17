@@ -1053,6 +1053,10 @@
 
         .modal-item-content {
             flex: 1;
+            /* Allow the content to shrink below its intrinsic min size
+               (the default min-width: auto on flex items keeps the
+               actions row from wrapping and overflows the modal). */
+            min-width: 0;
             display: flex;
             flex-direction: column;
             gap: 24px;
@@ -1079,6 +1083,7 @@
 
         .modal-item-actions {
             display: flex;
+            flex-wrap: wrap;
             align-items: center;
             gap: 24px;
             margin-top: 8px;
@@ -1510,7 +1515,7 @@
         </div>
     </div>
 
-    <script src="store/store.js?v=8"></script>
+    <script src="store/store.js?v=9"></script>
     <script>
         // ─────────────────────────────────────────────────────────────
         // VIEW SWITCHING (Home ⇄ Store, no page reload)
@@ -1825,6 +1830,9 @@
             const requestBtn = item.requestable
                 ? `<a href="${mailto}" class="btn-primary">Request shirt&nbsp;&nbsp;—&nbsp;&nbsp;$299</a>`
                 : '';
+            const appStoreBtn = item.appStoreUrl
+                ? `<a href="${item.appStoreUrl}" target="_blank" rel="noopener" class="app-store-button"><img src="images/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="Download on the App Store" class="app-store-badge"></a>`
+                : '';
             const descHTML = item.description
                 ? `<p class="modal-item-description">${item.description}</p>`
                 : '';
@@ -1834,7 +1842,7 @@
                     <div class="modal-item-image">${imgHTML}</div>
                     <div class="modal-item-content">
                         ${descHTML}
-                        <div class="modal-item-actions">${requestBtn}</div>
+                        <div class="modal-item-actions">${requestBtn}${appStoreBtn}</div>
                     </div>
                 </div>
             `;
