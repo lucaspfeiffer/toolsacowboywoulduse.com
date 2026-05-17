@@ -1161,16 +1161,18 @@
 
             .color-spinner {
                 gap: 6px;
-                padding: 14px 16px;
+                padding: 10px 14px;
                 width: 100%;
                 justify-content: center;
                 flex: 1;
             }
 
+            /* Rectangular chips on mobile to save vertical space — the
+               full-width squares took up too much room in the stacked nav. */
             .color-circle {
                 width: auto;
-                height: auto;
-                aspect-ratio: 1;
+                height: 32px;
+                aspect-ratio: auto;
                 flex: 1;
                 border-radius: 0;
             }
