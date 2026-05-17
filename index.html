@@ -1029,11 +1029,29 @@
         .modal-item-image {
             flex: 0 0 auto;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             max-width: 62%;
             position: sticky;
             top: 32px;
+        }
+
+        /* When thumbs are present, freeze the image column to a fixed
+           width AND the image to a fixed height with object-fit: contain.
+           Different assets (square shirt vs portrait photo) then render
+           inside the same box, so swapping them doesn't reflow the
+           column width or shift the content column vertically. */
+        .modal-item-image.has-thumbs {
+            flex: 0 0 62%;
+            width: 62%;
+            max-width: 62%;
+        }
+        .modal-item-image.has-thumbs > img,
+        .modal-item-image.has-thumbs > .placeholder {
+            width: 100%;
+            height: 68vh;
+            max-height: 68vh;
+            object-fit: contain;
         }
 
         .modal-item-image img,
@@ -1088,6 +1106,61 @@
             gap: 24px;
             margin-top: 8px;
             align-self: flex-start;
+        }
+
+        /* Optional thumbnail strip under the main detail image. Each
+           thumb swaps the main asset on click; the first thumb is the
+           main detail image so users can switch back. Driven by
+           item.gallery (1–10 extras) — strip only renders when there's
+           more than one asset to choose between. */
+        .modal-item-thumbs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .modal-thumb {
+            width: 64px;
+            height: 64px;
+            min-width: 44px;
+            min-height: 44px;
+            padding: 0;
+            background: none;
+            border: 2px solid transparent;
+            border-radius: 0;
+            cursor: pointer;
+            overflow: hidden;
+            opacity: 0.55;
+            transition:
+                opacity 0.18s ease,
+                border-color 0.18s ease,
+                box-shadow 0.18s ease;
+        }
+
+        .modal-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .modal-thumb:hover { opacity: 0.9; }
+
+        /* Selected thumb wears the wooden bevel: lighter top/left
+           highlight, darker bottom/right shadow, plus the same inset +
+           drop shadow used on the wooden nav buttons. */
+        .modal-thumb.active {
+            opacity: 1;
+            border-top-color: rgba(90, 45, 35, 0.9);
+            border-left-color: rgba(90, 45, 35, 0.9);
+            border-right-color: rgba(26, 11, 14, 1);
+            border-bottom-color: rgba(26, 11, 14, 1);
+            box-shadow:
+                inset 0 1px 1px rgba(120, 60, 45, 0.4),
+                inset 0 -1px 2px rgba(26, 11, 14, 0.6),
+                2px 2px 6px 1px rgba(47, 19, 24, 0.4);
         }
 
         .btn-primary {
@@ -1357,6 +1430,20 @@
                 max-height: 65vh;
             }
 
+            /* Stacked layout: drop the desktop's fixed flex-basis and
+               pin the image height instead so swapping still doesn't
+               jiggle content below. */
+            .modal-item-image.has-thumbs {
+                flex: 0 0 auto;
+                width: 100%;
+                max-width: 100%;
+            }
+            .modal-item-image.has-thumbs > img,
+            .modal-item-image.has-thumbs > .placeholder {
+                height: 55vh;
+                max-height: 55vh;
+            }
+
             .modal-item-content {
                 flex: 0 0 auto;
                 padding-bottom: 0;
@@ -1515,7 +1602,7 @@
         </div>
     </div>
 
-    <script src="store/store.js?v=9"></script>
+    <script src="store/store.js?v=11"></script>
     <script>
         // ─────────────────────────────────────────────────────────────
         // VIEW SWITCHING (Home ⇄ Store, no page reload)
@@ -1836,16 +1923,41 @@
             const descHTML = item.description
                 ? `<p class="modal-item-description">${item.description}</p>`
                 : '';
+            // Build the list of swappable assets: the main detail image
+            // always comes first, then any gallery extras. Thumb strip
+            // only renders if there's more than one image to switch to.
+            const assets = [detailSrc, ...(item.gallery || [])].filter(Boolean);
+            const thumbsHTML = assets.length > 1
+                ? `<div class="modal-item-thumbs">${assets
+                    .map((src, i) => `<button type="button" class="modal-thumb${i === 0 ? ' active' : ''}" data-src="${src}" aria-label="View image ${i + 1}"><img src="${src}" alt="" loading="lazy" /></button>`)
+                    .join('')}</div>`
+                : '';
 
+            const imgClass = assets.length > 1
+                ? 'modal-item-image has-thumbs'
+                : 'modal-item-image';
             inner.innerHTML = `
                 <div class="modal-item">
-                    <div class="modal-item-image">${imgHTML}</div>
+                    <div class="${imgClass}">
+                        ${imgHTML}
+                        ${thumbsHTML}
+                    </div>
                     <div class="modal-item-content">
                         ${descHTML}
                         <div class="modal-item-actions">${requestBtn}${appStoreBtn}</div>
                     </div>
                 </div>
             `;
+
+            // Wire thumbs to swap the main image and update active state.
+            if (assets.length > 1) {
+                const mainImg = inner.querySelector('.modal-item-image > img');
+                const thumbs = inner.querySelectorAll('.modal-thumb');
+                thumbs.forEach(t => t.addEventListener('click', () => {
+                    if (mainImg) mainImg.src = t.dataset.src;
+                    thumbs.forEach(x => x.classList.toggle('active', x === t));
+                }));
+            }
 
             modal.querySelector('.modal-content').scrollTop = 0;
             prev.classList.toggle('disabled', idx === 0);
