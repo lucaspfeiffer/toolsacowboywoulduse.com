@@ -859,18 +859,18 @@
         .store-footer { display: none; }
 
         @media (max-width: 768px) {
-            /* Drop the 100vh + overflow:hidden traps on html/body and
-               .store-view so the window can scroll on mobile. The
-               horizontal-scroll mode (non-gallery) still works because
-               .timeline-view explicitly sets height:100vh; gallery mode
-               lets timeline-view's height go auto and the page grows. */
-            html[data-view="store"],
-            html[data-view="store"] body {
+            /* Lift the 100vh + overflow:hidden traps ONLY when in
+               gallery mode (vertical window scroll). Non-gallery keeps
+               the trap so the horizontal-scroll layout doesn't get an
+               unwanted vertical scroll. html.gallery-mode is mirrored
+               from .store-view.gallery-mode by the toggle JS. */
+            html[data-view="store"].gallery-mode,
+            html[data-view="store"].gallery-mode body {
                 height: auto;
                 overflow: visible;
             }
 
-            .store-view {
+            .store-view.gallery-mode {
                 height: auto;
                 overflow: visible;
             }
@@ -1240,11 +1240,13 @@
                 padding: 200px 32px calc(var(--bar-height) + 32px) 36px;
             }
 
+            /* Narrowed so the first shirt always peeks out at scroll
+               position 0 — a clear visual cue that the row scrolls. */
             .store-hero {
-                max-width: 460px;
-                min-width: 300px;
-                padding: 0 36px 0 0;
-                margin-right: 36px;
+                max-width: 320px;
+                min-width: 240px;
+                padding: 0 24px 0 0;
+                margin-right: 24px;
                 gap: 20px;
             }
 
@@ -1269,15 +1271,15 @@
             .placeholder { width: 220px; height: 300px; font-size: 17px; }
 
             .store-hero {
-                max-width: 280px;
-                min-width: 240px;
-                padding: 0 28px 0 0;
-                margin-right: 28px;
+                max-width: 220px;
+                min-width: 200px;
+                padding: 0 20px 0 0;
+                margin-right: 20px;
                 gap: 16px;
             }
 
-            .store-hero-title { font-size: 36px; }
-            .store-hero-description { font-size: 15px; }
+            .store-hero-title { font-size: 32px; }
+            .store-hero-description { font-size: 14px; }
 
             .item-image img,
             .item-image .placeholder { max-height: 65vh; }
@@ -1895,6 +1897,10 @@
             const storeView = document.querySelector('.store-view');
             const timelineView = document.getElementById('timeline-view');
             const on = storeView.classList.toggle('gallery-mode');
+            // Mirror the class onto <html> so CSS can use a plain class
+            // selector to unlock the document-level scroll trap (avoids
+            // relying on :has(), which has uneven support).
+            document.documentElement.classList.toggle('gallery-mode', on);
             document.getElementById('gallery-toggle').classList.toggle('active', on);
             if (on) {
                 // Drop the inline paddingRight that adjustEndPadding set;
