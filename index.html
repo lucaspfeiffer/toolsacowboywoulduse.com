@@ -1273,7 +1273,17 @@
 
             .modal-content-inner { padding: 24px; }
             .modal-item-title { font-size: 36px; }
-            .modal-item-description { font-size: 18px; }
+            .modal-item-description { font-size: 16px; line-height: 1.4; }
+
+            /* Shrink the shirt so title + description + button all fit
+               in view on small mobile without scrolling. */
+            .modal-item-image img,
+            .modal-item-image .placeholder {
+                max-height: 42vh;
+            }
+
+            .modal-item { gap: 16px; }
+            .modal-item-content { gap: 16px; }
 
             .btn-primary { font-size: 14px; padding: 11px 18px; }
         }
@@ -1397,7 +1407,7 @@
                 <section class="store-hero">
                     <h2 class="store-hero-title">2026 Summer Collection</h2>
                     <p class="store-hero-description">
-                        this summer, tools a cowboy would use is elevating their first tool, dawn and dusk, into a category of other legendary consumer tools. the collection is a set of t-shirts with completley hand-done embroidery and created with an unreasonable amount of detail. stamped with a tools a cowboy would use patch.
+                        Limited time T-Shirt collection by Tools a Cowboy Would Use. Hand embroidered, hand drawn artwork, each one with a hand embroidered Tools a Cowboy Would Use patch with the year it was created. Created with an unreasonable amount of detail. This collection elevates the first Tools a Cowboy Would Use tool, Dawn and Dusk, into a category of other legendary consumer tools.
                     </p>
                 </section>
             </div>
@@ -1450,7 +1460,7 @@
         </div>
     </div>
 
-    <script src="store/store.js?v=7"></script>
+    <script src="store/store.js?v=8"></script>
     <script>
         // ─────────────────────────────────────────────────────────────
         // VIEW SWITCHING (Home ⇄ Store, no page reload)
@@ -1660,17 +1670,25 @@
             const itemEls = document.querySelectorAll('.item');
             if (itemEls.length === 0) return;
 
-            // Walk items in DOM order; the last one whose left edge has
-            // reached the marker is the "current" one. Defaults to the
-            // first item while still scrolled before any have passed, and
-            // sticks on the last item once you've scrolled past all of them.
             const threshold = marker.getBoundingClientRect().left + 60;
-            let current = itemEls[0];
-            itemEls.forEach(el => {
-                if (el.getBoundingClientRect().left <= threshold) current = el;
-            });
 
-            const label = current.dataset.title;
+            // Before the first item has passed the marker, the user is
+            // still on the editorial hero — show its title in the ticker.
+            let label;
+            if (itemEls[0].getBoundingClientRect().left > threshold) {
+                const heroTitleEl = document.querySelector('.store-hero-title');
+                label = heroTitleEl ? heroTitleEl.textContent.trim() : '';
+            } else {
+                // Otherwise, the last item whose left edge has reached the
+                // marker is the "current" one (sticks on the last item
+                // once you've scrolled past all of them).
+                let current = itemEls[0];
+                itemEls.forEach(el => {
+                    if (el.getBoundingClientRect().left <= threshold) current = el;
+                });
+                label = current.dataset.title;
+            }
+
             if (tickerEl.textContent !== label) {
                 tickerEl.textContent = label;
                 alignTimelineMarker();
@@ -1753,8 +1771,9 @@
             const imgHTML = detailSrc
                 ? `<img src="${detailSrc}" alt="${item.title}" />`
                 : `<div class="placeholder">${item.title}</div>`;
+            const mailto = `mailto:lpfeif19@gmail.com?subject=${encodeURIComponent(`Tools a Cowboy Would Use — Requesting ${item.title} shirt`)}`;
             const requestBtn = item.requestable
-                ? `<a href="${REQUEST_URL}" class="btn-primary">Request shirt&nbsp;&nbsp;—&nbsp;&nbsp;$300</a>`
+                ? `<a href="${mailto}" class="btn-primary">Request shirt&nbsp;&nbsp;—&nbsp;&nbsp;$299</a>`
                 : '';
             const descHTML = item.description
                 ? `<p class="modal-item-description">${item.description}</p>`
