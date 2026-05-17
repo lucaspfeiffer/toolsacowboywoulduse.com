@@ -30,7 +30,7 @@ const items = [
     {
         id: 'lets-grow',
         title: "Let's Grow",
-        description: "Inspired by 'GT' Greg Taylor. Get better every day.",
+        description: "Inspired by 'GT' Greg Taylor. Nashville, TN. Get better every day.",
         ordinal: 2,
         month: 5,
         year: 2026,
