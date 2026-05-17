@@ -17,7 +17,22 @@
       "WebFetch(domain:tools.applemediaservices.com)",
       "WebFetch(domain:toolbox.marketingtools.apple.com)",
       "Bash(open http://localhost:8000/shelves.html)",
-      "WebFetch(domain:itunes.apple.com)"
+      "WebFetch(domain:itunes.apple.com)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(ssh:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(sips:*)",
+      "Bash(brew install:*)",
+      "Bash(cwebp:*)",
+      "Bash(python3 -m http.server 8765)",
+      "Bash(echo \"PID: $!\")",
+      "Bash(git restore *)",
+      "Bash(gh pr *)",
+      "Bash(identify lets_grow.webp)",
+      "Bash(python3 -c ' *)",
+      "Bash(webpinfo __TRACKED_VAR__.webp)",
+      "Bash(git fetch *)"
     ],
     "defaultMode": "acceptEdits"
   },
