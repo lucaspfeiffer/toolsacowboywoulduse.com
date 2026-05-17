@@ -102,12 +102,74 @@
 
         .nav-row-top, .nav-row-bottom { display: contents; }
 
-        /* Compact "show nav" button. Hidden everywhere by default. Only
-           on mobile gallery (≤768px) do we render it and animate between
-           the expanded nav and a single hamburger when scrolled. Selector
-           is scoped to .navigation-bar so it outranks the bare
-           .nav-icon-btn rule that sets display: inline-flex. */
-        .navigation-bar > .nav-compact-toggle { display: none; }
+        /* Compact "scroll to top" button — base (hidden) state. Both the
+           desktop (≥769px, horizontal shrink) and mobile (≤768px,
+           vertical shrink) blocks below extend this with their own
+           animatable properties. */
+        .navigation-bar > .nav-compact-toggle {
+            display: inline-flex;
+            opacity: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .navigation-bar.collapsed > .nav-compact-toggle {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Desktop (>768px): horizontal collapse. Each row child shrinks
+           its max-width / padding / border-width toward 0; the toggle
+           grows in from the same row. .navigation-bar stays centered via
+           translateX(-50%), so the strip smoothly contracts to a single
+           wooden button at the top center. */
+        @media (min-width: 769px) {
+            .navigation-bar > .nav-row-top > *,
+            .navigation-bar > .nav-row-bottom > * {
+                transition:
+                    opacity 0.22s ease,
+                    max-width 0.28s ease,
+                    padding-left 0.22s ease,
+                    padding-right 0.22s ease,
+                    border-left-width 0.22s ease,
+                    border-right-width 0.22s ease;
+                max-width: 600px;
+                overflow: hidden;
+            }
+
+            .navigation-bar.collapsed > .nav-row-top > *,
+            .navigation-bar.collapsed > .nav-row-bottom > * {
+                opacity: 0;
+                max-width: 0;
+                padding-left: 0;
+                padding-right: 0;
+                border-left-width: 0;
+                border-right-width: 0;
+                pointer-events: none;
+            }
+
+            .navigation-bar > .nav-compact-toggle {
+                max-width: 0;
+                padding-left: 0;
+                padding-right: 0;
+                border-left-width: 0;
+                border-right-width: 0;
+                transition:
+                    opacity 0.22s ease,
+                    max-width 0.28s ease,
+                    padding-left 0.22s ease,
+                    padding-right 0.22s ease,
+                    border-left-width 0.22s ease,
+                    border-right-width 0.22s ease;
+            }
+
+            .navigation-bar.collapsed > .nav-compact-toggle {
+                max-width: 80px;
+                padding-left: 16px;
+                padding-right: 16px;
+                border-left-width: 2px;
+                border-right-width: 2px;
+            }
+        }
 
         /* Make the compact toggle visibly "sink" on press: deeper inset
            shadow on top/left, swap border highlights, and nudge the icon
@@ -1969,16 +2031,15 @@
 
         // ─────────────────────────────────────────────────────────────
         // COLLAPSIBLE NAV
-        // Mobile (≤768px), on home view OR store gallery view. When the
-        // active scroller passes a small threshold the full nav shrinks
-        // to a single wooden "scroll to top" arrow. Tapping it smooth-
-        // scrolls to the top — the nav auto-expands as scroll drops back
-        // under the threshold.
+        // When the active scroller passes a small threshold the full nav
+        // shrinks to a single wooden "scroll to top" arrow. Tapping it
+        // smooth-scrolls to the top — the nav auto-expands as scroll
+        // drops back under the threshold.
         //
         // Active scroller depends on view:
-        //   home          → window
-        //   store gallery → #timeline-view (100vh with overflow:auto)
-        //   store scroll  → none (horizontal-scroll layout, no collapse)
+        //   home                       → window (any breakpoint)
+        //   store gallery (≤768px)     → #timeline-view (100vh, overflow:auto)
+        //   store scroll / desktop gallery → none (no collapse)
         // ─────────────────────────────────────────────────────────────
         (function initCollapsibleNav() {
             const navBar = document.querySelector('.navigation-bar');
@@ -1989,10 +2050,11 @@
             const MOBILE_MAX = 768;
 
             function activeScroller() {
-                if (window.innerWidth > MOBILE_MAX) return null;
                 const view = document.documentElement.dataset.view;
                 if (view === 'home') return window;
-                if (view === 'store' && storeView?.classList.contains('gallery-mode')) {
+                if (view === 'store' &&
+                    window.innerWidth <= MOBILE_MAX &&
+                    storeView?.classList.contains('gallery-mode')) {
                     return timelineEl;
                 }
                 return null;
