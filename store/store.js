@@ -12,6 +12,10 @@
 //                back to `image` when omitted
 //   requestable: when true, the detail page shows the "Request shirt"
 //                primary button
+//   appStoreUrl: optional — when set, the detail page also shows the
+//                "Download on App Store" badge linking here
+//   gallery:     optional array (1–10) of extra image paths shown on the
+//                detail page below the main image + copy. Use webp.
 //   hidden:      when true, the item is excluded from the store view
 //                (kept in the file so it's easy to bring back later)
 const items = [
@@ -25,7 +29,12 @@ const items = [
         collections: ['Legendary Tools'],
         image: './store/images/dawn_and_dusk.webp',
         detailImage: './store/images/dawn_and_dusk2.webp',
-        requestable: true
+        requestable: true,
+        appStoreUrl: 'https://apps.apple.com/us/app/dawn-and-dusk/id6736839971',
+        gallery: [
+            './store/images/dawn_and_dusk_g1.webp',
+            './store/images/dawn_and_dusk_g2.webp'
+        ]
     },
     {
         id: 'lets-grow',

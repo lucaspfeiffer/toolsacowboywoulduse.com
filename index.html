@@ -859,18 +859,18 @@
         .store-footer { display: none; }
 
         @media (max-width: 768px) {
-            /* Drop the 100vh + overflow:hidden traps on html/body and
-               .store-view so the window can scroll on mobile. The
-               horizontal-scroll mode (non-gallery) still works because
-               .timeline-view explicitly sets height:100vh; gallery mode
-               lets timeline-view's height go auto and the page grows. */
-            html[data-view="store"],
-            html[data-view="store"] body {
+            /* Lift the 100vh + overflow:hidden traps ONLY when in
+               gallery mode (vertical window scroll). Non-gallery keeps
+               the trap so the horizontal-scroll layout doesn't get an
+               unwanted vertical scroll. html.gallery-mode is mirrored
+               from .store-view.gallery-mode by the toggle JS. */
+            html[data-view="store"].gallery-mode,
+            html[data-view="store"].gallery-mode body {
                 height: auto;
                 overflow: visible;
             }
 
-            .store-view {
+            .store-view.gallery-mode {
                 height: auto;
                 overflow: visible;
             }
@@ -1029,11 +1029,29 @@
         .modal-item-image {
             flex: 0 0 auto;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             max-width: 62%;
             position: sticky;
             top: 32px;
+        }
+
+        /* When thumbs are present, freeze the image column to a fixed
+           width AND the image to a fixed height with object-fit: contain.
+           Different assets (square shirt vs portrait photo) then render
+           inside the same box, so swapping them doesn't reflow the
+           column width or shift the content column vertically. */
+        .modal-item-image.has-thumbs {
+            flex: 0 0 62%;
+            width: 62%;
+            max-width: 62%;
+        }
+        .modal-item-image.has-thumbs > img,
+        .modal-item-image.has-thumbs > .placeholder {
+            width: 100%;
+            height: 68vh;
+            max-height: 68vh;
+            object-fit: contain;
         }
 
         .modal-item-image img,
@@ -1053,6 +1071,10 @@
 
         .modal-item-content {
             flex: 1;
+            /* Allow the content to shrink below its intrinsic min size
+               (the default min-width: auto on flex items keeps the
+               actions row from wrapping and overflows the modal). */
+            min-width: 0;
             display: flex;
             flex-direction: column;
             gap: 24px;
@@ -1079,10 +1101,66 @@
 
         .modal-item-actions {
             display: flex;
+            flex-wrap: wrap;
             align-items: center;
             gap: 24px;
             margin-top: 8px;
             align-self: flex-start;
+        }
+
+        /* Optional thumbnail strip under the main detail image. Each
+           thumb swaps the main asset on click; the first thumb is the
+           main detail image so users can switch back. Driven by
+           item.gallery (1–10 extras) — strip only renders when there's
+           more than one asset to choose between. */
+        .modal-item-thumbs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .modal-thumb {
+            width: 64px;
+            height: 64px;
+            min-width: 44px;
+            min-height: 44px;
+            padding: 0;
+            background: none;
+            border: 2px solid transparent;
+            border-radius: 0;
+            cursor: pointer;
+            overflow: hidden;
+            opacity: 0.55;
+            transition:
+                opacity 0.18s ease,
+                border-color 0.18s ease,
+                box-shadow 0.18s ease;
+        }
+
+        .modal-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .modal-thumb:hover { opacity: 0.9; }
+
+        /* Selected thumb wears the wooden bevel: lighter top/left
+           highlight, darker bottom/right shadow, plus the same inset +
+           drop shadow used on the wooden nav buttons. */
+        .modal-thumb.active {
+            opacity: 1;
+            border-top-color: rgba(90, 45, 35, 0.9);
+            border-left-color: rgba(90, 45, 35, 0.9);
+            border-right-color: rgba(26, 11, 14, 1);
+            border-bottom-color: rgba(26, 11, 14, 1);
+            box-shadow:
+                inset 0 1px 1px rgba(120, 60, 45, 0.4),
+                inset 0 -1px 2px rgba(26, 11, 14, 0.6),
+                2px 2px 6px 1px rgba(47, 19, 24, 0.4);
         }
 
         .btn-primary {
@@ -1240,11 +1318,13 @@
                 padding: 200px 32px calc(var(--bar-height) + 32px) 36px;
             }
 
+            /* Narrowed so the first shirt always peeks out at scroll
+               position 0 — a clear visual cue that the row scrolls. */
             .store-hero {
-                max-width: 460px;
-                min-width: 300px;
-                padding: 0 36px 0 0;
-                margin-right: 36px;
+                max-width: 320px;
+                min-width: 240px;
+                padding: 0 24px 0 0;
+                margin-right: 24px;
                 gap: 20px;
             }
 
@@ -1269,15 +1349,15 @@
             .placeholder { width: 220px; height: 300px; font-size: 17px; }
 
             .store-hero {
-                max-width: 280px;
-                min-width: 240px;
-                padding: 0 28px 0 0;
-                margin-right: 28px;
+                max-width: 220px;
+                min-width: 200px;
+                padding: 0 20px 0 0;
+                margin-right: 20px;
                 gap: 16px;
             }
 
-            .store-hero-title { font-size: 36px; }
-            .store-hero-description { font-size: 15px; }
+            .store-hero-title { font-size: 32px; }
+            .store-hero-description { font-size: 14px; }
 
             .item-image img,
             .item-image .placeholder { max-height: 65vh; }
@@ -1348,6 +1428,20 @@
                 max-width: 100%;
                 height: auto;
                 max-height: 65vh;
+            }
+
+            /* Stacked layout: drop the desktop's fixed flex-basis and
+               pin the image height instead so swapping still doesn't
+               jiggle content below. */
+            .modal-item-image.has-thumbs {
+                flex: 0 0 auto;
+                width: 100%;
+                max-width: 100%;
+            }
+            .modal-item-image.has-thumbs > img,
+            .modal-item-image.has-thumbs > .placeholder {
+                height: 55vh;
+                max-height: 55vh;
             }
 
             .modal-item-content {
@@ -1508,7 +1602,7 @@
         </div>
     </div>
 
-    <script src="store/store.js?v=8"></script>
+    <script src="store/store.js?v=11"></script>
     <script>
         // ─────────────────────────────────────────────────────────────
         // VIEW SWITCHING (Home ⇄ Store, no page reload)
@@ -1823,19 +1917,47 @@
             const requestBtn = item.requestable
                 ? `<a href="${mailto}" class="btn-primary">Request shirt&nbsp;&nbsp;—&nbsp;&nbsp;$299</a>`
                 : '';
+            const appStoreBtn = item.appStoreUrl
+                ? `<a href="${item.appStoreUrl}" target="_blank" rel="noopener" class="app-store-button"><img src="images/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="Download on the App Store" class="app-store-badge"></a>`
+                : '';
             const descHTML = item.description
                 ? `<p class="modal-item-description">${item.description}</p>`
                 : '';
+            // Build the list of swappable assets: the main detail image
+            // always comes first, then any gallery extras. Thumb strip
+            // only renders if there's more than one image to switch to.
+            const assets = [detailSrc, ...(item.gallery || [])].filter(Boolean);
+            const thumbsHTML = assets.length > 1
+                ? `<div class="modal-item-thumbs">${assets
+                    .map((src, i) => `<button type="button" class="modal-thumb${i === 0 ? ' active' : ''}" data-src="${src}" aria-label="View image ${i + 1}"><img src="${src}" alt="" loading="lazy" /></button>`)
+                    .join('')}</div>`
+                : '';
 
+            const imgClass = assets.length > 1
+                ? 'modal-item-image has-thumbs'
+                : 'modal-item-image';
             inner.innerHTML = `
                 <div class="modal-item">
-                    <div class="modal-item-image">${imgHTML}</div>
+                    <div class="${imgClass}">
+                        ${imgHTML}
+                        ${thumbsHTML}
+                    </div>
                     <div class="modal-item-content">
                         ${descHTML}
-                        <div class="modal-item-actions">${requestBtn}</div>
+                        <div class="modal-item-actions">${requestBtn}${appStoreBtn}</div>
                     </div>
                 </div>
             `;
+
+            // Wire thumbs to swap the main image and update active state.
+            if (assets.length > 1) {
+                const mainImg = inner.querySelector('.modal-item-image > img');
+                const thumbs = inner.querySelectorAll('.modal-thumb');
+                thumbs.forEach(t => t.addEventListener('click', () => {
+                    if (mainImg) mainImg.src = t.dataset.src;
+                    thumbs.forEach(x => x.classList.toggle('active', x === t));
+                }));
+            }
 
             modal.querySelector('.modal-content').scrollTop = 0;
             prev.classList.toggle('disabled', idx === 0);
@@ -1895,6 +2017,10 @@
             const storeView = document.querySelector('.store-view');
             const timelineView = document.getElementById('timeline-view');
             const on = storeView.classList.toggle('gallery-mode');
+            // Mirror the class onto <html> so CSS can use a plain class
+            // selector to unlock the document-level scroll trap (avoids
+            // relying on :has(), which has uneven support).
+            document.documentElement.classList.toggle('gallery-mode', on);
             document.getElementById('gallery-toggle').classList.toggle('active', on);
             if (on) {
                 // Drop the inline paddingRight that adjustEndPadding set;
