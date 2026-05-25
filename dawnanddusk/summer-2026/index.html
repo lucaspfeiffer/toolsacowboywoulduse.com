@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Summer 2026 Update - Dawn and Dusk</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+            max-width: 1000px;
+            padding: 80px 40px 40px;
+            gap: 24px;
+        }
+
+        .eyebrow {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #FF7F50;
+            margin: 0;
+        }
+
+        .app-logo-link {
+            display: inline-block;
+            line-height: 0;
+            transition: transform 0.2s ease;
+        }
+
+        .app-logo-link:hover {
+            transform: scale(1.05);
+        }
+
+        .app-logo {
+            width: 88px;
+            height: 88px;
+            border-radius: 24px;
+            object-fit: cover;
+            outline: 1px solid rgba(0, 0, 0, 0.12);
+            outline-offset: -1px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: block;
+        }
+
+        h1 {
+            font-size: 56px;
+            font-weight: 700;
+            margin: 0;
+            line-height: 1.1;
+            max-width: 720px;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            font-weight: 500;
+            color: #666;
+            margin: 0;
+            max-width: 600px;
+            line-height: 1.5;
+        }
+
+        .app-store-badge {
+            width: 180px;
+            height: auto;
+            margin-top: 8px;
+        }
+
+        .hero-image-wrap {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 0 40px 40px;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-width: 900px;
+            height: auto;
+            border-radius: 24px;
+            display: block;
+        }
+
+        /* Feature sections */
+        .feature-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 1200px;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .feature-section h2 {
+            font-size: 42px;
+            font-weight: 700;
+            color: #333;
+            margin: 0 0 16px;
+            max-width: 700px;
+            line-height: 1.2;
+        }
+
+        .feature-section p {
+            font-size: 18px;
+            color: #666;
+            margin: 0 0 40px;
+            max-width: 560px;
+            line-height: 1.5;
+        }
+
+        .feature-image-wide {
+            width: 100%;
+            max-width: 900px;
+            height: auto;
+            border-radius: 24px;
+            display: block;
+        }
+
+        .feature-image-square {
+            width: 100%;
+            max-width: 560px;
+            height: auto;
+            border-radius: 24px;
+            display: block;
+        }
+
+        /* Split: tall screenshot + text content */
+        .feature-split {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+            width: 100%;
+            max-width: 1100px;
+            padding: 80px 40px;
+            flex-wrap: wrap;
+        }
+
+        .feature-split.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .feature-split-text {
+            flex: 1 1 320px;
+            max-width: 460px;
+            text-align: left;
+        }
+
+        .feature-split-text h2 {
+            font-size: 42px;
+            font-weight: 700;
+            color: #333;
+            margin: 0 0 16px;
+            line-height: 1.2;
+        }
+
+        .feature-split-text p {
+            font-size: 18px;
+            color: #666;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .feature-split-image-wrap {
+            flex: 0 1 280px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .feature-image-tall {
+            width: 100%;
+            max-width: 280px;
+            max-height: 80vh;
+            height: auto;
+            object-fit: contain;
+            border-radius: 24px;
+            display: block;
+        }
+
+        /* Two-up grid for square feature images */
+        .feature-pair {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            padding: 60px 20px;
+            gap: 60px;
+        }
+
+        .feature-pair-row {
+            display: flex;
+            gap: 24px;
+            width: 100%;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .feature-pair-card {
+            flex: 1 1 380px;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 16px;
+        }
+
+        .feature-pair-card h3 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .feature-pair-card p {
+            font-size: 16px;
+            color: #666;
+            margin: 0;
+            max-width: 420px;
+            line-height: 1.5;
+        }
+
+        .feature-pair-image {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            display: block;
+        }
+
+        /* Closing CTA */
+        .closing {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+            padding: 80px 20px 40px;
+        }
+
+        .closing h2 {
+            font-size: 42px;
+            font-weight: 700;
+            color: #333;
+            margin: 0 0 24px;
+            max-width: 700px;
+            line-height: 1.2;
+        }
+
+        .closing .app-store-badge {
+            margin-top: 8px;
+        }
+
+        /* Footer */
+        .footer {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            padding: 24px 0 40px;
+        }
+
+        .footer-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 20px;
+            gap: 16px;
+        }
+
+        .footer-link {
+            font-size: 14px;
+            color: #777;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .footer-link:hover {
+            color: #333;
+        }
+
+        .footer-right {
+            display: flex;
+            gap: 16px;
+        }
+
+        /* Tablet / narrow desktop */
+        @media (max-width: 1024px) {
+            .hero {
+                padding: 64px 32px 32px;
+            }
+
+            .hero-image-wrap {
+                padding: 0 32px 32px;
+            }
+
+            .feature-section {
+                padding: 60px 24px;
+            }
+
+            .feature-pair {
+                padding: 48px 24px;
+                gap: 48px;
+            }
+
+            .feature-split {
+                padding: 60px 32px;
+                gap: 40px;
+            }
+
+            .feature-split-image-wrap {
+                flex: 0 1 240px;
+            }
+
+            .feature-image-tall {
+                max-width: 240px;
+            }
+
+            .closing {
+                padding: 64px 24px 32px;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 40px 20px 24px;
+                gap: 16px;
+            }
+
+            h1 {
+                font-size: 36px;
+            }
+
+            .subtitle {
+                font-size: 17px;
+            }
+
+            .app-logo {
+                width: 72px;
+                height: 72px;
+                border-radius: 20px;
+            }
+
+            .hero-image-wrap {
+                padding: 0 20px 24px;
+            }
+
+            .feature-section {
+                padding: 40px 20px;
+            }
+
+            .feature-section h2,
+            .feature-split-text h2,
+            .closing h2 {
+                font-size: 30px;
+            }
+
+            .feature-section p,
+            .feature-split-text p {
+                font-size: 16px;
+            }
+
+            .feature-section p {
+                margin-bottom: 28px;
+            }
+
+            .feature-pair {
+                padding: 24px 20px;
+                gap: 36px;
+            }
+
+            .feature-pair-row {
+                gap: 36px;
+            }
+
+            .feature-pair-card {
+                gap: 12px;
+            }
+
+            .feature-pair-card h3 {
+                font-size: 22px;
+            }
+
+            .feature-split {
+                padding: 32px 20px;
+                gap: 20px;
+                flex-direction: column;
+            }
+
+            .feature-split.reverse {
+                flex-direction: column;
+            }
+
+            .feature-split-text {
+                flex: 0 1 auto;
+                max-width: 460px;
+                text-align: center;
+            }
+
+            .feature-split-image-wrap {
+                flex: 0 1 auto;
+                max-width: 220px;
+            }
+
+            .feature-image-tall {
+                max-width: 220px;
+                max-height: none;
+            }
+
+            .closing {
+                padding: 40px 20px 16px;
+            }
+
+            .closing h2 {
+                margin-bottom: 16px;
+            }
+
+            .footer {
+                padding: 16px 0 24px;
+            }
+
+            .footer-container {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <a href="/dawnanddusk/" class="app-logo-link" aria-label="Back to Dawn and Dusk">
+            <img src="../../images/Sun_App_logo_3 1.png" alt="Dawn and Dusk app icon" class="app-logo">
+        </a>
+        <h1>Dawn and Dusk 2026 Summer Update.</h1>
+        <p class="subtitle">Improvements and upgrades to improve sunrise and sunset, build rituals to experience more of them.</p>
+        <a href="https://apps.apple.com/us/app/dawn-and-dusk/id6736839971" target="_blank">
+            <img src="../../images/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="Download on the App Store" class="app-store-badge">
+        </a>
+    </section>
+
+    <div class="hero-image-wrap">
+        <img src="../../images/summer-2026/Dawn and Dusk hero.png" alt="Dawn and Dusk summer 2026 hero" class="hero-image">
+    </div>
+
+    <section class="feature-section">
+        <h2>Streaks</h2>
+        <p>Build a habit of stepping outside. Track how many days in a row you've caught the sun.</p>
+        <img src="../../images/summer-2026/Streaks.png" alt="Streaks" class="feature-image-wide">
+    </section>
+
+    <section class="feature-section">
+        <h2>Enhanced charts</h2>
+        <p>A richer look at the rhythm of light across each day.</p>
+        <img src="../../images/summer-2026/Enhanced-Charts.png" alt="Enhanced sun charts" class="feature-image-wide">
+    </section>
+
+    <section class="feature-split">
+        <div class="feature-split-text">
+            <h2>Sunrise alarm</h2>
+            <p>Wake up with the sun, every day.</p>
+        </div>
+        <div class="feature-split-image-wrap">
+            <img src="../../images/summer-2026/Sunrise-alarm.png" alt="Sunrise alarm" class="feature-image-tall">
+        </div>
+    </section>
+
+    <section class="feature-split reverse">
+        <div class="feature-split-text">
+            <h2>Sunset notifications</h2>
+            <p>A gentle nudge before the sun goes down.</p>
+        </div>
+        <div class="feature-split-image-wrap">
+            <img src="../../images/summer-2026/Notification-Sunset.png" alt="Sunset notification" class="feature-image-tall">
+        </div>
+    </section>
+
+    <section class="feature-split">
+        <div class="feature-split-text">
+            <h2>Community gallery</h2>
+            <p>Share your sunrises and sunsets with the world.</p>
+        </div>
+        <div class="feature-split-image-wrap">
+            <img src="../../images/summer-2026/Community-Gallery.png" alt="Community gallery" class="feature-image-tall">
+        </div>
+    </section>
+
+    <section class="feature-split reverse">
+        <div class="feature-split-text">
+            <h2>Sun table</h2>
+            <p>See the full day at a glance &mdash; every sun event for any date, all in one view.</p>
+        </div>
+        <div class="feature-split-image-wrap">
+            <img src="../../images/summer-2026/Sun-Table.png" alt="Sun table view" class="feature-image-tall">
+        </div>
+    </section>
+
+    <section class="feature-pair">
+        <div class="feature-pair-row">
+            <div class="feature-pair-card">
+                <img src="../../images/summer-2026/Weather Summary.png" alt="Weather summary" class="feature-pair-image">
+                <h3>Weather, woven in</h3>
+                <p>Quick weather context alongside your sun times so you know what to expect outside.</p>
+            </div>
+            <div class="feature-pair-card">
+                <img src="../../images/summer-2026/Offline mode.png" alt="Offline mode" class="feature-pair-image">
+                <h3>Works offline</h3>
+                <p>All your sun times available without a signal, anywhere the day takes you.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="feature-pair">
+        <div class="feature-pair-row">
+            <div class="feature-pair-card">
+                <img src="../../images/summer-2026/Compass.png" alt="Built-in compass" class="feature-pair-image">
+                <h3>Find the sun</h3>
+                <p>A built-in compass that points to where the sun is right now.</p>
+            </div>
+            <div class="feature-pair-card">
+                <img src="../../images/summer-2026/Compact navigation.png" alt="Compact navigation" class="feature-pair-image">
+                <h3>Compact navigation</h3>
+                <p>Refined navigation that gets you anywhere in the app in a tap.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="closing">
+        <h2>Made for all of us, to get outside more.</h2>
+        <a href="https://apps.apple.com/us/app/dawn-and-dusk/id6736839971" target="_blank">
+            <img src="../../images/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="Download on the App Store" class="app-store-badge">
+        </a>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <a href="/dawnanddusk/" class="footer-link">&larr; Back to Dawn and Dusk</a>
+            <div class="footer-right">
+                <a href="mailto:lpfeif19@gmail.com" class="footer-link">Contact</a>
+                <a href="/dawnanddusk/privacypolicy/" class="footer-link">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

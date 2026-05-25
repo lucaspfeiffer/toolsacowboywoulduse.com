@@ -968,6 +968,62 @@
             }
         }
         
+        /* Launch announcement banner */
+        .launch-banner {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            background-color: #FFF7EE;
+            border-bottom: 1px solid rgba(255, 127, 80, 0.18);
+        }
+
+        .launch-banner a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            text-decoration: none;
+            width: 100%;
+            max-width: 1200px;
+            transition: background-color 0.2s ease;
+        }
+
+        .launch-banner a:hover {
+            background-color: rgba(255, 127, 80, 0.06);
+        }
+
+        .launch-banner .badge {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #FF7F50;
+            background-color: rgba(255, 127, 80, 0.12);
+            padding: 4px 8px;
+            border-radius: 999px;
+        }
+
+        .launch-banner .arrow {
+            color: #FF7F50;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .launch-banner a {
+                font-size: 13px;
+                gap: 8px;
+                padding: 10px 16px;
+            }
+            .launch-banner .badge {
+                font-size: 10px;
+                padding: 3px 6px;
+            }
+        }
+
         .quotes-section {
             display: flex;
             flex-direction: column;
@@ -1007,6 +1063,13 @@
     </style>
 </head>
 <body>
+    <div class="launch-banner">
+        <a href="/dawnanddusk/summer-2026/">
+            <span class="badge">New</span>
+            <span>Summer 2026 update is here</span>
+            <span class="arrow">&rarr;</span>
+        </a>
+    </div>
     <div class="content-container">
         <div class="text-content">
             <img src="../images/Sun_App_logo_3 1.png" alt="Dawn and Dusk App Logo" class="app-logo">
