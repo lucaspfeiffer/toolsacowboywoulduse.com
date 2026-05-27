@@ -38,7 +38,7 @@
             max-width: 1000px;
             width: 100%;
             margin-top: 10px;
-            min-height: calc(100vh - 15px);
+            min-height: calc(100vh - 140px);
             padding: 40px 60px;
             box-sizing: border-box;
         }
@@ -968,59 +968,217 @@
             }
         }
         
-        /* Launch announcement banner */
-        .launch-banner {
-            width: 100%;
+        /* ── Tools a Cowboy Would Use navigation (ported from main site) */
+        .navigation-bar {
             display: flex;
             justify-content: center;
-            background-color: #FFF7EE;
-            border-bottom: 1px solid rgba(255, 127, 80, 0.18);
+            width: 100%;
+            padding: 24px 20px 8px;
+            box-sizing: border-box;
+        }
+
+        .nav-row-top {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+        }
+
+        .nav-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 500 !important;
+            color: #F4E6D7;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            background:
+                linear-gradient(145deg, #52221F 0%, #34151A 50%, #1E0C0F 100%),
+                linear-gradient(90deg, transparent 46%, rgba(74, 31, 31, 0.7) 50%, transparent 54%),
+                linear-gradient(0deg, transparent 47%, rgba(47, 19, 24, 0.6) 50%, transparent 53%),
+                linear-gradient(135deg, transparent 45%, rgba(90, 35, 25, 0.4) 50%, transparent 55%),
+                linear-gradient(67deg, transparent 48%, rgba(30, 12, 8, 0.8) 52%, transparent 56%);
+            background-size: 100% 100%, 2px 2px, 4px 4px, 8px 8px, 16px 16px;
+            padding: 12px 20px;
+            white-space: nowrap;
+            border: 2px solid;
+            border-top-color: rgba(90, 45, 35, 0.9);
+            border-left-color: rgba(90, 45, 35, 0.9);
+            border-right-color: rgba(26, 11, 14, 1);
+            border-bottom-color: rgba(26, 11, 14, 1);
+            box-shadow:
+                inset 0 1px 1px rgba(120, 60, 45, 0.4),
+                inset 0 -1px 2px rgba(26, 11, 14, 0.6),
+                2px 2px 6px 1px rgba(47, 19, 24, 0.4);
+            text-shadow: 1px 1px 3px rgba(26, 11, 14, 0.6);
+            border-radius: 0;
+        }
+
+        .nav-btn:hover {
+            color: #FFEECC;
+            border-top-color: rgba(120, 60, 45, 1);
+            border-left-color: rgba(120, 60, 45, 1);
+            box-shadow:
+                inset 0 1px 2px rgba(150, 80, 60, 0.5),
+                inset 0 -1px 2px rgba(26, 11, 14, 0.7),
+                2px 2px 8px 2px rgba(47, 19, 24, 0.5);
+        }
+
+        .nav-btn:active {
+            border-top-color: rgba(26, 11, 14, 1);
+            border-left-color: rgba(26, 11, 14, 1);
+            border-right-color: rgba(90, 45, 35, 0.9);
+            border-bottom-color: rgba(90, 45, 35, 0.9);
+            box-shadow:
+                inset 4px 4px 8px rgba(26, 11, 14, 0.9),
+                inset -2px -2px 4px rgba(120, 60, 45, 0.1),
+                0px 0px 1px rgba(47, 19, 24, 0.2);
+        }
+
+        .nav-icon-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            color: #F4E6D7;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            background:
+                linear-gradient(145deg, #52221F 0%, #34151A 50%, #1E0C0F 100%),
+                linear-gradient(90deg, transparent 46%, rgba(74, 31, 31, 0.7) 50%, transparent 54%),
+                linear-gradient(0deg, transparent 47%, rgba(47, 19, 24, 0.6) 50%, transparent 53%),
+                linear-gradient(135deg, transparent 45%, rgba(90, 35, 25, 0.4) 50%, transparent 55%),
+                linear-gradient(67deg, transparent 48%, rgba(30, 12, 8, 0.8) 52%, transparent 56%);
+            background-size: 100% 100%, 2px 2px, 4px 4px, 8px 8px, 16px 16px;
+            padding: 12px;
+            border: 2px solid;
+            border-top-color: rgba(90, 45, 35, 0.9);
+            border-left-color: rgba(90, 45, 35, 0.9);
+            border-right-color: rgba(26, 11, 14, 1);
+            border-bottom-color: rgba(26, 11, 14, 1);
+            box-shadow:
+                inset 0 1px 1px rgba(120, 60, 45, 0.4),
+                inset 0 -1px 2px rgba(26, 11, 14, 0.6),
+                2px 2px 6px 1px rgba(47, 19, 24, 0.4);
+            border-radius: 0;
+        }
+
+        .nav-icon-btn:hover {
+            color: #FFEECC;
+            border-top-color: rgba(120, 60, 45, 1);
+            border-left-color: rgba(120, 60, 45, 1);
+            box-shadow:
+                inset 0 1px 2px rgba(150, 80, 60, 0.5),
+                inset 0 -1px 2px rgba(26, 11, 14, 0.7),
+                2px 2px 8px 2px rgba(47, 19, 24, 0.5);
+        }
+
+        .nav-icon-btn:active {
+            border-top-color: rgba(26, 11, 14, 1);
+            border-left-color: rgba(26, 11, 14, 1);
+            border-right-color: rgba(90, 45, 35, 0.9);
+            border-bottom-color: rgba(90, 45, 35, 0.9);
+            box-shadow:
+                inset 4px 4px 8px rgba(26, 11, 14, 0.9),
+                inset -2px -2px 4px rgba(120, 60, 45, 0.1),
+                0px 0px 1px rgba(47, 19, 24, 0.2);
+        }
+
+        .nav-glyph {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .nav-btn .nav-glyph { display: none; }
+
+        /* ── Launch announcement banner */
+        .launch-banner {
+            width: 100%;
+            height: 64px;
+            background-color: #FFD200;
+            box-shadow: inset 0 -1px 0 #FFAA00;
         }
 
         .launch-banner a {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            padding: 12px 20px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #333;
-            text-decoration: none;
+            gap: 16px;
+            height: 100%;
             width: 100%;
-            max-width: 1200px;
-            transition: background-color 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: #000;
+            text-decoration: none;
+            box-sizing: border-box;
+            padding: 0 24px;
         }
 
-        .launch-banner a:hover {
-            background-color: rgba(255, 127, 80, 0.06);
+        .launch-banner .banner-squares {
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
         }
 
-        .launch-banner .badge {
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: #FF7F50;
-            background-color: rgba(255, 127, 80, 0.12);
-            padding: 4px 8px;
-            border-radius: 999px;
-        }
-
-        .launch-banner .arrow {
-            color: #FF7F50;
-            font-weight: 700;
+        .launch-banner .banner-square {
+            width: 32px;
+            height: 32px;
+            border-radius: 7px;
+            display: block;
         }
 
         @media (max-width: 768px) {
+            .navigation-bar {
+                padding: 14px 16px 4px;
+            }
+
+            .nav-row-top {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav-row-top .nav-btn {
+                font-size: 14px;
+                padding: 12px 14px;
+                flex: 1 1 60px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .nav-row-top .nav-btn .nav-label { display: none; }
+            .nav-row-top .nav-btn .nav-glyph { display: inline-block; }
+
+            .nav-row-top .nav-icon-btn {
+                padding: 12px 14px;
+                flex: 1 1 60px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
             .launch-banner a {
                 font-size: 13px;
-                gap: 8px;
-                padding: 10px 16px;
+                gap: 12px;
+                padding: 0 16px;
             }
-            .launch-banner .badge {
-                font-size: 10px;
-                padding: 3px 6px;
+
+            .launch-banner .banner-square {
+                width: 24px;
+                height: 24px;
+                border-radius: 5px;
+            }
+
+            .launch-banner .banner-squares {
+                gap: 5px;
             }
         }
 
@@ -1065,11 +1223,51 @@
 <body>
     <div class="launch-banner">
         <a href="/dawnanddusk/summer-2026/">
-            <span class="badge">New</span>
-            <span>Summer 2026 update is here</span>
-            <span class="arrow">&rarr;</span>
+            <span>2026 Summer updates for Dawn and Dusk</span>
+            <span class="banner-squares" aria-hidden="true">
+                <span class="banner-square" style="background-color: #FFAD1A;"></span>
+                <span class="banner-square" style="background-color: #A854F8;"></span>
+                <span class="banner-square" style="background-color: #21C45F;"></span>
+            </span>
         </a>
     </div>
+
+    <nav class="navigation-bar">
+        <div class="nav-row-top">
+            <a href="/" class="nav-btn" aria-label="Home">
+                <svg class="nav-glyph" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 11L12 4l9 7"/>
+                    <path d="M4 11v9h16v-9"/>
+                    <path d="M9 20v-7h6v7"/>
+                    <path d="M9 13l6 7M15 13l-6 7"/>
+                </svg>
+                <span class="nav-label">Home</span>
+            </a>
+            <a href="https://www.instagram.com/tools_a_cowboy_would_use/" target="_blank" class="nav-icon-btn" aria-label="Instagram">
+                <svg class="nav-glyph" viewBox="0 0 24 24" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18" rx="5"/>
+                    <circle cx="12" cy="12" r="4"/>
+                    <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/>
+                </svg>
+            </a>
+            <a href="https://blog.toolsacowboywoulduse.com" target="_blank" class="nav-btn" aria-label="Get notified">
+                <svg class="nav-glyph" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 3v2"/>
+                    <path d="M6 17c1-2 1.5-5 1.5-8a4.5 4.5 0 0 1 9 0c0 3 .5 6 1.5 8z"/>
+                    <path d="M10 19a2 2 0 0 0 4 0"/>
+                </svg>
+                <span class="nav-label">Get notified</span>
+            </a>
+            <a href="/?view=store" class="nav-btn" aria-label="Store">
+                <svg class="nav-glyph" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M10 5c0-3 2-3 2-1"/>
+                    <path d="M12 4v2"/>
+                    <path d="M12 6L4 16h16z"/>
+                </svg>
+                <span class="nav-label">Store</span>
+            </a>
+        </div>
+    </nav>
     <div class="content-container">
         <div class="text-content">
             <img src="../images/Sun_App_logo_3 1.png" alt="Dawn and Dusk App Logo" class="app-logo">
