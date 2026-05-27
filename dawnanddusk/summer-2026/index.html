@@ -377,16 +377,13 @@
             width: 100%;
             max-width: 280px;
             aspect-ratio: 861 / 1745;
-            background-color: #0F0F12;
-            border-radius: 32px;
-            overflow: hidden;
             position: relative;
         }
 
         .tool-phone img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
             display: block;
         }
 
@@ -630,7 +627,6 @@
 
             .tool-phone {
                 max-width: 220px;
-                border-radius: 26px;
             }
 
 
@@ -655,30 +651,20 @@
             <img src="../../images/Sun_App_logo_3 1.png" alt="Dawn and Dusk app icon" class="app-logo">
         </a>
         <h1>Dawn and Dusk 2026 Summer Update.</h1>
-        <p class="subtitle">Improvements and upgrades to improve sunrise and sunset, build rituals to experience more of them.</p>
+        <p class="subtitle">Improvements to your sunrise and sunset experience. New tools to help you build habits and experience more of them.</p>
         <a href="https://apps.apple.com/us/app/dawn-and-dusk/id6736839971" target="_blank">
             <img src="../../images/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="Download on the App Store" class="app-store-badge">
         </a>
     </section>
 
     <div class="hero-image-wrap">
-        <img src="../../images/summer-2026/Dawn and Dusk hero.png" alt="Dawn and Dusk summer 2026 hero" class="hero-image">
+        <img src="../../images/summer-2026/2026-Summer-Update-hero.webp" alt="Dawn and Dusk 2026 Summer Update" class="hero-image">
     </div>
 
     <section class="feature-section">
         <h2>Streaks</h2>
         <p>Build a habit of stepping outside. Track how many days in a row you've caught the sun.</p>
-        <img src="../../images/summer-2026/Streaks.png" alt="Streaks" class="feature-image-wide">
-    </section>
-
-    <section class="feature-split">
-        <div class="feature-split-text">
-            <h2>Community gallery</h2>
-            <p>Share your sunrises and sunsets with the world.</p>
-        </div>
-        <div class="feature-split-image-wrap">
-            <img src="../../images/summer-2026/Community-Gallery.png" alt="Community gallery" class="feature-image-tall">
-        </div>
+        <img src="../../images/summer-2026/Streaks-hero.webp" alt="Streaks" class="feature-image-wide">
     </section>
 
     <section class="feature-split reverse">
@@ -687,14 +673,24 @@
             <p>Wake up with the sun, every day.</p>
         </div>
         <div class="feature-split-image-wrap">
-            <img src="../../images/summer-2026/Sunrise-alarm.png" alt="Sunrise alarm" class="feature-image-tall">
+            <img src="../../images/summer-2026/Sunrise-alarm.webp" alt="Sunrise alarm" class="feature-image-tall">
         </div>
     </section>
 
     <section class="feature-section">
         <h2>Enhanced charts</h2>
         <p>A richer look at the rhythm of light across each day.</p>
-        <img src="../../images/summer-2026/Enhanced-Charts.png" alt="Enhanced sun charts" class="feature-image-wide">
+        <img src="../../images/summer-2026/Enhanced-Charts.webp" alt="Enhanced sun charts" class="feature-image-wide">
+    </section>
+
+    <section class="feature-split">
+        <div class="feature-split-text">
+            <h2>Community gallery</h2>
+            <p>Share your sunrises and sunsets with the world.</p>
+        </div>
+        <div class="feature-split-image-wrap">
+            <img src="../../images/summer-2026/Community-Gallery.webp" alt="Community gallery" class="feature-image-tall">
+        </div>
     </section>
 
     <section class="tools-section">
@@ -714,7 +710,9 @@
                     <div class="tool-description">
                         <p>Build a habit of stepping outside. Tap +1 within an hour of sunrise or sunset to keep your streak alive.</p>
                     </div>
-                    <div class="tool-phone" aria-label="Streaks screen placeholder"></div>
+                    <div class="tool-phone">
+                        <img src="../../images/summer-2026/Streaks-solo.webp" alt="Streaks">
+                    </div>
                 </div>
             </details>
             <details class="tool-item" style="--tool-color: #FF9500;">
@@ -729,7 +727,7 @@
                         <p>Upload your sunrises and sunsets to a moderated public feed. See what people are seeing right now, anywhere in the world.</p>
                     </div>
                     <div class="tool-phone">
-                        <img src="../../images/summer-2026/Community-Gallery.png" alt="Community gallery">
+                        <img src="../../images/summer-2026/Community-Gallery.webp" alt="Community gallery">
                     </div>
                 </div>
             </details>
@@ -744,7 +742,9 @@
                     <div class="tool-description">
                         <p>A natural-language read of the sky at sunrise and sunset, powered by Apple Weather. Choose Short, Medium, or Long.</p>
                     </div>
-                    <div class="tool-phone" aria-label="Weather summary screen placeholder"></div>
+                    <div class="tool-phone">
+                        <img src="../../images/summer-2026/Weather-summary-solo.webp" alt="Weather summary">
+                    </div>
                 </div>
             </details>
             <details class="tool-item" style="--tool-color: #FF9500;">
@@ -759,7 +759,7 @@
                         <p>A scrollable year of sunrise and sunset times for your location. Tap any row to jump there and watch the days grow.</p>
                     </div>
                     <div class="tool-phone">
-                        <img src="../../images/summer-2026/Sun-Table.png" alt="Sun table">
+                        <img src="../../images/summer-2026/Sun-Table.webp" alt="Sun table">
                     </div>
                 </div>
             </details>
@@ -774,7 +774,9 @@
                     <div class="tool-description">
                         <p>A true-north compass that points to the sun's bearing right now, plus where sunrise and sunset will sit on the horizon.</p>
                     </div>
-                    <div class="tool-phone" aria-label="Compass screen placeholder"></div>
+                    <div class="tool-phone">
+                        <img src="../../images/summer-2026/Compass-solo.webp" alt="Compass">
+                    </div>
                 </div>
             </details>
         </div>
@@ -783,13 +785,13 @@
     <section class="feature-section">
         <h2>Offline mode</h2>
         <p>Your sun times wherever the day takes you, signal or no signal.</p>
-        <img src="../../images/summer-2026/Offline mode.png" alt="Offline mode" class="feature-image-square">
+        <img src="../../images/summer-2026/Offline-mode.webp" alt="Offline mode" class="feature-image-square">
     </section>
 
     <section class="feature-section">
         <h2>Compact tab navigation</h2>
         <p>Quicker moves between every part of the app.</p>
-        <img src="../../images/summer-2026/Compact navigation.png" alt="Compact tab navigation" class="feature-image-square">
+        <img src="../../images/summer-2026/Compact-navigation.webp" alt="Compact tab navigation" class="feature-image-square">
     </section>
 
     <section class="closing">
