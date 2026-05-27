@@ -96,7 +96,7 @@
             width: 100%;
             display: flex;
             justify-content: center;
-            padding: 0 40px 40px;
+            padding: 0 40px 80px;
         }
 
         .hero-image {
@@ -115,7 +115,7 @@
             justify-content: center;
             width: 100%;
             max-width: 1200px;
-            padding: 80px 20px;
+            padding: 120px 20px;
             text-align: center;
         }
 
@@ -160,7 +160,7 @@
             gap: 60px;
             width: 100%;
             max-width: 1100px;
-            padding: 80px 40px;
+            padding: 120px 40px;
             flex-wrap: wrap;
         }
 
@@ -212,7 +212,7 @@
             align-items: center;
             width: 100%;
             max-width: 1200px;
-            padding: 60px 20px;
+            padding: 100px 20px;
             gap: 60px;
         }
 
@@ -264,7 +264,7 @@
             align-items: center;
             width: 100%;
             max-width: 1200px;
-            padding: 80px 20px;
+            padding: 120px 20px;
             gap: 64px;
         }
 
@@ -350,9 +350,27 @@
 
         .tool-content {
             display: flex;
+            align-items: center;
             justify-content: center;
+            gap: 56px;
             padding: 4px 8px 36px;
             overflow: hidden;
+        }
+
+        .tool-description {
+            flex: 1 1 280px;
+            max-width: 380px;
+        }
+
+        .tool-description p {
+            font-size: 17px;
+            color: #555;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .tool-phone {
+            flex-shrink: 0;
         }
 
         .tool-phone {
@@ -594,7 +612,20 @@
             }
 
             .tool-content {
+                flex-direction: column;
+                gap: 20px;
                 padding: 4px 4px 28px;
+            }
+
+            .tool-description {
+                flex: 0 1 auto;
+                max-width: 100%;
+                text-align: left;
+                align-self: stretch;
+            }
+
+            .tool-description p {
+                font-size: 15px;
             }
 
             .tool-phone {
@@ -680,6 +711,9 @@
                     </svg>
                 </summary>
                 <div class="tool-content">
+                    <div class="tool-description">
+                        <p>Build a habit of stepping outside. Tap +1 within an hour of sunrise or sunset to keep your streak alive.</p>
+                    </div>
                     <div class="tool-phone" aria-label="Streaks screen placeholder"></div>
                 </div>
             </details>
@@ -691,6 +725,9 @@
                     </svg>
                 </summary>
                 <div class="tool-content">
+                    <div class="tool-description">
+                        <p>Upload your sunrises and sunsets to a moderated public feed. See what people are seeing right now, anywhere in the world.</p>
+                    </div>
                     <div class="tool-phone">
                         <img src="../../images/summer-2026/Community-Gallery.png" alt="Community gallery">
                     </div>
@@ -704,6 +741,9 @@
                     </svg>
                 </summary>
                 <div class="tool-content">
+                    <div class="tool-description">
+                        <p>A natural-language read of the sky at sunrise and sunset, powered by Apple Weather. Choose Short, Medium, or Long.</p>
+                    </div>
                     <div class="tool-phone" aria-label="Weather summary screen placeholder"></div>
                 </div>
             </details>
@@ -715,6 +755,9 @@
                     </svg>
                 </summary>
                 <div class="tool-content">
+                    <div class="tool-description">
+                        <p>A scrollable year of sunrise and sunset times for your location. Tap any row to jump there and watch the days grow.</p>
+                    </div>
                     <div class="tool-phone">
                         <img src="../../images/summer-2026/Sun-Table.png" alt="Sun table">
                     </div>
@@ -728,6 +771,9 @@
                     </svg>
                 </summary>
                 <div class="tool-content">
+                    <div class="tool-description">
+                        <p>A true-north compass that points to the sun's bearing right now, plus where sunrise and sunset will sit on the horizon.</p>
+                    </div>
                     <div class="tool-phone" aria-label="Compass screen placeholder"></div>
                 </div>
             </details>
