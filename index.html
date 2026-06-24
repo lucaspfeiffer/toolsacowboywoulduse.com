@@ -584,6 +584,82 @@
         .app-store-button:hover { transform: scale(1.05); }
         .app-store-button .app-store-badge { width: 140px; height: auto; }
 
+        /* Summer Collection Section — features the Store's 2026 Summer
+           Collection on the home view. Images and the CTA both switch to
+           the store view in-page via .js-view-link. */
+        .collection-section {
+            padding: 80px 60px 120px 60px;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .collection-container { max-width: 1100px; width: 100%; margin: 0 auto; }
+
+        .collection-eyebrow {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            text-align: center;
+            color: #BE5D1D;
+            margin: 0 0 12px 0;
+        }
+
+        .collection-title {
+            font-family: 'EB Garamond', serif;
+            font-size: 48px;
+            font-weight: 700;
+            text-align: center;
+            margin: 0 0 16px 0;
+            color: #000000;
+            line-height: 1.1;
+        }
+
+        .collection-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            font-weight: 400;
+            text-align: center;
+            color: #666666;
+            margin: 0 auto 24px auto;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .collection-grid {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .collection-item {
+            display: block;
+            width: 100%;
+            max-width: 340px;
+            text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+
+        .collection-item:hover { transform: translateY(-6px); }
+
+        /* The product photos have a tall white margin above/below the
+           shirt. Crop to a square (object-position biased low to keep the
+           full shirt) so the bare image doesn't read as empty space. */
+        .collection-item img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            object-position: center 62%;
+            display: block;
+        }
+
+        .collection-cta-wrap { display: flex; justify-content: center; }
+
         /* ─────────────────────────────────────────────────────────────
            STORE VIEW
            ───────────────────────────────────────────────────────────── */
@@ -1334,6 +1410,12 @@
             .tool-description { font-size: 16px; margin-bottom: 12px; }
             .app-store-button .app-store-badge { width: 160px; }
 
+            .collection-section { padding: 60px 20px 80px 20px; }
+            .collection-title { font-size: 36px; }
+            .collection-subtitle { font-size: 16px; margin-bottom: 32px; }
+            .collection-grid { margin-bottom: 36px; }
+            .collection-item { max-width: 280px; }
+
             /* Store layout when the top nav has stacked into two rows —
                the editorial copy needs more headroom below the nav and
                more breathing room on the left edge. */
@@ -1554,6 +1636,24 @@
             <p class="tagline">making tools people love</p>
         </section>
 
+        <section class="collection-section">
+            <div class="collection-container">
+                <p class="collection-eyebrow">New</p>
+                <h2 class="collection-title">2026 Summer Collection</h2>
+                <p class="collection-subtitle">
+                    Limited time collection by Tools a Cowboy Would Use. Each item is made to order, hand embroidered, hand drawn artwork, with a patch for when it was made. This collection elevates Dawn and Dusk by Tools a Cowboy Would Use into a category of legendary tools.
+                </p>
+                <div class="collection-grid">
+                    <a href="?view=store" class="collection-item js-view-link" data-view="store" aria-label="Dawn and Dusk — shop the collection">
+                        <img src="store/images/dawn_and_dusk.webp" alt="Dawn and Dusk apparel">
+                    </a>
+                </div>
+                <div class="collection-cta-wrap">
+                    <a href="?view=store" class="btn-primary js-view-link" data-view="store">Shop the collection</a>
+                </div>
+            </div>
+        </section>
+
         <section class="our-tools-section">
             <div class="tools-container">
                 <h2 class="tools-title">Our Tools</h2>
@@ -1600,7 +1700,7 @@
                 <section class="store-hero">
                     <h2 class="store-hero-title">2026 Summer Collection</h2>
                     <p class="store-hero-description">
-                        Limited time collection by Tools a Cowboy Would Use. Each item is hand embroidered, hand drawn artwork, with a patch for when it was made. This collection elevates Dawn and Dusk by Tools a Cowboy Would Use into a category of legendary tools.
+                        Limited time collection by Tools a Cowboy Would Use. Each item is made to order, hand embroidered, hand drawn artwork, with a patch for when it was made. This collection elevates Dawn and Dusk by Tools a Cowboy Would Use into a category of legendary tools.
                     </p>
                 </section>
             </div>
