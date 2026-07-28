@@ -2060,10 +2060,14 @@
             const imgHTML = detailSrc
                 ? `<img src="${detailSrc}" alt="${item.title}" />`
                 : `<div class="placeholder">${item.title}</div>`;
+            // Items with a Square product page go straight to checkout;
+            // the rest keep the per-item request mailto.
             const mailto = `mailto:lpfeif19@gmail.com?subject=${encodeURIComponent(`Tools a Cowboy Would Use — Requesting ${item.title} shirt`)}`;
-            const requestBtn = item.requestable
-                ? `<a href="${mailto}" class="btn-primary">Request shirt&nbsp;&nbsp;—&nbsp;&nbsp;$299</a>`
-                : '';
+            const requestBtn = !item.requestable
+                ? ''
+                : item.storeUrl
+                    ? `<a href="${item.storeUrl}" target="_blank" rel="noopener" class="btn-primary">Buy&nbsp;&nbsp;—&nbsp;&nbsp;$299</a>`
+                    : `<a href="${mailto}" class="btn-primary">Request shirt&nbsp;&nbsp;—&nbsp;&nbsp;$299</a>`;
             const appStoreBtn = item.appStoreUrl
                 ? `<a href="${item.appStoreUrl}" target="_blank" rel="noopener" class="app-store-button"><img src="images/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="Download on the App Store" class="app-store-badge"></a>`
                 : '';
