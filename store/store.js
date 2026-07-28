@@ -10,8 +10,11 @@
 //   image:       path to the scroll image (webp)
 //   detailImage: optional tighter crop used on the detail modal; falls
 //                back to `image` when omitted
-//   requestable: when true, the detail page shows the "Request shirt"
-//                primary button
+//   requestable: when true, the detail page shows the primary buy/request
+//                button; set false to take an item off sale
+//   storeUrl:    optional Square checkout link. When set (and requestable),
+//                the primary button becomes "Buy" and opens this page
+//                instead of the request mailto
 //   appStoreUrl: optional — when set, the detail page also shows the
 //                "Download on App Store" badge linking here
 //   gallery:     optional array (1–10) of extra image paths shown on the
@@ -30,6 +33,7 @@ const items = [
         image: './store/images/dawn_and_dusk.webp',
         detailImage: './store/images/dawn_and_dusk2.webp',
         requestable: true,
+        storeUrl: 'https://square.link/u/VUtutICn',
         appStoreUrl: 'https://apps.apple.com/us/app/dawn-and-dusk/id6736839971',
         gallery: [
             './store/images/dawn_and_dusk_g1.webp',
@@ -46,7 +50,8 @@ const items = [
         collections: [],
         image: './store/images/lets_grow.webp',
         detailImage: './store/images/lets_grow2.webp',
-        requestable: true
+        requestable: true,
+        storeUrl: 'https://square.link/u/b7jVgBV3'
     },
     {
         id: 'mail',
