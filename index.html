@@ -20,7 +20,9 @@
     <meta property="og:image" content="https://toolsacowboywoulduse.com/images/hero-veggies.webp">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://toolsacowboywoulduse.com">
+    <meta property="og:site_name" content="Tools a Cowboy Would Use">
     <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://toolsacowboywoulduse.com/">
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
@@ -1620,7 +1622,7 @@
     <!-- ============================ HOME VIEW ============================ -->
     <div class="home-view">
         <section class="hero-section">
-            <img src="images/hero-veggies.webp" alt="Veggies" class="hero-image">
+            <img src="images/hero-veggies.webp" alt="Veggies" class="hero-image" width="1024" height="721" fetchpriority="high">
             <h1>Tools a Cowboy Would Use</h1>
             <p class="tagline">making tools people love</p>
         </section>
@@ -1633,7 +1635,7 @@
                 </p>
                 <div class="collection-grid">
                     <a href="?view=store" class="collection-item js-view-link" data-view="store" aria-label="Dawn and Dusk — shop the collection">
-                        <img src="store/images/dawn_and_dusk.webp" alt="Dawn and Dusk apparel">
+                        <img src="store/images/dawn_and_dusk.webp" alt="Dawn and Dusk apparel" width="1536" height="2048" loading="lazy" decoding="async">
                     </a>
                 </div>
                 <div class="collection-cta-wrap">
@@ -1651,7 +1653,7 @@
                         <div class="tool-row">
                             <div class="tool-left">
                                 <a href="dawnanddusk/" class="tool-logo">
-                                    <img src="images/Sun_App_logo_3 1.png" alt="Dawn and Dusk App Logo" class="tool-app-logo">
+                                    <img src="images/Sun_App_logo_3 1.png" alt="Dawn and Dusk App Logo" class="tool-app-logo" width="1024" height="1024" loading="lazy" decoding="async">
                                 </a>
                                 <a href="dawnanddusk/" class="tool-name-link">
                                     <h3 class="tool-name">Dawn and Dusk</h3>
@@ -1665,7 +1667,7 @@
                             </div>
                             <div class="tool-right">
                                 <a href="https://apps.apple.com/us/app/dawn-and-dusk/id6736839971" target="_blank" class="app-store-button">
-                                    <img src="images/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="Download on the App Store" class="app-store-badge">
+                                    <img src="images/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="Download on the App Store" class="app-store-badge" width="120" height="40" loading="lazy" decoding="async">
                                 </a>
                             </div>
                         </div>
@@ -1676,7 +1678,7 @@
 
         <footer class="site-footer">
             <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">
-                <img src="images/hero-vegetables.webp" alt="TACWU patch" class="footer-patch">
+                <img src="images/hero-vegetables.webp" alt="TACWU patch" class="footer-patch" width="1024" height="1024" loading="lazy" decoding="async">
             </a>
         </footer>
     </div>
@@ -1697,7 +1699,7 @@
                  the user can reach the nav without a long swipe up. -->
             <footer class="store-footer">
                 <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">
-                    <img src="images/hero-vegetables.webp" alt="TACWU patch" class="footer-patch">
+                    <img src="images/hero-vegetables.webp" alt="TACWU patch" class="footer-patch" width="1024" height="1024" loading="lazy" decoding="async">
                 </a>
             </footer>
         </div>
@@ -2069,7 +2071,7 @@
                     ? `<a href="${item.storeUrl}" target="_blank" rel="noopener" class="btn-primary">Buy&nbsp;&nbsp;—&nbsp;&nbsp;$299</a>`
                     : `<a href="${mailto}" class="btn-primary">Request shirt&nbsp;&nbsp;—&nbsp;&nbsp;$299</a>`;
             const appStoreBtn = item.appStoreUrl
-                ? `<a href="${item.appStoreUrl}" target="_blank" rel="noopener" class="app-store-button"><img src="images/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="Download on the App Store" class="app-store-badge"></a>`
+                ? `<a href="${item.appStoreUrl}" target="_blank" rel="noopener" class="app-store-button"><img src="images/Download_on_the_App_Store_Badge_US-UK_RGB_blk_092917.svg" alt="Download on the App Store" class="app-store-badge" width="120" height="40" loading="lazy" decoding="async"></a>`
                 : '';
             const descHTML = item.description
                 ? `<p class="modal-item-description">${item.description}</p>`
