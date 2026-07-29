@@ -649,6 +649,160 @@
 
         .collection-cta-wrap { display: flex; justify-content: center; }
 
+        /* Community Gallery Section — surfaces photos uploaded from the
+           Dawn and Dusk app and published at dawnanddusk.earth. Dark
+           ground so the dusk photography reads; the section registers
+           with the home theme observer so the mobile browser chrome
+           follows it. The strip is a scroll-snapped filmstrip: swipe on
+           touch, arrow buttons on hover-capable pointers. */
+        .gallery-section {
+            --gallery-card-w: 260px;
+            --gallery-gap: 20px;
+            --gallery-edge: 60px;
+            padding: 120px 0 140px 0;
+            background-color: #14100F;
+        }
+
+        .gallery-header { padding: 0 var(--gallery-edge); }
+
+        .gallery-title {
+            font-family: 'EB Garamond', serif;
+            font-size: 48px;
+            font-weight: 700;
+            text-align: center;
+            margin: 0 0 16px 0;
+            color: #F4E6D7;
+            line-height: 1.1;
+        }
+
+        .gallery-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            font-weight: 400;
+            text-align: center;
+            color: #A79789;
+            margin: 0 auto;
+            max-width: 620px;
+            line-height: 1.6;
+        }
+
+        .gallery-strip-wrap { position: relative; margin: 44px 0 32px 0; }
+
+        /* Full-bleed so the next photo peeks past the right edge and
+           reads as "there is more to flip through". The edge padding
+           lines the first card up with the header copy. */
+        .gallery-strip {
+            display: flex;
+            gap: var(--gallery-gap);
+            padding: 0 var(--gallery-edge);
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .gallery-strip::-webkit-scrollbar { display: none; }
+
+        .gallery-figure {
+            flex: 0 0 var(--gallery-card-w);
+            margin: 0;
+            /* start (not center) so snap points line up with the whole-card
+               steps the arrows scroll by — centre alignment fights the
+               programmatic scroll and re-snaps it back. */
+            scroll-snap-align: start;
+        }
+
+        /* height:auto is required — the width/height attributes (there to
+           reserve layout space before the image loads) otherwise resolve
+           the height and aspect-ratio never applies. */
+        .gallery-figure img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 3 / 4;
+            object-fit: cover;
+            display: block;
+            background-color: #241D1B;
+        }
+
+        .gallery-caption {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #8C7D71;
+            margin-top: 12px;
+        }
+
+        .gallery-caption .gallery-place { color: #C9B8A8; }
+
+        /* Centred on the image rather than the whole figure, so the
+           caption row below does not drag the arrows off-centre. */
+        .gallery-nav {
+            position: absolute;
+            top: calc(var(--gallery-card-w) * 4 / 3 / 2);
+            transform: translateY(-50%);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            padding: 0;
+            background: rgba(20, 16, 15, 0.78);
+            border: 1px solid rgba(244, 230, 215, 0.3);
+            color: #F4E6D7;
+            cursor: pointer;
+            transition: background 0.2s ease, opacity 0.2s ease;
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .gallery-nav { display: flex; }
+        }
+
+        .gallery-nav:hover { background: rgba(52, 21, 26, 0.95); }
+        .gallery-nav[disabled] { opacity: 0.25; cursor: default; }
+        .gallery-nav[disabled]:hover { background: rgba(20, 16, 15, 0.78); }
+        .gallery-nav.prev { left: 16px; }
+        .gallery-nav.next { right: 16px; }
+        .gallery-nav svg { width: 18px; height: 18px; display: block; }
+
+        .gallery-surfaces {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px 28px;
+            list-style: none;
+            margin: 0 0 28px 0;
+            padding: 0 var(--gallery-edge);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #A79789;
+        }
+
+        .gallery-surfaces li { position: relative; }
+
+        .gallery-surfaces li + li::before {
+            content: '';
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            width: 3px;
+            height: 3px;
+            transform: translateY(-50%);
+            background-color: #6B5D53;
+            border-radius: 50%;
+        }
+
+        .gallery-cta-wrap { display: flex; justify-content: center; }
+
         /* ─────────────────────────────────────────────────────────────
            STORE VIEW
            ───────────────────────────────────────────────────────────── */
@@ -1405,6 +1559,18 @@
             .collection-grid { margin-bottom: 36px; }
             .collection-item { max-width: 280px; }
 
+            .gallery-section {
+                --gallery-card-w: 76vw;
+                --gallery-gap: 14px;
+                --gallery-edge: 20px;
+                padding: 80px 0 100px 0;
+            }
+            .gallery-title { font-size: 36px; }
+            .gallery-subtitle { font-size: 16px; }
+            .gallery-strip-wrap { margin: 32px 0 28px 0; }
+            .gallery-surfaces { font-size: 12px; gap: 8px 22px; margin-bottom: 24px; }
+            .gallery-surfaces li + li::before { left: -12px; }
+
             /* Store layout when the top nav has stacked into two rows —
                the editorial copy needs more headroom below the nav and
                more breathing room on the left edge. */
@@ -1642,6 +1808,75 @@
             </div>
         </section>
 
+        <section class="gallery-section">
+            <div class="gallery-header">
+                <h2 class="gallery-title">The Community Gallery</h2>
+                <p class="gallery-subtitle">
+                    Every sunrise and sunset here was uploaded from the Dawn and Dusk app by someone who stepped outside for it. Shared to the community gallery, the light people catch shows up in more than one place.
+                </p>
+            </div>
+
+            <div class="gallery-strip-wrap">
+                <button type="button" class="gallery-nav prev" id="gallery-prev" aria-label="Previous photos">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M15 18l-6-6 6-6"/>
+                    </svg>
+                </button>
+
+                <div class="gallery-strip" id="gallery-strip">
+                    <figure class="gallery-figure">
+                        <img src="images/gallery/01-madison-lake.webp" alt="Sunset over Madison Lake" loading="lazy" decoding="async" width="675" height="900">
+                        <figcaption class="gallery-caption"><span class="gallery-place">Madison Lake</span><span>July 2026</span></figcaption>
+                    </figure>
+                    <figure class="gallery-figure">
+                        <img src="images/gallery/02-madrid.webp" alt="Sunset behind a tree in Madrid" loading="lazy" decoding="async" width="675" height="900">
+                        <figcaption class="gallery-caption"><span class="gallery-place">Madrid</span><span>July 2026</span></figcaption>
+                    </figure>
+                    <figure class="gallery-figure">
+                        <img src="images/gallery/03-san-francisco.webp" alt="Sunset over the Pacific in San Francisco" loading="lazy" decoding="async" width="675" height="900">
+                        <figcaption class="gallery-caption"><span class="gallery-place">San Francisco</span><span>February 2026</span></figcaption>
+                    </figure>
+                    <figure class="gallery-figure">
+                        <img src="images/gallery/04-grand-rapids.webp" alt="Sunset across the water in Grand Rapids" loading="lazy" decoding="async" width="675" height="900">
+                        <figcaption class="gallery-caption"><span class="gallery-place">Grand Rapids</span><span>June 2026</span></figcaption>
+                    </figure>
+                    <figure class="gallery-figure">
+                        <img src="images/gallery/05-aspen.webp" alt="Dusk in downtown Aspen" loading="lazy" decoding="async" width="675" height="900">
+                        <figcaption class="gallery-caption"><span class="gallery-place">Aspen</span><span>June 2026</span></figcaption>
+                    </figure>
+                    <figure class="gallery-figure">
+                        <img src="images/gallery/06-franklin.webp" alt="Orange sky over the treeline in Franklin" loading="lazy" decoding="async" width="675" height="900">
+                        <figcaption class="gallery-caption"><span class="gallery-place">Franklin</span><span>May 2026</span></figcaption>
+                    </figure>
+                    <figure class="gallery-figure">
+                        <img src="images/gallery/07-half-moon-bay.webp" alt="Sunset over the coast at Half Moon Bay" loading="lazy" decoding="async" width="675" height="900">
+                        <figcaption class="gallery-caption"><span class="gallery-place">Half Moon Bay</span><span>March 2026</span></figcaption>
+                    </figure>
+                    <figure class="gallery-figure">
+                        <img src="images/gallery/08-san-francisco.webp" alt="Photographing the sunset on the San Francisco coast" loading="lazy" decoding="async" width="675" height="900">
+                        <figcaption class="gallery-caption"><span class="gallery-place">San Francisco</span><span>February 2026</span></figcaption>
+                    </figure>
+                </div>
+
+                <button type="button" class="gallery-nav next" id="gallery-next" aria-label="More photos">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </button>
+            </div>
+
+            <ul class="gallery-surfaces">
+                <li>In the app</li>
+                <li>Online</li>
+                <li>In print</li>
+                <li>And more</li>
+            </ul>
+
+            <div class="gallery-cta-wrap">
+                <a href="https://dawnanddusk.earth" target="_blank" rel="noopener" class="btn-primary">View the gallery</a>
+            </div>
+        </section>
+
         <section class="our-tools-section">
             <div class="tools-container">
                 <h2 class="tools-title">Our Tools</h2>
@@ -1873,6 +2108,8 @@
 
             const heroSection = document.querySelector('.hero-section');
             const toolsSection = document.querySelector('.our-tools-section');
+            const gallerySection = document.querySelector('.gallery-section');
+            const collectionSection = document.querySelector('.collection-section');
             const themeMeta = document.querySelector('meta[name="theme-color"]');
 
             const observer = new IntersectionObserver((entries) => {
@@ -1880,9 +2117,15 @@
                 if (document.documentElement.dataset.view !== 'home') return;
                 entries.forEach(entry => {
                     if (!entry.isIntersecting) return;
-                    if (entry.target === toolsSection) {
+                    if (entry.target === toolsSection || entry.target === collectionSection) {
                         themeMeta.content = '#ffffff';
                         document.body.style.backgroundColor = '#ffffff';
+                    } else if (entry.target === gallerySection) {
+                        // Matches .gallery-section's background so the
+                        // mobile browser chrome does not sit white above
+                        // the dark band.
+                        themeMeta.content = '#14100F';
+                        document.body.style.backgroundColor = '#14100F';
                     } else if (entry.target === heroSection) {
                         applyHeroThemeColor();
                     }
@@ -1891,6 +2134,13 @@
 
             observer.observe(heroSection);
             observer.observe(toolsSection);
+            // Observed so scrolling back up out of the dark gallery band
+            // restores white chrome instead of holding the dark colour
+            // over the white collection module.
+            if (collectionSection) observer.observe(collectionSection);
+            if (gallerySection) observer.observe(gallerySection);
+
+            initGalleryStrip();
 
             // Hover-color title and tagline.
             const heroTitle = document.querySelector('.hero-section h1');
@@ -1907,6 +2157,46 @@
             document.addEventListener('mouseout', (e) => {
                 if (e.target.classList.contains('letter')) e.target.classList.add('fade-out');
             });
+        }
+
+        // ─────────────────────────────────────────────────────────────
+        // HOME — community gallery filmstrip
+        // ─────────────────────────────────────────────────────────────
+
+        // The strip scrolls natively (swipe / trackpad / scroll-snap).
+        // The arrows are a pointer affordance on top of that: each click
+        // advances by whole cards, sized from the live DOM so the step
+        // stays correct across the responsive card widths.
+        function initGalleryStrip() {
+            const strip = document.getElementById('gallery-strip');
+            const prev = document.getElementById('gallery-prev');
+            const next = document.getElementById('gallery-next');
+            if (!strip || !prev || !next) return;
+
+            const firstCard = strip.querySelector('.gallery-figure');
+            if (!firstCard) return;
+
+            function step() {
+                const gap = parseFloat(getComputedStyle(strip).columnGap) || 0;
+                const card = firstCard.getBoundingClientRect().width + gap;
+                // Advance by as many whole cards as are on screen, always
+                // at least one.
+                const perView = Math.max(1, Math.floor(strip.clientWidth / card));
+                return card * perView;
+            }
+
+            function syncNav() {
+                // 1px slack absorbs sub-pixel scroll positions.
+                const max = strip.scrollWidth - strip.clientWidth;
+                prev.disabled = strip.scrollLeft <= 1;
+                next.disabled = strip.scrollLeft >= max - 1;
+            }
+
+            prev.addEventListener('click', () => strip.scrollBy({ left: -step(), behavior: 'smooth' }));
+            next.addEventListener('click', () => strip.scrollBy({ left: step(), behavior: 'smooth' }));
+            strip.addEventListener('scroll', syncNav, { passive: true });
+            window.addEventListener('resize', syncNav);
+            syncNav();
         }
 
         // ─────────────────────────────────────────────────────────────
