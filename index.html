@@ -697,6 +697,11 @@
             padding: 0 var(--gallery-edge);
             overflow-x: auto;
             scroll-snap-type: x mandatory;
+            /* Without this the snapport starts at the scrollport edge, so
+               snapping settles at scrollLeft = the padding and the first
+               photo sits flush to the window instead of lining up with
+               the header copy. */
+            scroll-padding-left: var(--gallery-edge);
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
@@ -708,9 +713,8 @@
         .gallery-figure {
             flex: 0 0 var(--gallery-card-w);
             margin: 0;
-            /* start (not center) so snap points line up with the whole-card
-               steps the arrows scroll by — centre alignment fights the
-               programmatic scroll and re-snaps it back. */
+            /* start, not centre: the arrows advance by whole pages of
+               cards, so snap points should sit on card boundaries. */
             scroll-snap-align: start;
         }
 
