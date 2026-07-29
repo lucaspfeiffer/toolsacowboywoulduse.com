@@ -425,6 +425,13 @@
         .hero-section h1,
         .hero-section .tagline { cursor: default; }
 
+        /* .letter is inline-block (it carries the per-letter hover cursor
+           and color), which makes every single letter a line-break
+           opportunity — the browser would happily split "Would" into
+           "Woul / d". Each word is wrapped in a .word box that refuses to
+           break internally, so lines can only end at real spaces. */
+        .word { white-space: nowrap; }
+
         .letter {
             display: inline-block;
             transition: color 0.2s ease;
@@ -1862,10 +1869,15 @@
             '#FF44CC','#FF4488','#FF4466','#FF6688','#FF88AA','#FFAACC'
         ];
 
+        // Every character becomes its own .letter span so it can be
+        // hover-colored individually. Group them per word so the nowrap
+        // .word box keeps the browser from breaking mid-word.
         function wrapLetters(el) {
-            el.innerHTML = [...el.textContent]
-                .map(ch => ch === ' ' ? ' ' : `<span class="letter">${ch}</span>`)
-                .join('');
+            el.innerHTML = el.textContent.split(' ')
+                .map(word => `<span class="word">${
+                    [...word].map(ch => `<span class="letter">${ch}</span>`).join('')
+                }</span>`)
+                .join(' ');
         }
 
         function initHome() {
