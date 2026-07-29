@@ -641,8 +641,12 @@
         /* The product photos have a tall white margin above/below the
            shirt. Crop to a square (object-position biased low to keep the
            full shirt) so the bare image doesn't read as empty space. */
+        /* height:auto is required — the width/height attributes (there to
+           reserve layout space before the image loads) otherwise resolve
+           the height and aspect-ratio never applies. */
         .collection-item img {
             width: 100%;
+            height: auto;
             aspect-ratio: 1 / 1;
             object-fit: cover;
             object-position: center 62%;
