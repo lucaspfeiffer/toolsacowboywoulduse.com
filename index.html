@@ -2265,18 +2265,18 @@
         // ─────────────────────────────────────────────────────────────
 
         const GALLERY_PHOTOS = [
-            { slug: '01-san-francisco', place: 'San Francisco', when: 'February 2026' },
-            { slug: '02-madrid', place: 'Madrid', when: 'July 2026' },
-            { slug: '03-franklin', place: 'Franklin', when: 'May 2026' },
-            { slug: '04-half-moon-bay', place: 'Half Moon Bay', when: 'March 2026' },
-            { slug: '05-san-francisco', place: 'San Francisco', when: 'February 2026' },
-            { slug: '06-grand-rapids', place: 'Grand Rapids', when: 'June 2026' },
-            { slug: '07-san-francisco', place: 'San Francisco', when: 'February 2026' },
-            { slug: '08-aspen', place: 'Aspen', when: 'June 2026' },
-            { slug: '09-unrecorded', place: null, when: 'February 2026' },
-            { slug: '10-san-francisco', place: 'San Francisco', when: 'July 2026' },
-            { slug: '11-san-francisco', place: 'San Francisco', when: 'May 2026' },
-            { slug: '12-madison-lake', place: 'Madison Lake', when: 'July 2026' }
+            { slug: '01-san-francisco', w: 1200, h: 1600, place: 'San Francisco', when: 'February 2026' },
+            { slug: '02-madrid', w: 1200, h: 1600, place: 'Madrid', when: 'July 2026' },
+            { slug: '03-franklin', w: 1200, h: 1600, place: 'Franklin', when: 'May 2026' },
+            { slug: '04-half-moon-bay', w: 1200, h: 1600, place: 'Half Moon Bay', when: 'March 2026' },
+            { slug: '05-san-francisco', w: 1200, h: 1600, place: 'San Francisco', when: 'February 2026' },
+            { slug: '06-grand-rapids', w: 1200, h: 1600, place: 'Grand Rapids', when: 'June 2026' },
+            { slug: '07-san-francisco', w: 1200, h: 1600, place: 'San Francisco', when: 'February 2026' },
+            { slug: '08-aspen', w: 1200, h: 1600, place: 'Aspen', when: 'June 2026' },
+            { slug: '09-unrecorded', w: 1200, h: 1600, place: null, when: 'February 2026' },
+            { slug: '10-san-francisco', w: 1200, h: 1600, place: 'San Francisco', when: 'July 2026' },
+            { slug: '11-san-francisco', w: 1200, h: 1600, place: 'San Francisco', when: 'May 2026' },
+            { slug: '12-madison-lake', w: 1200, h: 1600, place: 'Madison Lake', when: 'July 2026' }
         ];
 
         function initCommunityGallery() {
@@ -2341,6 +2341,12 @@
 
             function render() {
                 const photo = GALLERY_PHOTOS[index];
+                // width/height go with the src. They only supply the box the
+                // browser reserves before the image decodes — intrinsic
+                // dimensions win afterwards — but leaving them stale gives a
+                // landscape frame a portrait placeholder that snaps on load.
+                image.width = photo.w;
+                image.height = photo.h;
                 image.src = 'images/gallery/' + photo.slug + '.webp';
                 image.alt = 'Sunrise or sunset at ' + (photo.place || 'an unrecorded location');
                 caption(placeEl, sepEl, dateEl, photo);
