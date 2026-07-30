@@ -725,6 +725,10 @@
 
         .gallery-stage {
             position: relative;
+            /* Overwritten per photo by render(). The 4/3 default is what the
+               markup's no-JS first frame is, so the box is right before the
+               script runs. */
+            --stage-ratio: 1.3333;
             height: min(72vh, 720px);
             display: flex;
             align-items: center;
@@ -1736,11 +1740,14 @@
 
             /* Narrow edges here, matching the other modules — the desktop
                fallback of 60px left the photo only 270px wide on a phone.
-               The stage is sized to exactly what a portrait frame needs at
+               The stage is sized to exactly what the current frame needs at
                this column width, so it fills rather than floating in a box,
-               and capped so a tablet does not get a 971px-tall stage. */
+               and capped so a tablet does not get a 971px-tall stage.
+               --stage-ratio is height/width of the active photo, set from
+               GALLERY_PHOTOS on every render; a fixed 4/3 here letterboxed
+               landscape frames inside a portrait-shaped box. */
             .gallery-section { padding: var(--space-section, 80px) var(--space-edge, 20px); }
-            .gallery-stage { height: min(calc((100vw - 40px) * 4 / 3), 62vh); }
+            .gallery-stage { height: min(calc((100vw - 40px) * var(--stage-ratio)), 62vh); }
             .collection-section { padding: var(--space-section) var(--space-edge); }
             .collection-title { font-size: 36px; }
             .collection-subtitle { font-size: 16px; }
@@ -2347,6 +2354,10 @@
                 // landscape frame a portrait placeholder that snaps on load.
                 image.width = photo.w;
                 image.height = photo.h;
+                // The phone layout sizes the stage off this rather than
+                // assuming portrait, so a landscape frame gets a landscape
+                // box instead of dead bands above and below it.
+                stage.style.setProperty('--stage-ratio', photo.h / photo.w);
                 image.src = 'images/gallery/' + photo.slug + '.webp';
                 image.alt = 'Sunrise or sunset at ' + (photo.place || 'an unrecorded location');
                 caption(placeEl, sepEl, dateEl, photo);
