@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en" data-theme-color="white">
+<head>
+    <meta charset="UTF-8">
+    <title>The Techno Gatherer Manifesto - Tools a Cowboy Would Use</title>
+    <meta name="description" content="Technology is changing the way humans live faster than the human body can evolve. Accelerate technological progress, but design technology that serves a natural way of life.">
+    <link rel="canonical" href="https://toolsacowboywoulduse.com/manifesto.html">
+    <meta property="og:site_name" content="Tools a Cowboy Would Use">
+    <meta property="og:title" content="The Techno Gatherer Manifesto — Designing the future for humans">
+    <meta property="og:description" content="Technology is changing the way humans live faster than the human body can evolve.">
+    <meta property="og:image" content="https://toolsacowboywoulduse.com/images/hero-veggies.webp">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://toolsacowboywoulduse.com/manifesto.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Inter:wght@300;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+
+        /* Theme variables driven by data-theme-color on <html>, set by
+           setColor() from the nav spinner. Same four brand colors and
+           same contract as the homepage: everything on this page reads
+           its color from these vars. */
+        :root {
+            --theme-bg: #ffffff;
+            --theme-text: #000;
+            --theme-muted: #494949;
+            --theme-border: rgba(0, 0, 0, 0.12);
+        }
+
+        html[data-theme-color="red"]   { --theme-bg: #7E202B; }
+        html[data-theme-color="green"] { --theme-bg: #1F2C26; }
+        html[data-theme-color="navy"]  { --theme-bg: #001E32; }
+        html[data-theme-color="white"] { --theme-bg: #ffffff; }
+
+        html[data-theme-color="red"],
+        html[data-theme-color="green"],
+        html[data-theme-color="navy"] {
+            --theme-text: #ffffff;
+            --theme-muted: rgba(255, 255, 255, 0.7);
+            --theme-border: rgba(255, 255, 255, 0.2);
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'EB Garamond', serif;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        body {
+            overflow-x: hidden;
+            background-color: var(--theme-bg);
+            color: var(--theme-text);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* ─────────────────────────────────────────────────────────────
+           SHARED NAVIGATION
+           Lifted verbatim from index.html so the chrome stays one
+           system. If the nav changes there it has to change here too —
+           this page is standalone HTML by design (no build step).
+           ───────────────────────────────────────────────────────────── */
+        .navigation-bar {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            padding: 0;
+            background: none;
+            border: none;
+        }
+
+        .nav-row-top, .nav-row-bottom { display: contents; }
+
+        .color-spinner-container {
+            position: relative;
+            z-index: 10;
+        }
+
+        .color-spinner {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background:
+                linear-gradient(145deg, #52221F 0%, #34151A 50%, #1E0C0F 100%),
+                linear-gradient(90deg, transparent 46%, rgba(74, 31, 31, 0.7) 50%, transparent 54%),
+                linear-gradient(0deg, transparent 47%, rgba(47, 19, 24, 0.6) 50%, transparent 53%),
+                linear-gradient(135deg, transparent 45%, rgba(90, 35, 25, 0.4) 50%, transparent 55%),
+                linear-gradient(67deg, transparent 48%, rgba(30, 12, 8, 0.8) 52%, transparent 56%);
+            background-size: 100% 100%, 2px 2px, 4px 4px, 8px 8px, 16px 16px;
+            padding: 12px 16px;
+            border: 2px solid;
+            border-top-color: rgba(90, 45, 35, 0.9);
+            border-left-color: rgba(90, 45, 35, 0.9);
+            border-right-color: rgba(26, 11, 14, 1);
+            border-bottom-color: rgba(26, 11, 14, 1);
+            box-shadow:
+                inset 0 1px 1px rgba(120, 60, 45, 0.4),
+                inset 0 -1px 2px rgba(26, 11, 14, 0.6),
+                2px 2px 6px 1px rgba(47, 19, 24, 0.4);
+            border-radius: 0;
+        }
+
+        .color-circle {
+            position: relative;
+            width: 28px;
+            height: 28px;
+            border-radius: 0px;
+            cursor: pointer;
+            border: 2px solid;
+            border-top-color: rgba(90, 45, 35, 1);
+            border-left-color: rgba(90, 45, 35, 1);
+            border-right-color: rgba(26, 11, 14, 1);
+            border-bottom-color: rgba(26, 11, 14, 1);
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-shrink: 0;
+            box-shadow:
+                inset 0 1px 1px rgba(120, 60, 45, 0.7),
+                inset 0 -1px 1px rgba(26, 11, 14, 0.8),
+                2px 2px 4px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(58, 26, 24, 0.6);
+        }
+
+        .color-circle:hover {
+            border-top-color: rgba(120, 60, 45, 1);
+            border-left-color: rgba(120, 60, 45, 1);
+            box-shadow:
+                inset 0 1px 2px rgba(150, 80, 60, 0.7),
+                inset 0 -1px 2px rgba(26, 11, 14, 0.7),
+                3px 3px 6px rgba(0, 0, 0, 0.6),
+                0 0 0 1px rgba(58, 26, 24, 0.5);
+        }
+
+        .color-circle:active,
+        .color-circle.pressed {
+            border-top-color: rgba(26, 11, 14, 1);
+            border-left-color: rgba(26, 11, 14, 1);
+            border-right-color: rgba(90, 45, 35, 0.9);
+            border-bottom-color: rgba(90, 45, 35, 0.9);
+            box-shadow:
+                inset 6px 6px 12px rgba(26, 11, 14, 1),
+                inset -3px -3px 6px rgba(120, 60, 45, 0.4),
+                0px 0px 1px rgba(47, 19, 24, 0.3);
+        }
+
+        .color-circle.red   { background-color: #7E202B; }
+        .color-circle.green { background-color: #1F2C26; }
+        .color-circle.navy  { background-color: #001E32; }
+        .color-circle.white {
+            background-color: #ffffff;
+            box-shadow:
+                inset 0 1px 1px rgba(120, 60, 45, 0.4),
+                inset 0 -1px 2px rgba(26, 11, 14, 0.6),
+                2px 2px 6px 1px rgba(47, 19, 24, 0.4);
+        }
+
+        .color-circle.white:active,
+        .color-circle.white.pressed {
+            box-shadow:
+                inset 6px 6px 12px rgba(50, 30, 35, 0.8),
+                inset -3px -3px 6px rgba(80, 50, 55, 0.6),
+                0px 0px 1px rgba(50, 30, 35, 0.3);
+        }
+
+        .nav-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 500 !important;
+            color: #F4E6D7;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            background:
+                linear-gradient(145deg, #52221F 0%, #34151A 50%, #1E0C0F 100%),
+                linear-gradient(90deg, transparent 46%, rgba(74, 31, 31, 0.7) 50%, transparent 54%),
+                linear-gradient(0deg, transparent 47%, rgba(47, 19, 24, 0.6) 50%, transparent 53%),
+                linear-gradient(135deg, transparent 45%, rgba(90, 35, 25, 0.4) 50%, transparent 55%),
+                linear-gradient(67deg, transparent 48%, rgba(30, 12, 8, 0.8) 52%, transparent 56%);
+            background-size: 100% 100%, 2px 2px, 4px 4px, 8px 8px, 16px 16px;
+            padding: 12px 20px;
+            white-space: nowrap;
+            border: 2px solid;
+            border-top-color: rgba(90, 45, 35, 0.9);
+            border-left-color: rgba(90, 45, 35, 0.9);
+            border-right-color: rgba(26, 11, 14, 1);
+            border-bottom-color: rgba(26, 11, 14, 1);
+            box-shadow:
+                inset 0 1px 1px rgba(120, 60, 45, 0.4),
+                inset 0 -1px 2px rgba(26, 11, 14, 0.6),
+                2px 2px 6px 1px rgba(47, 19, 24, 0.4);
+            text-shadow: 1px 1px 3px rgba(26, 11, 14, 0.6);
+            border-radius: 0;
+        }
+
+        .nav-btn:hover {
+            color: #FFEECC;
+            border-top-color: rgba(120, 60, 45, 1);
+            border-left-color: rgba(120, 60, 45, 1);
+            box-shadow:
+                inset 0 1px 2px rgba(150, 80, 60, 0.5),
+                inset 0 -1px 2px rgba(26, 11, 14, 0.7),
+                2px 2px 8px 2px rgba(47, 19, 24, 0.5);
+        }
+
+        .nav-btn:active {
+            border-top-color: rgba(26, 11, 14, 1);
+            border-left-color: rgba(26, 11, 14, 1);
+            border-right-color: rgba(90, 45, 35, 0.9);
+            border-bottom-color: rgba(90, 45, 35, 0.9);
+            box-shadow:
+                inset 4px 4px 8px rgba(26, 11, 14, 0.9),
+                inset -2px -2px 4px rgba(120, 60, 45, 0.1),
+                0px 0px 1px rgba(47, 19, 24, 0.2);
+        }
+
+        /* "You are here" pressed state — used on the active view link
+           in the top nav, and on the gallery toggle when gallery view
+           is on. */
+        .nav-btn.active,
+        .nav-btn.active:hover,
+        .nav-icon-btn.active,
+        .nav-icon-btn.active:hover {
+            cursor: default;
+            color: #F4E6D7;
+            border-top-color: rgba(10, 4, 5, 1);
+            border-left-color: rgba(10, 4, 5, 1);
+            border-right-color: rgba(70, 35, 25, 0.7);
+            border-bottom-color: rgba(70, 35, 25, 0.7);
+            background:
+                linear-gradient(145deg, #2A1014 0%, #1A0709 50%, #0E0407 100%),
+                linear-gradient(90deg, transparent 46%, rgba(74, 31, 31, 0.7) 50%, transparent 54%),
+                linear-gradient(0deg, transparent 47%, rgba(47, 19, 24, 0.6) 50%, transparent 53%),
+                linear-gradient(135deg, transparent 45%, rgba(90, 35, 25, 0.4) 50%, transparent 55%),
+                linear-gradient(67deg, transparent 48%, rgba(30, 12, 8, 0.8) 52%, transparent 56%);
+            background-size: 100% 100%, 2px 2px, 4px 4px, 8px 8px, 16px 16px;
+            box-shadow:
+                inset 4px 4px 10px rgba(0, 0, 0, 1),
+                inset 6px 6px 16px rgba(0, 0, 0, 0.7),
+                inset -2px -2px 4px rgba(120, 60, 45, 0.12),
+                0px 0px 1px rgba(0, 0, 0, 0.4);
+            text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.9);
+        }
+
+        /* Bottom-bar gallery toggle: always anchored to the right edge,
+           regardless of whether the ticker is visible. The gallery icon
+           swap is handled in CSS so it can be themed via currentColor. */
+        .js-gallery-toggle {
+            margin-left: auto;
+        }
+
+        .gallery-icon { display: block; }
+
+        .nav-icon-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            color: #F4E6D7;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            background:
+                linear-gradient(145deg, #52221F 0%, #34151A 50%, #1E0C0F 100%),
+                linear-gradient(90deg, transparent 46%, rgba(74, 31, 31, 0.7) 50%, transparent 54%),
+                linear-gradient(0deg, transparent 47%, rgba(47, 19, 24, 0.6) 50%, transparent 53%),
+                linear-gradient(135deg, transparent 45%, rgba(90, 35, 25, 0.4) 50%, transparent 55%),
+                linear-gradient(67deg, transparent 48%, rgba(30, 12, 8, 0.8) 52%, transparent 56%);
+            background-size: 100% 100%, 2px 2px, 4px 4px, 8px 8px, 16px 16px;
+            padding: 12px;
+            border: 2px solid;
+            border-top-color: rgba(90, 45, 35, 0.9);
+            border-left-color: rgba(90, 45, 35, 0.9);
+            border-right-color: rgba(26, 11, 14, 1);
+            border-bottom-color: rgba(26, 11, 14, 1);
+            box-shadow:
+                inset 0 1px 1px rgba(120, 60, 45, 0.4),
+                inset 0 -1px 2px rgba(26, 11, 14, 0.6),
+                2px 2px 6px 1px rgba(47, 19, 24, 0.4);
+            border-radius: 0;
+        }
+
+        .nav-icon-btn:hover {
+            color: #FFEECC;
+            border-top-color: rgba(120, 60, 45, 1);
+            border-left-color: rgba(120, 60, 45, 1);
+            box-shadow:
+                inset 0 1px 2px rgba(150, 80, 60, 0.5),
+                inset 0 -1px 2px rgba(26, 11, 14, 0.7),
+                2px 2px 8px 2px rgba(47, 19, 24, 0.5);
+        }
+
+        .nav-icon-btn:active {
+            border-top-color: rgba(26, 11, 14, 1);
+            border-left-color: rgba(26, 11, 14, 1);
+            border-right-color: rgba(90, 45, 35, 0.9);
+            border-bottom-color: rgba(90, 45, 35, 0.9);
+            box-shadow:
+                inset 4px 4px 8px rgba(26, 11, 14, 0.9),
+                inset -2px -2px 4px rgba(120, 60, 45, 0.1),
+                0px 0px 1px rgba(47, 19, 24, 0.2);
+        }
+
+        /* Shared sizing/styling for all nav glyphs (home, instagram,
+           get notified, store). All are outlined stroke-2 24x24 icons
+           so they read as one cohesive family at mobile. */
+        .nav-glyph {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Hide the inline glyph on the text buttons by default; show it
+           instead of the label at the mobile breakpoint. */
+        .nav-btn .nav-glyph { display: none; }
+
+        /* ─────────────────────────────────────────────────────────────
+           MANIFESTO
+           One column, one measure. The headline is the page; everything
+           below it is support. Sizes are clamped so the page never needs
+           a breakpoint to stay readable.
+           ───────────────────────────────────────────────────────────── */
+        .manifesto {
+            max-width: 760px;
+            margin: 0 auto;
+            /* Top padding clears the absolutely-positioned nav. */
+            padding: clamp(160px, 22vh, 240px) 32px 0;
+        }
+
+        .eyebrow {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--theme-muted);
+            margin: 0 0 24px 0;
+        }
+
+        .manifesto-headline {
+            font-family: 'EB Garamond', serif;
+            font-size: clamp(38px, 6.5vw, 76px);
+            font-weight: 500;
+            line-height: 1.04;
+            letter-spacing: -0.01em;
+            margin: 0 0 clamp(48px, 9vh, 88px) 0;
+            max-width: 14em;
+        }
+
+        .manifesto p {
+            font-family: 'EB Garamond', serif;
+            font-size: clamp(19px, 2.2vw, 22px);
+            line-height: 1.62;
+            margin: 0 0 1.5em 0;
+            max-width: 34em;
+        }
+
+        /* "(rough draft)" is in lucas's title, so it stays until he says
+           otherwise. Its own span so it can be sized down, muted, or
+           deleted without touching the headline text. */
+        .draft-mark {
+            font-size: 0.42em;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--theme-muted);
+            white-space: nowrap;
+            vertical-align: 0.35em;
+        }
+
+        /* Element-qualified on purpose. `.manifesto p` above is (0,1,1);
+           a bare `.manifesto-subtitle` is (0,1,0) and loses, which
+           silently reverts these to body size. Same for .examples and
+           .closing below. */
+        p.manifesto-subtitle {
+            font-family: 'EB Garamond', serif;
+            font-size: clamp(24px, 3.4vw, 34px);
+            font-weight: 400;
+            font-style: italic;
+            line-height: 1.25;
+            color: var(--theme-muted);
+            margin: 0 0 clamp(48px, 9vh, 88px) 0;
+            max-width: 24em;
+        }
+
+        /* Title and subtitle are one unit, so the headline gives up its
+           own bottom margin when the subtitle follows it. Sibling
+           selector rather than a negative margin — nothing to unpick if
+           the headline scale changes. */
+        .manifesto-headline:has(+ p.manifesto-subtitle) { margin-bottom: 12px; }
+
+        .section-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--theme-muted);
+            margin: clamp(48px, 8vh, 80px) 0 32px 0;
+        }
+
+        /* The Examples paragraph: ~380 words, one block, verbatim. This
+           is a holding treatment, not the answer — slightly narrower
+           measure and a hairline so it reads as a set-apart passage
+           rather than more body copy. The real fix is designeer's. */
+        p.examples {
+            border-left: 1px solid var(--theme-border);
+            padding-left: clamp(20px, 3vw, 32px);
+            max-width: 32em;
+        }
+
+        p.closing {
+            font-size: clamp(22px, 2.8vw, 28px);
+            line-height: 1.4;
+            margin-top: clamp(40px, 7vh, 64px);
+        }
+
+        .colophon {
+            border-top: 1px solid var(--theme-border);
+            margin-top: clamp(48px, 8vh, 80px);
+            padding-top: 28px;
+        }
+
+        .colophon p {
+            font-style: italic;
+            font-size: 19px;
+            color: var(--theme-muted);
+            margin: 0;
+            max-width: none;
+        }
+
+        .site-footer {
+            display: flex;
+            justify-content: center;
+            padding: clamp(64px, 10vh, 100px) 20px;
+        }
+
+        .footer-patch {
+            max-width: 240px;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .footer-patch:hover { transform: scale(1.05); }
+
+        @media (max-width: 768px) {
+            .navigation-bar {
+                top: 20px;
+                left: 32px;
+                right: 32px;
+                width: calc(100vw - 64px);
+                transform: none;
+                flex-direction: column;
+                align-items: center;
+                gap: 0;
+            }
+
+            .nav-row-top, .nav-row-bottom {
+                display: flex;
+                align-items: stretch;
+                gap: 0;
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .color-spinner-container {
+                flex: 3;
+                display: flex;
+                justify-content: center;
+            }
+
+            /* Each top-row button takes an equal share, but won't shrink
+               below ~80px — if four don't fit, they wrap to a second row.
+               Scoped to nav-row-top so other .nav-btns (e.g. the gallery
+               toggle in the bottom bar) don't get stretched. */
+            .nav-row-top .nav-btn {
+                font-size: 15px;
+                font-weight: 600;
+                padding: 14px 16px;
+                flex: 1 1 60px;
+                text-align: center;
+                /* Center the glyph inside the button at this breakpoint */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            /* Swap label → icon at mobile so the row stays compact. */
+            .nav-row-top .nav-btn .nav-label { display: none; }
+            .nav-row-top .nav-btn .nav-glyph { display: inline-block; }
+
+            .nav-row-top .nav-icon-btn {
+                padding: 14px 16px;
+                flex: 1 1 60px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .color-spinner {
+                gap: 6px;
+                padding: 10px 14px;
+                width: 100%;
+                justify-content: center;
+                flex: 1;
+            }
+
+            /* Rectangular chips on mobile to save vertical space — the
+               full-width squares took up too much room in the stacked nav. */
+            .color-circle {
+                width: auto;
+                height: 32px;
+                aspect-ratio: auto;
+                flex: 1;
+                border-radius: 0;
+            }
+
+            .manifesto {
+                padding-left: 24px;
+                padding-right: 24px;
+                /* The nav stacks to two rows at this width. */
+                padding-top: 200px;
+            }
+
+            p.examples {
+                padding-left: 16px;
+            }
+
+            .footer-patch { max-width: 180px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                transition-duration: 0.01ms !important;
+                animation-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navigation-bar">
+        <div class="nav-row-top">
+            <!-- Each text button carries a sibling SVG icon. At desktop
+                 we show the label; at ≤768px we hide the label and show
+                 the icon so the row stays compact. Icons are all 24x24
+                 stroke-2 outlines so they read as one family. -->
+            <a href="/" class="nav-btn" aria-label="Home">
+                <svg class="nav-glyph" viewBox="0 0 24 24" aria-hidden="true">
+                    <!-- Barn: peaked roof, body, big X-braced doors -->
+                    <path d="M3 11L12 4l9 7"/>
+                    <path d="M4 11v9h16v-9"/>
+                    <path d="M9 20v-7h6v7"/>
+                    <path d="M9 13l6 7M15 13l-6 7"/>
+                </svg>
+                <span class="nav-label">Home</span>
+            </a>
+            <a href="https://www.instagram.com/tools_a_cowboy_would_use/" target="_blank" class="nav-icon-btn" aria-label="Instagram">
+                <svg class="nav-glyph" viewBox="0 0 24 24" aria-hidden="true">
+                    <!-- Outlined Instagram glyph — matches the stroke-2
+                         family used by the other nav icons. -->
+                    <rect x="3" y="3" width="18" height="18" rx="5"/>
+                    <circle cx="12" cy="12" r="4"/>
+                    <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/>
+                </svg>
+            </a>
+            <a href="https://blog.toolsacowboywoulduse.com" target="_blank" class="nav-btn" aria-label="Get notified">
+                <svg class="nav-glyph" viewBox="0 0 24 24" aria-hidden="true">
+                    <!-- Bell on a short rope -->
+                    <path d="M12 3v2"/>
+                    <path d="M6 17c1-2 1.5-5 1.5-8a4.5 4.5 0 0 1 9 0c0 3 .5 6 1.5 8z"/>
+                    <path d="M10 19a2 2 0 0 0 4 0"/>
+                </svg>
+                <span class="nav-label">Get notified</span>
+            </a>
+            <a href="/?view=store" class="nav-btn" aria-label="Store">
+                <svg class="nav-glyph" viewBox="0 0 24 24" aria-hidden="true">
+                    <!-- Clothes hanger: hook curling over the rod, neck
+                         dropping down, then the triangular hanger body
+                         with a horizontal bottom bar. Works for shirts,
+                         jackets, pants — anything that hangs. -->
+                    <path d="M10 5c0-3 2-3 2-1"/>
+                    <path d="M12 4v2"/>
+                    <path d="M12 6L4 16h16z"/>
+                </svg>
+                <span class="nav-label">Store</span>
+            </a>
+        </div>
+        <div class="nav-row-bottom">
+            <div class="color-spinner-container">
+                <div class="color-spinner">
+                    <button class="color-circle white" onclick="changeColor('white')" aria-label="White"></button>
+                    <button class="color-circle green" onclick="changeColor('green')" aria-label="Green"></button>
+                    <button class="color-circle red" onclick="changeColor('red')" aria-label="Red"></button>
+                    <button class="color-circle navy" onclick="changeColor('navy')" aria-label="Navy"></button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="manifesto">
+        <p class="eyebrow">Tools a Cowboy Would Use</p>
+
+        <h1 class="manifesto-headline">The Techno Gatherer Manifesto <span class="draft-mark">(rough draft)</span></h1>
+        <p class="manifesto-subtitle">Designing the future for humans</p>
+
+        <p>Last spring, I was sitting in an apartment in San Francisco with some colleagues and friends, and we were talking shop about technology&#x27;s role in the future. For those of you who know me, this topic (probably to the annoyance of all of you) comes up quite frequently, but on a brisk evening in the winter of 2023, someone in the group put words to the position and uttered the phrase &#x27;techno gatherer&#x27;.</p>
+
+        <p>Technology is changing the way humans live faster than the human body can evolve. The techno gatherer philosophy is rooted in the belief that humans should accelerate the pace of technological progress, but design technology that serves a natural way of life, a lifestyle that is in touch with primitive human nature.</p>
+
+        <p>Those in support of effective accelerationism (e/acc) and the techno optimist manifesto have been articulating the importance of accelerating the pace at which we develop and adopt technology to improve the state of the world, but the techno gatherer philosophy melds parts of these ideals with a focus on designing technology to serve the primitive human in a way that maximizes the quality of our lives. The techno gatherer acknowledges that the world is always changing, and aims to design the future in a way where we aim to keep things we value as a part of our lives.</p>
+
+        <p>The gatherer is inspired by the human body being designed to forage and walk in search of food. The techno is a nod to accelerating the pace at which we adopt new technologies that are designed to serve a way of living that we want, and feel in control of.</p>
+
+        <p>Accelerating the rate of technological progress means the change technology will have on the way we live, will outpace the rate at which humans evolve. Thus, we must build technology that serves our primitive needs. For example, the techno gatherer wants computers to enhance their life, but needs to designed in a way we use them to afford us a lifestyle that isn&#x27;t sedentary.</p>
+
+        <h2 class="section-label">Examples</h2>
+
+        <!-- ~380 words in a single block, verbatim from the source.
+             This is the paragraph to solve typographically — not by
+             editing it. Hook: .examples -->
+        <p class="examples">The techno gatherer values sharing a meal with loved ones, being a part of physical communities, experiencing nature, and moving their body. The techno gatherer avoids defaulting for optimization at all costs, and may forgo the bullet train and walk to their home from their workspace at the end of the day, or read an essay in physical print over a digital copy. The techno gatherer aspires to give humans the leverage to make explicit choice when trading their life for an altered way of living resulting of technological adoption. The techno gatherer values technology designed to protect personal privacy and give people freedom from government. The techno gatherer values the pursuit of science to explore about earth, space and the cosmos. The techno gatherer would go for a surf with a drone, or go for a hike and run in the mountains with a wearable. The techno gatherer uses satellites to connect to the internet in the wilderness. The techno gatherer uses tools to create art. The techno gatherer takes trains, planes, boats, and rockets to explore places they couldn&#x27;t before. The techno gatherer supports agriculture, may live on a ranch with internet, or go to a farmers market and use digital payment. The techno gatherer moves their body, leverages but avoids dependence on modern medicine and pharmaceuticals. The techno gatherer enjoys having conversations in the physical-world without distractions, works to avoid overstimulation, and focuses on being present. The techno gatherer values things built with human hands, while valuing things we&#x27;ve built with machines. The techno gatherer values craftsmanship, avoids over consumption, and reduces waste. The techno gatherer values children and growing families, leaves things better than they found them, and practices long-term thinking and decision making. The techno gatherer believes in meritocracies, abundance, and trade. The techno gatherer loves the ocean, the outdoors, and the sun. The techno gatherer believes in work and play.</p>
+
+        <p class="closing">The techno gatherer believes we can architect and design a future that we want to live in.</p>
+
+        <div class="colophon">
+            <p>Written on an iPhone during a walk, and published from a MacBook on the beach.</p>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <a href="/" aria-label="Home">
+            <img src="images/hero-vegetables.webp" alt="TACWU patch" class="footer-patch" width="1024" height="1024" loading="lazy" decoding="async">
+        </a>
+    </footer>
+
+    <script>
+        // Same four brand colors as the homepage. This page has no hero,
+        // so setColor only drives the html data attribute (which every
+        // themed rule reads), the meta theme-color, and the pressed
+        // state on the spinner.
+        const brandColors = ['red', 'green', 'navy', 'white'];
+        const colorValues = {
+            red:   '#7E202B',
+            green: '#1F2C26',
+            navy:  '#001E32',
+            white: '#ffffff'
+        };
+
+        function setColor(colorName) {
+            if (!brandColors.includes(colorName)) return;
+
+            document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('pressed'));
+            const activeCircle = document.querySelector(`.color-circle.${colorName}`);
+            if (activeCircle) activeCircle.classList.add('pressed');
+
+            document.documentElement.dataset.themeColor = colorName;
+            document.querySelector('meta[name="theme-color"]').content = colorValues[colorName];
+        }
+
+        function changeColor(colorName) { setColor(colorName); }
+
+        setColor('white');
+    </script>
+</body>
+</html>
