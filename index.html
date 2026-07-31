@@ -669,11 +669,14 @@
 
         .collection-item:hover { transform: translateY(-6px); }
 
-        /* The source photo has a tall empty band above the shirt; that is
-           cropped in the asset now (dawn_and_dusk_crop.webp) rather than
-           worked around with object-position, which was both leaving dead
-           space above the garment and clipping the hem. The image is shown
-           whole — no CSS crop.
+        /* dawn_and_dusk_crop.webp is the source photo trimmed to the
+           garment's alpha bounding box (883x719 out of 1536x2048 — the
+           shirt was only a third of the original canvas). Trimmed rather
+           than worked around with object-position, so the image box IS the
+           garment: the 32px above and below it are the gaps a reader
+           actually sees. Cropping only the top, as this file did first,
+           left a 640px transparent band under the hem and pushed the CTA
+           an apparent ~230px away from a photo it is 32px from.
            height: auto is load-bearing: width/height attributes on the tag
            would otherwise resolve the height and defeat the intrinsic
            aspect ratio. */
@@ -1667,7 +1670,7 @@
                 </p>
                 <div class="collection-grid">
                     <a href="?view=store" class="collection-item js-view-link" data-view="store" aria-label="Dawn and Dusk — shop the collection">
-                        <img src="store/images/dawn_and_dusk_crop.webp" alt="Dawn and Dusk apparel" width="1010" height="1430" loading="lazy" decoding="async">
+                        <img src="store/images/dawn_and_dusk_crop.webp" alt="Dawn and Dusk apparel" width="883" height="719" loading="lazy" decoding="async">
                     </a>
                 </div>
                 <div class="collection-cta-wrap">
