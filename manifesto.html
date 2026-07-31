@@ -344,7 +344,15 @@
             padding: clamp(160px, 22vh, 240px) 32px 0;
         }
 
-        .eyebrow {
+        /* Scoped AND element-qualified — (0,2,1). A bare `.eyebrow` is
+           (0,1,0) and loses to `.manifesto p` (0,1,1), which was silently
+           rendering this line at 22px with 0.18em tracking: nearly body
+           size, competing with the headline instead of sitting under it.
+           Note that `p.eyebrow` alone does not fix it either — that only
+           ties `.manifesto p`, and this rule sits earlier in the sheet,
+           so the tie breaks the wrong way. Anything that has to beat
+           `.manifesto p` from above it needs the extra class. */
+        .manifesto p.eyebrow {
             font-family: 'Inter', sans-serif;
             font-size: 13px;
             font-weight: 500;
@@ -415,15 +423,45 @@
             margin: clamp(48px, 8vh, 80px) 0 32px 0;
         }
 
-        /* The Examples paragraph: ~380 words, one block, verbatim. This
-           is a holding treatment, not the answer — slightly narrower
-           measure and a hairline so it reads as a set-apart passage
-           rather than more body copy. The real fix is designeer's. */
-        p.examples {
-            border-left: 1px solid var(--theme-border);
-            padding-left: clamp(20px, 3vw, 32px);
-            max-width: 32em;
+        /* THE LITANY — the Examples block.
+           All 18 sentences begin with the identical string "The techno
+           gatherer". It was never a paragraph; it is an 18-item list
+           written as one. So it is set as one, with no word changed,
+           added, or reordered.
+
+           Deliberately the SAME size as body copy. The block reads
+           differently because of structure and color, not because it
+           got its own type size — one less kind on the page. */
+        .litany {
+            list-style: none;
+            margin: 0 0 1.5em 0;
+            padding: 0;
+            /* No max-width here on purpose: an em value on the <ul> would
+               resolve against its inherited 16px, not the 22px the <li>s
+               actually set. The column already carries the measure. */
         }
+
+        .litany li {
+            /* Two columns per line: the repeated stem, then the clause.
+               `auto` sizes column 1 to the stem — and because every stem
+               is the identical string at the identical size, all 18 rows
+               resolve to the same width and the clauses line up without
+               a shared grid or a hard-coded indent. Wrapped lines hang
+               against the clause, not the stem. */
+            display: grid;
+            grid-template-columns: auto 1fr;
+            column-gap: 0.4em;
+            font-family: 'EB Garamond', serif;
+            font-size: clamp(19px, 2.2vw, 22px);
+            line-height: 1.5;
+            /* Larger than the 1.5 line-height above, so a sentence that
+               wraps still reads as one item rather than two. */
+            margin-bottom: 0.85em;
+        }
+
+        /* The repetition is the essay's rhythm, so it stays on the page —
+           but recessive, so the eye runs down the clauses. */
+        .litany .stem { color: var(--theme-muted); }
 
         p.closing {
             font-size: clamp(22px, 2.8vw, 28px);
@@ -551,8 +589,15 @@
                 padding-top: 200px;
             }
 
-            p.examples {
-                padding-left: 16px;
+            /* At phone widths there is no room for two columns. Drop back
+               to inline flow — the stem runs into its clause and stays
+               recessive, and each sentence still gets its own block. The
+               win that matters (one sentence, one item) survives; the
+               alignment that needs width does not. Stacking the stem onto
+               its own row was worse than the original wall: 18 identical
+               lead-in lines you have to read past. */
+            .litany li {
+                display: block;
             }
 
             .footer-patch { max-width: 180px; }
@@ -647,7 +692,26 @@
         <!-- ~380 words in a single block, verbatim from the source.
              This is the paragraph to solve typographically — not by
              editing it. Hook: .examples -->
-        <p class="examples">The techno gatherer values sharing a meal with loved ones, being a part of physical communities, experiencing nature, and moving their body. The techno gatherer avoids defaulting for optimization at all costs, and may forgo the bullet train and walk to their home from their workspace at the end of the day, or read an essay in physical print over a digital copy. The techno gatherer aspires to give humans the leverage to make explicit choice when trading their life for an altered way of living resulting of technological adoption. The techno gatherer values technology designed to protect personal privacy and give people freedom from government. The techno gatherer values the pursuit of science to explore about earth, space and the cosmos. The techno gatherer would go for a surf with a drone, or go for a hike and run in the mountains with a wearable. The techno gatherer uses satellites to connect to the internet in the wilderness. The techno gatherer uses tools to create art. The techno gatherer takes trains, planes, boats, and rockets to explore places they couldn&#x27;t before. The techno gatherer supports agriculture, may live on a ranch with internet, or go to a farmers market and use digital payment. The techno gatherer moves their body, leverages but avoids dependence on modern medicine and pharmaceuticals. The techno gatherer enjoys having conversations in the physical-world without distractions, works to avoid overstimulation, and focuses on being present. The techno gatherer values things built with human hands, while valuing things we&#x27;ve built with machines. The techno gatherer values craftsmanship, avoids over consumption, and reduces waste. The techno gatherer values children and growing families, leaves things better than they found them, and practices long-term thinking and decision making. The techno gatherer believes in meritocracies, abundance, and trade. The techno gatherer loves the ocean, the outdoors, and the sun. The techno gatherer believes in work and play.</p>
+        <ul class="litany">
+            <li><span class="stem">The techno gatherer </span><span>values sharing a meal with loved ones, being a part of physical communities, experiencing nature, and moving their body.</span></li>
+            <li><span class="stem">The techno gatherer </span><span>avoids defaulting for optimization at all costs, and may forgo the bullet train and walk to their home from their workspace at the end of the day, or read an essay in physical print over a digital copy.</span></li>
+            <li><span class="stem">The techno gatherer </span><span>aspires to give humans the leverage to make explicit choice when trading their life for an altered way of living resulting of technological adoption.</span></li>
+            <li><span class="stem">The techno gatherer </span><span>values technology designed to protect personal privacy and give people freedom from government.</span></li>
+            <li><span class="stem">The techno gatherer </span><span>values the pursuit of science to explore about earth, space and the cosmos.</span></li>
+            <li><span class="stem">The techno gatherer </span><span>would go for a surf with a drone, or go for a hike and run in the mountains with a wearable.</span></li>
+            <li><span class="stem">The techno gatherer </span><span>uses satellites to connect to the internet in the wilderness.</span></li>
+            <li><span class="stem">The techno gatherer </span><span>uses tools to create art.</span></li>
+            <li><span class="stem">The techno gatherer </span><span>takes trains, planes, boats, and rockets to explore places they couldn&#x27;t before.</span></li>
+            <li><span class="stem">The techno gatherer </span><span>supports agriculture, may live on a ranch with internet, or go to a farmers market and use digital payment.</span></li>
+            <li><span class="stem">The techno gatherer </span><span>moves their body, leverages but avoids dependence on modern medicine and pharmaceuticals.</span></li>
+            <li><span class="stem">The techno gatherer </span><span>enjoys having conversations in the physical-world without distractions, works to avoid overstimulation, and focuses on being present.</span></li>
+            <li><span class="stem">The techno gatherer </span><span>values things built with human hands, while valuing things we&#x27;ve built with machines.</span></li>
+            <li><span class="stem">The techno gatherer </span><span>values craftsmanship, avoids over consumption, and reduces waste.</span></li>
+            <li><span class="stem">The techno gatherer </span><span>values children and growing families, leaves things better than they found them, and practices long-term thinking and decision making.</span></li>
+            <li><span class="stem">The techno gatherer </span><span>believes in meritocracies, abundance, and trade.</span></li>
+            <li><span class="stem">The techno gatherer </span><span>loves the ocean, the outdoors, and the sun.</span></li>
+            <li><span class="stem">The techno gatherer </span><span>believes in work and play.</span></li>
+        </ul>
 
         <p class="closing">The techno gatherer believes we can architect and design a future that we want to live in.</p>
 
