@@ -392,11 +392,13 @@
             vertical-align: 0.35em;
         }
 
-        /* Element-qualified on purpose. `.manifesto p` above is (0,1,1);
-           a bare `.manifesto-subtitle` is (0,1,0) and loses, which
-           silently reverts these to body size. Same for .examples and
-           .closing below. */
-        p.manifesto-subtitle {
+        /* Scoped to beat `.manifesto p` above on specificity rather than
+           on source order. A bare `.manifesto-subtitle` is (0,1,0) and
+           loses outright; `p.manifesto-subtitle` only ties at (0,1,1) and
+           happens to win because it sits later in the sheet — move it up
+           and the type silently reverts to body size. `.manifesto p.x`
+           is (0,2,1) and wins from anywhere. Same for .closing below. */
+        .manifesto p.manifesto-subtitle {
             font-family: 'EB Garamond', serif;
             font-size: clamp(24px, 3.4vw, 34px);
             font-weight: 400;
@@ -463,7 +465,7 @@
            but recessive, so the eye runs down the clauses. */
         .litany .stem { color: var(--theme-muted); }
 
-        p.closing {
+        .manifesto p.closing {
             font-size: clamp(22px, 2.8vw, 28px);
             line-height: 1.4;
             margin-top: clamp(40px, 7vh, 64px);
@@ -721,7 +723,7 @@
              picture it describes. Photo is lucas's, from the post. -->
         <figure class="colophon">
             <img src="images/techno-gatherer.webp"
-                 alt="The sun setting into the ocean, seen from the beach at low tide, footprints across the wet sand."
+                 alt="The sun setting into the ocean at low tide, seen across a wide beach churned with footprints, the wet sand beyond them holding the light."
                  width="1456" height="1941" loading="lazy" decoding="async">
             <figcaption>Written on an iPhone during a walk, and published from a MacBook on the beach.</figcaption>
         </figure>
