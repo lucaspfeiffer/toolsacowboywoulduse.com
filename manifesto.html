@@ -8,7 +8,7 @@
     <meta property="og:site_name" content="Tools a Cowboy Would Use">
     <meta property="og:title" content="The Techno Gatherer Manifesto — Designing the future for humans">
     <meta property="og:description" content="Technology is changing the way humans live faster than the human body can evolve.">
-    <meta property="og:image" content="https://toolsacowboywoulduse.com/images/hero-veggies.webp">
+    <meta property="og:image" content="https://toolsacowboywoulduse.com/images/techno-gatherer.webp">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://toolsacowboywoulduse.com/manifesto.html">
     <meta name="twitter:card" content="summary_large_image">
@@ -431,18 +431,30 @@
             margin-top: clamp(40px, 7vh, 64px);
         }
 
+        /* The photo the essay ends on, at full measure. Not cropped and
+           not height-capped — it is lucas's picture and the 3:4 is his,
+           so scaling it is designeer's call to make deliberately rather
+           than mine to make by accident. The width/height attributes on
+           the <img> reserve the box, so nothing shifts as it loads. */
         .colophon {
             border-top: 1px solid var(--theme-border);
-            margin-top: clamp(48px, 8vh, 80px);
+            margin: clamp(48px, 8vh, 80px) 0 0 0;
             padding-top: 28px;
         }
 
-        .colophon p {
+        .colophon img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .colophon figcaption {
+            font-family: 'EB Garamond', serif;
             font-style: italic;
             font-size: 19px;
+            line-height: 1.5;
             color: var(--theme-muted);
-            margin: 0;
-            max-width: none;
+            margin-top: 16px;
         }
 
         .site-footer {
@@ -639,9 +651,16 @@
 
         <p class="closing">The techno gatherer believes we can architect and design a future that we want to live in.</p>
 
-        <div class="colophon">
-            <p>Written on an iPhone during a walk, and published from a MacBook on the beach.</p>
-        </div>
+        <!-- In the Substack source this line is the figcaption of the
+             photo, not a standalone paragraph — the markdown extract
+             flattened that. Restored here: the caption belongs to the
+             picture it describes. Photo is lucas's, from the post. -->
+        <figure class="colophon">
+            <img src="images/techno-gatherer.webp"
+                 alt="The sun setting into the ocean, seen from the beach at low tide, footprints across the wet sand."
+                 width="1456" height="1941" loading="lazy" decoding="async">
+            <figcaption>Written on an iPhone during a walk, and published from a MacBook on the beach.</figcaption>
+        </figure>
     </main>
 
     <footer class="site-footer">
