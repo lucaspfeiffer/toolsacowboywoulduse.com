@@ -702,15 +702,12 @@
            photograph, the photograph is back to sharing the module.
            ───────────────────────────────────────────────────────────── */
         .gallery-section {
-            --gallery-paper: #FAF7F2;
             --gallery-ink: #16120F;
             --gallery-ink-60: #6B6259;
             --gallery-ink-40: #9A9086;
             --gallery-rule: rgba(22, 18, 15, 0.13);
-            /* Falls back to the collection section's current values on main,
-               and picks up the shared scale automatically if #18 lands. */
             padding: var(--space-section, 120px) var(--space-edge, 60px);
-            background-color: var(--gallery-paper);
+            background-color: #ffffff;
             color: var(--gallery-ink);
         }
 
@@ -734,7 +731,6 @@
             align-items: center;
             justify-content: center;
             margin: 0;
-            cursor: zoom-in;
         }
 
         .gallery-stage img {
@@ -746,56 +742,23 @@
             box-shadow: 0 18px 50px -22px rgba(22, 18, 15, 0.42);
         }
 
-        .gallery-expand {
-            position: absolute;
-            right: 12px;
-            bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 7px 10px;
-            background: rgba(15, 12, 11, 0.55);
-            color: #F6EFE5;
-            font-family: 'Inter', sans-serif;
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-            pointer-events: none;
-        }
-
-        .gallery-stage:hover .gallery-expand { opacity: 1; }
-        /* Touch has no hover, so the affordance has to stay put there. */
-        @media (hover: none) { .gallery-expand { opacity: 1; } }
-
         .gallery-copy { display: flex; flex-direction: column; }
-
-        .gallery-eyebrow {
-            font-family: 'Inter', sans-serif;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: var(--gallery-ink-40);
-            margin: 0 0 14px 0;
-        }
 
         .gallery-title {
             font-family: 'EB Garamond', serif;
-            font-size: clamp(28px, 2.3vw, 38px);
+            font-size: 48px;
             font-weight: 700;
             line-height: 1.1;
             letter-spacing: -0.012em;
+            color: #000000;
             margin: 0;
         }
 
         .gallery-deck {
-            font-family: 'EB Garamond', serif;
-            font-size: clamp(16px, 1.05vw, 17px);
-            line-height: 1.62;
-            color: var(--gallery-ink-60);
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            line-height: 1.6;
+            color: #666666;
             max-width: 38ch;
             margin: 16px 0 0 0;
         }
@@ -856,45 +819,6 @@
         .gallery-arrow:disabled { opacity: 0.22; cursor: default; }
         .gallery-arrow svg { width: 17px; height: 17px; }
 
-        /* min-width: 0 keeps the rail from setting the grid column's minimum
-           to the width of every thumbnail laid end to end. */
-        .gallery-rail {
-            display: flex;
-            min-width: 0;
-            gap: 8px;
-            overflow-x: auto;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            margin-top: 12px;
-        }
-
-        .gallery-rail::-webkit-scrollbar { display: none; }
-
-        .gallery-rail button {
-            appearance: none;
-            flex: 0 0 auto;
-            padding: 0;
-            border: 0;
-            background: none;
-            cursor: pointer;
-            line-height: 0;
-            opacity: 0.4;
-            transition: opacity 0.25s ease;
-        }
-
-        .gallery-rail button:hover { opacity: 0.75; }
-        .gallery-rail button[aria-current="true"] { opacity: 1; }
-
-        .gallery-rail img {
-            height: 56px;
-            width: auto;
-            display: block;
-            outline: 1px solid var(--gallery-rule);
-            outline-offset: -1px;
-        }
-
-        .gallery-rail button[aria-current="true"] img { outline-color: var(--gallery-ink); }
-
         .gallery-cta-wrap { margin-top: 36px; }
 
         .gallery-cta {
@@ -913,64 +837,9 @@
 
         .gallery-cta:hover { color: #BE5D1D; border-color: #BE5D1D; }
 
-        /* Expanded view. Built in JS so there is one implementation of it. */
-        .gallery-lightbox {
-            position: fixed;
-            inset: 0;
-            z-index: 800;
-            display: none;
-            background: rgba(8, 6, 5, 0.96);
-            padding: clamp(16px, 4vw, 56px);
-        }
-
-        .gallery-lightbox[data-open="true"] {
-            display: grid;
-            /* minmax(0, 1fr), not 1fr — an auto-min row grows to the image's
-               intrinsic height and pushes the caption bar off screen. */
-            grid-template-rows: minmax(0, 1fr) auto;
-            gap: 20px;
-        }
-
-        .gallery-lightbox img {
-            max-width: 100%;
-            max-height: 100%;
-            width: auto;
-            height: auto;
-            margin: auto;
-            display: block;
-            cursor: zoom-out;
-        }
-
-        .gallery-lightbox-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            color: #F6EFE5;
-        }
-
-        .gallery-lightbox-bar .gallery-caption { color: rgba(246, 239, 229, 0.6); }
-        .gallery-lightbox-bar .gallery-caption .gallery-place { color: #F6EFE5; }
-        .gallery-lightbox-bar .gallery-counter { color: rgba(246, 239, 229, 0.6); }
-        .gallery-lightbox .gallery-arrow { border-color: rgba(246, 239, 229, 0.32); color: #F6EFE5; }
-        .gallery-lightbox .gallery-arrow:hover:not(:disabled) { border-color: #F6EFE5; }
-
-        .gallery-lightbox-close {
-            appearance: none;
-            border: 0;
-            background: none;
-            color: #F6EFE5;
-            cursor: pointer;
-            padding: 8px;
-            line-height: 0;
-        }
-
-
         /* The two-column layout squeezes the photograph below ~980px, which is
            above the site's 768 breakpoint — so this module collapses on its
-           own. Copy first, then the photograph, then the controls.
-           minmax(0, 1fr), not 1fr: a 1fr track takes its minimum from content,
-           and the rail's content is wider than a phone viewport. */
+           own. Copy first, then the photograph, then the controls. */
         @media (max-width: 980px) {
             .gallery-inner {
                 grid-template-columns: minmax(0, 1fr);
@@ -1748,6 +1617,8 @@
                landscape frames inside a portrait-shaped box. */
             .gallery-section { padding: var(--space-section, 80px) var(--space-edge, 20px); }
             .gallery-stage { height: min(calc((100vw - 40px) * var(--stage-ratio)), 62vh); }
+            .gallery-title { font-size: 36px; }
+            .gallery-deck { font-size: 16px; }
             .collection-section { padding: var(--space-section) var(--space-edge); }
             .collection-title { font-size: 36px; }
             .collection-subtitle { font-size: 16px; }
@@ -1996,21 +1867,16 @@
              viewer takes over from GALLERY_PHOTOS below. -->
         <section class="gallery-section">
             <div class="gallery-inner">
-                <figure class="gallery-stage" id="gallery-stage" tabindex="0" role="button" aria-label="Expand photo">
+                <figure class="gallery-stage" id="gallery-stage">
                     <img id="gallery-image"
                          src="images/gallery/01-san-francisco.webp"
                          alt="Sunrise or sunset at San Francisco"
                          width="1200" height="1600"
                          decoding="async">
-                    <span class="gallery-expand" aria-hidden="true">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-                        Expand
-                    </span>
                 </figure>
 
                 <div class="gallery-copy">
                     <div class="gallery-intro">
-                    <p class="gallery-eyebrow">The Dawn and Dusk community gallery</p>
                     <h2 class="gallery-title">Every sky here started as a notification.</h2>
                     <p class="gallery-deck">Dawn and Dusk tells you an hour before the light turns. The rest is you, outside, with a phone. Photos shared from the app land here — and the frames that stop us get featured: in the app, on the site, and in whatever we make next.</p>
                     </div>
@@ -2022,7 +1888,6 @@
                             <button type="button" class="gallery-arrow" id="gallery-prev" aria-label="Previous photo" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
                             <button type="button" class="gallery-arrow" id="gallery-next" aria-label="Next photo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
                         </div>
-                        <div class="gallery-rail" id="gallery-rail"></div>
                     </div>
 
                     <div class="gallery-cta-wrap">
@@ -2295,56 +2160,12 @@
             const counter = document.getElementById('gallery-counter');
             const prev    = document.getElementById('gallery-prev');
             const next    = document.getElementById('gallery-next');
-            const rail    = document.getElementById('gallery-rail');
-            if (!stage || !rail) return;
+            if (!stage) return;
 
             const total = GALLERY_PHOTOS.length;
             let index = 0;
 
-            const ARROW_L = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>';
-            const ARROW_R = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>';
-
             const pad = n => String(n).padStart(2, '0');
-
-            // Built here rather than in the markup so there is one
-            // implementation of the expanded view.
-            const box = document.createElement('div');
-            box.className = 'gallery-lightbox';
-            box.dataset.open = 'false';
-            box.setAttribute('role', 'dialog');
-            box.setAttribute('aria-modal', 'true');
-            box.setAttribute('aria-label', 'Expanded photo');
-            box.innerHTML =
-                '<img id="gallery-lb-image" src="" alt="">' +
-                '<div class="gallery-lightbox-bar">' +
-                    '<p class="gallery-caption">' +
-                        '<span class="gallery-place" id="gallery-lb-place"></span>' +
-                        '<span id="gallery-lb-sep">·</span>' +
-                        '<span id="gallery-lb-date"></span>' +
-                    '</p>' +
-                    '<div style="display:flex;align-items:center;gap:14px">' +
-                        '<span class="gallery-counter" id="gallery-lb-counter"></span>' +
-                        '<button type="button" class="gallery-arrow" id="gallery-lb-prev" aria-label="Previous photo">' + ARROW_L + '</button>' +
-                        '<button type="button" class="gallery-arrow" id="gallery-lb-next" aria-label="Next photo">' + ARROW_R + '</button>' +
-                        '<button type="button" class="gallery-lightbox-close" id="gallery-lb-close" aria-label="Close">' +
-                            '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>' +
-                        '</button>' +
-                    '</div>' +
-                '</div>';
-            document.body.appendChild(box);
-
-            const lbImage   = document.getElementById('gallery-lb-image');
-            const lbPlace   = document.getElementById('gallery-lb-place');
-            const lbSep     = document.getElementById('gallery-lb-sep');
-            const lbDate    = document.getElementById('gallery-lb-date');
-            const lbCounter = document.getElementById('gallery-lb-counter');
-
-            function caption(pEl, sEl, dEl, photo) {
-                pEl.textContent = photo.place || '';
-                pEl.hidden = !photo.place;
-                sEl.hidden = !photo.place;
-                dEl.textContent = photo.when;
-            }
 
             function render() {
                 const photo = GALLERY_PHOTOS[index];
@@ -2360,30 +2181,13 @@
                 stage.style.setProperty('--stage-ratio', photo.h / photo.w);
                 image.src = 'images/gallery/' + photo.slug + '.webp';
                 image.alt = 'Sunrise or sunset at ' + (photo.place || 'an unrecorded location');
-                caption(placeEl, sepEl, dateEl, photo);
+                placeEl.textContent = photo.place || '';
+                placeEl.hidden = !photo.place;
+                sepEl.hidden = !photo.place;
+                dateEl.textContent = photo.when;
                 counter.textContent = pad(index + 1) + ' / ' + pad(total);
                 prev.disabled = index === 0;
                 next.disabled = index === total - 1;
-
-                Array.from(rail.children).forEach((b, n) => b.setAttribute('aria-current', String(n === index)));
-                // Scroll the rail itself — scrollIntoView walks up and scrolls
-                // the window with it, which yanks the page on first paint.
-                const active = rail.children[index];
-                if (active) {
-                    const target = active.offsetLeft - (rail.clientWidth - active.offsetWidth) / 2;
-                    const max = rail.scrollWidth - rail.clientWidth;
-                    rail.scrollTo({ left: Math.max(0, Math.min(target, max)), behavior: 'smooth' });
-                }
-
-                if (box.dataset.open === 'true') renderLightbox();
-            }
-
-            function renderLightbox() {
-                const photo = GALLERY_PHOTOS[index];
-                lbImage.src = 'images/gallery/' + photo.slug + '.webp';
-                lbImage.alt = 'Sunrise or sunset at ' + (photo.place || 'an unrecorded location');
-                caption(lbPlace, lbSep, lbDate, photo);
-                lbCounter.textContent = pad(index + 1) + ' / ' + pad(total);
             }
 
             function go(n) {
@@ -2392,44 +2196,13 @@
                 render();
             }
 
-            function openLightbox() {
-                box.dataset.open = 'true';
-                document.body.classList.add('modal-open');
-                renderLightbox();
-            }
-
-            function closeLightbox() {
-                box.dataset.open = 'false';
-                document.body.classList.remove('modal-open');
-            }
-
-            GALLERY_PHOTOS.forEach((photo, n) => {
-                const b = document.createElement('button');
-                b.type = 'button';
-                b.setAttribute('aria-label', (photo.place ? photo.place + ', ' : '') + photo.when);
-                const im = document.createElement('img');
-                im.src = 'images/gallery/' + photo.slug + '-thumb.webp';
-                im.alt = '';
-                im.loading = 'lazy';
-                im.decoding = 'async';
-                b.appendChild(im);
-                b.addEventListener('click', () => go(n));
-                rail.appendChild(b);
-            });
-
             prev.addEventListener('click', () => go(index - 1));
             next.addEventListener('click', () => go(index + 1));
-            document.getElementById('gallery-lb-prev').addEventListener('click', () => go(index - 1));
-            document.getElementById('gallery-lb-next').addEventListener('click', () => go(index + 1));
-            document.getElementById('gallery-lb-close').addEventListener('click', closeLightbox);
-            stage.addEventListener('click', openLightbox);
-            lbImage.addEventListener('click', closeLightbox);
 
             document.addEventListener('keydown', (e) => {
                 // The store view has its own arrow-key handling; only take the
                 // keys while the home view is the one on screen.
                 if (document.documentElement.dataset.view !== 'home') return;
-                if (box.dataset.open === 'true' && e.key === 'Escape') { closeLightbox(); return; }
                 if (e.key === 'ArrowLeft')  go(index - 1);
                 if (e.key === 'ArrowRight') go(index + 1);
             });
@@ -2437,18 +2210,16 @@
             // Swipe. Only a mostly-horizontal gesture counts, so a vertical
             // scroll that starts on the photo still scrolls the page.
             let x0 = null, y0 = null;
-            const onStart = (e) => { const t = e.changedTouches[0]; x0 = t.clientX; y0 = t.clientY; };
-            const onEnd = (e) => {
+            stage.addEventListener('touchstart', (e) => {
+                const t = e.changedTouches[0]; x0 = t.clientX; y0 = t.clientY;
+            }, { passive: true });
+            stage.addEventListener('touchend', (e) => {
                 if (x0 === null) return;
                 const t = e.changedTouches[0];
                 const dx = t.clientX - x0, dy = t.clientY - y0;
                 if (Math.abs(dx) > 44 && Math.abs(dx) > Math.abs(dy)) go(index + (dx < 0 ? 1 : -1));
                 x0 = y0 = null;
-            };
-            [stage, box].forEach((n) => {
-                n.addEventListener('touchstart', onStart, { passive: true });
-                n.addEventListener('touchend', onEnd, { passive: true });
-            });
+            }, { passive: true });
 
             render();
         }
