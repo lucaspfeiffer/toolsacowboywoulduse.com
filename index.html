@@ -1918,8 +1918,8 @@
 
             <div class="gallery-band">
                 <div class="gallery-track" id="gallery-track">
-                    <div class="gallery-print"><button type="button"><img src="images/gallery/01-san-francisco.webp" alt="Sunrise or sunset at San Francisco" width="1200" height="1600" decoding="async"><figcaption>San Francisco</figcaption></button></div>
-                    <div class="gallery-print"><button type="button"><img src="images/gallery/02-madrid.webp" alt="Sunrise or sunset at Madrid" width="1200" height="1600" loading="lazy" decoding="async"><figcaption>Madrid</figcaption></button></div>
+                    <div class="gallery-print"><button type="button"><img src="images/gallery/01-san-francisco-band.webp" alt="Sunrise or sunset at San Francisco" width="400" height="534" decoding="async"><figcaption>San Francisco</figcaption></button></div>
+                    <div class="gallery-print"><button type="button"><img src="images/gallery/02-madrid-band.webp" alt="Sunrise or sunset at Madrid" width="400" height="534" loading="lazy" decoding="async"><figcaption>Madrid</figcaption></button></div>
                 </div>
             </div>
 
@@ -2197,6 +2197,12 @@
 
             const total = GALLERY_PHOTOS.length;
             const pad = n => String(n).padStart(2, '0');
+            // A print in the band is 188px wide (135px on a phone), so it has
+            // no use for the 1200px file — that is 2.1MB across the twelve to
+            // paint 300KB worth of pixels. The band gets a 400px variant, wide
+            // enough for the print at 2x, and the expanded view keeps the full
+            // frame, which is the only place it is ever seen at size.
+            const bandSrcOf = p => 'images/gallery/' + p.slug + '-band.webp';
             const srcOf = p => 'images/gallery/' + p.slug + '.webp';
             const altOf = p => 'Sunrise or sunset at ' + (p.place || 'an unrecorded location');
 
@@ -2214,7 +2220,7 @@
                     wrap.style.transform = 'rotate(' + GALLERY_TILT[i % GALLERY_TILT.length] + 'deg)';
                     wrap.innerHTML =
                         '<button type="button" aria-label="Expand photo">' +
-                            '<img src="' + srcOf(photo) + '" alt="' + altOf(photo) + '" width="1200" height="1600" loading="lazy" decoding="async">' +
+                            '<img src="' + bandSrcOf(photo) + '" alt="' + altOf(photo) + '" width="400" height="534" loading="lazy" decoding="async">' +
                             '<figcaption>' + (photo.place || 'Unrecorded') + '</figcaption>' +
                         '</button>';
                     const button = wrap.querySelector('button');
