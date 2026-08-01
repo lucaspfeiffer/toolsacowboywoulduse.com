@@ -751,7 +751,7 @@
             align-items: flex-start;
             width: max-content;
             padding: 24px 0 40px 0;
-            animation: gallery-drift 104s linear infinite;
+            animation: gallery-drift 95s linear infinite;
         }
 
         /* Pausing on hover is the only way to look at one frame with a mouse. */
@@ -2175,7 +2175,6 @@
             { slug: '02-madrid', w: 1200, h: 1600, place: 'Madrid', when: 'July 2026' },
             { slug: '03-franklin', w: 1200, h: 1600, place: 'Franklin', when: 'May 2026' },
             { slug: '04-half-moon-bay', w: 1200, h: 1600, place: 'Half Moon Bay', when: 'March 2026' },
-            { slug: '05-san-francisco', w: 1200, h: 1600, place: 'San Francisco', when: 'February 2026' },
             { slug: '06-grand-rapids', w: 1200, h: 1600, place: 'Grand Rapids', when: 'June 2026' },
             { slug: '07-san-francisco', w: 1200, h: 1600, place: 'San Francisco', when: 'February 2026' },
             { slug: '08-aspen', w: 1200, h: 1600, place: 'Aspen', when: 'June 2026' },
@@ -2188,8 +2187,8 @@
         // Hand-set rather than generated: a formula gives the band a visible
         // period, and a table of prints never has one. Index-matched to
         // GALLERY_PHOTOS.
-        const GALLERY_TILT = [-2.4, 1.8, -1.1, 3.1, -3.4, 0.9, 2.6, -1.9, 1.3, -2.8, 2.1, -0.7];
-        const GALLERY_RISE = [0, 54, 18, 66, 8, 44, 26, 60, 4, 50, 22, 62];
+        const GALLERY_TILT = [-2.4, 1.8, -1.1, 3.1, 0.9, 2.6, -1.9, 1.3, -2.8, 2.1, -0.7];
+        const GALLERY_RISE = [0, 54, 18, 66, 44, 26, 60, 4, 50, 22, 62];
 
         function initCommunityGallery() {
             const track = document.getElementById('gallery-track');
@@ -2203,7 +2202,7 @@
             const ARROW_L = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>';
             const ARROW_R = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>';
 
-            // Two passes of the same twelve. The -50% keyframe lands the copy
+            // Two passes of the same eleven. The -50% keyframe lands the copy
             // exactly where the original started, so the loop has no seam.
             track.innerHTML = '';
             for (let pass = 0; pass < 2; pass++) {
@@ -2219,7 +2218,7 @@
                         '</button>';
                     const button = wrap.querySelector('button');
                     // The second pass is a visual duplicate — hide it from screen
-                    // readers rather than reading twelve photos twice, and take it
+                    // readers rather than reading eleven photos twice, and take it
                     // out of the tab order with them, since aria-hidden and a
                     // focusable child contradict each other.
                     if (pass === 1) {
